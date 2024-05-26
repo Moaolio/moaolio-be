@@ -57,4 +57,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserPostComments> userPostComments;
 
+    public void ifPresent(Object o) {
+    }
 }

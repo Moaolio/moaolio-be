@@ -1,13 +1,15 @@
 package com.example.side.service;
 
 import com.example.side.model.entity.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserService extends JpaRepository<User, Long> {
-    Page<User> findall(Pageable pageable);
+import java.util.Optional;
+
+public interface UserService{
+    Iterable<User> selectAll();
+    Optional<User> selectOneById(Long id);
+    User insertUser(User user);
+    void updateUser(User user);
+    void deleteUser(Long id);
+
 }

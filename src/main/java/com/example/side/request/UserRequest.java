@@ -25,8 +25,4 @@ public class UserRequest {
     private String Google;
     private String Naver;
 
-    @CreatedDate
-    private LocalDateTime Created;
-    @LastModifiedDate
-    private LocalDateTime Updated;
 }
