@@ -6,6 +6,7 @@ import com.example.side.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -21,5 +22,10 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public Optional<Community> selectOneById(Long id) {
         return communityRepository.findById(id);
+    }
+
+    @Override
+    public List<Community> findByOccupation(String occupation) {
+        return communityRepository.findByOccupation(occupation);
     }
 }
