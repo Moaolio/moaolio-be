@@ -10,8 +10,12 @@ import java.util.Optional;
 
 @Service
 public class UserPostFileServiceImpl implements UserPostFileService {
-    @Autowired
-    UserPostFileRepository userPostFileRepository;
+
+    private final UserPostFileRepository userPostFileRepository;
+
+    public UserPostFileServiceImpl(UserPostFileRepository userPostFileRepository) {
+        this.userPostFileRepository = userPostFileRepository;
+    }
 
     public Iterable<UserPostFile> selectAll() {
         return userPostFileRepository.findAll();

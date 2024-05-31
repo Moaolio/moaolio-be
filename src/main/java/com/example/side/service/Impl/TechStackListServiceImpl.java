@@ -26,8 +26,4 @@ public class TechStackListServiceImpl implements TechStackListService {
     public TechStackList insertTechStackList(TechStackList techStackList) {
         return techStackListRepository.save(techStackList);
     }
-    @Override
-    public void updateTechStackList(TechStackList techStackList) {
-        techStackListRepository.save(techStackList);
-    }
 }

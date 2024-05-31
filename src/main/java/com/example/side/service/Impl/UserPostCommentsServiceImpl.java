@@ -10,8 +10,13 @@ import java.util.Optional;
 
 @Service
 public class UserPostCommentsServiceImpl implements UserPostCommentsService {
-    @Autowired
-    UserPostCommentsRepository userPostCommentsRepository;
+
+    private final UserPostCommentsRepository userPostCommentsRepository;
+
+    public UserPostCommentsServiceImpl(UserPostCommentsRepository userPostCommentsRepository) {
+        this.userPostCommentsRepository = userPostCommentsRepository;
+    }
+
     public Iterable<UserPostComments> selectAll() {
         return userPostCommentsRepository.findAll();
     }

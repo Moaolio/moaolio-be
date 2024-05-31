@@ -10,8 +10,12 @@ import java.util.Optional;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
-    @Autowired
-    NotificationRepository notificationRepository;
+
+    private final NotificationRepository notificationRepository;
+
+    public NotificationServiceImpl(NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
+    }
 
     @Override
     public Iterable<Notification> selectAll() {

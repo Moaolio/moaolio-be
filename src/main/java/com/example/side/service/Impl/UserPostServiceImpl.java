@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 public class UserPostServiceImpl implements UserPostService {
-    @Autowired
-    UserPostRepository userPostRepository;
+
+    private final UserPostRepository userPostRepository;
+
+    public UserPostServiceImpl(UserPostRepository userPostRepository) {
+        this.userPostRepository = userPostRepository;
+    }
 
     public Iterable<UserPost> selectAll() {
         return userPostRepository.findAll();

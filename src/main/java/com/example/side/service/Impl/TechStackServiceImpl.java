@@ -10,8 +10,13 @@ import java.util.Optional;
 
 @Service
 public class TechStackServiceImpl implements TechStackService {
-    @Autowired
-    TechStackRepository techStackRepository;
+
+    private final TechStackRepository techStackRepository;
+
+    public TechStackServiceImpl(TechStackRepository techStackRepository) {
+        this.techStackRepository = techStackRepository;
+    }
+
     @Override
     public Iterable<TechStack> selectAll() {
         return techStackRepository.findAll();

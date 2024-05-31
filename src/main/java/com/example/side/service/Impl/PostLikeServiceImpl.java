@@ -10,8 +10,12 @@ import java.util.Optional;
 
 @Service
 public class PostLikeServiceImpl implements PostLikeService {
-    @Autowired
-    PostLikeRepository postLikeRepository;
+
+    private final PostLikeRepository postLikeRepository;
+
+    public PostLikeServiceImpl(PostLikeRepository postLikeRepository) {
+        this.postLikeRepository = postLikeRepository;
+    }
 
     public Iterable<PostLike> selectAll() {
         return postLikeRepository.findAll();

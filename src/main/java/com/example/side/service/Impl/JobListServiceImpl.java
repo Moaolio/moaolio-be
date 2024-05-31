@@ -10,8 +10,12 @@ import java.util.Optional;
 
 @Service
 public class JobListServiceImpl implements JobListService {
-    @Autowired
-    JobListRepository jobListRepository;
+
+    private final JobListRepository jobListRepository;
+
+    public JobListServiceImpl(JobListRepository jobListRepository) {
+        this.jobListRepository = jobListRepository;
+    }
 
     @Override
     public Iterable<JobList> selectAll() {

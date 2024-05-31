@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class CommunityServiceImpl implements CommunityService {
 
-    @Autowired
-    CommunityRepository communityRepository;
+
+    private final CommunityRepository communityRepository;
+
+    public CommunityServiceImpl(CommunityRepository communityRepository) {
+        this.communityRepository = communityRepository;
+    }
 
     @Override
     public Iterable<Community> selectAll() {

@@ -8,6 +8,5 @@ public interface UserScrapService {
     Iterable<UserScrap> selectAll();
     Optional<UserScrap> selectOneById(Long id);
     UserScrap insertUserScrap(UserScrap userScrap);
-    void updateUserScrap(UserScrap userScrap);
     void deleteUserScrap(Long id);
 }
