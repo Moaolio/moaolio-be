@@ -36,7 +36,14 @@ public class User {
     private String username;
     private Long career;
     private String state;
+    private String job;
+    private String profile;
+    private String profileImage;
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -46,9 +53,6 @@ public class User {
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Job> jobs;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserPost> userPosts;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -56,7 +60,4 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserPostComments> userPostComments;
-
-    public void ifPresent(Object o) {
-    }
 }
