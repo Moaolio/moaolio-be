@@ -27,9 +27,7 @@ public class UserResponse {
     private LocalDateTime Created;
     private LocalDateTime Updated;
     private List<NotificationResponse> notificationList;
-    private List<TechStackListResponse> techStackList;
     private List<UserPostCommentsResponse> userPostComments;
-    private List<JobResponse> jobList;
     private List<UserPostResponse> userPostList;
     private List<PostLikeResponse> userPostLikeList;
     private List<UserPostCommentsResponse> userPostCommentsList;

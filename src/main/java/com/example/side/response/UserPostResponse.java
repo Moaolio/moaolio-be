@@ -1,5 +1,6 @@
 package com.example.side.response;
 
+import com.example.side.model.entity.UserPost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,4 +31,12 @@ public class UserPostResponse {
     private List<UserPostCommentsResponse> userPostCommentsList;
     private List<PostLikeResponse> postLikeList;
 
+    public UserPostResponse(UserPost userPost) {
+        this.title = userPost.getTitle();
+        this.tag = userPost.getTag();
+        this.content = userPost.getContent();
+        this.category = userPost.getCategory();
+        this.createdAt = userPost.getCreatedAt();
+        this.userId = userPost.getUser().getId();
+    }
 }

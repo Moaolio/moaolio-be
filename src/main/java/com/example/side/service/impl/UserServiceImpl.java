@@ -1,9 +1,8 @@
-package com.example.side.service.Impl;
+package com.example.side.service.impl;
 
 import com.example.side.model.entity.User;
 import com.example.side.repository.UserRepository;
 import com.example.side.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

@@ -1,9 +1,8 @@
-package com.example.side.service.Impl;
+package com.example.side.service.impl;
 
 import com.example.side.model.entity.UserPostFile;
 import com.example.side.repository.UserPostFileRepository;
 import com.example.side.service.UserPostFileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

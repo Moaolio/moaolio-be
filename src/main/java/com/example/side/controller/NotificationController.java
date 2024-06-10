@@ -28,9 +28,5 @@ public class NotificationController {
         return (List<Notification>) notificationService.selectAll();
     }
 
-    @GetMapping("/{username}")
-    public List<Notification> getNotificationsByUsername(@PathVariable String username) {
-        // 이 메소드는 NotificationRepository에 새로운 메소드를 추가하여 구현해야 합니다.
-        // 예: return notificationRepository.findByUsername(username);
-    }
+
 }

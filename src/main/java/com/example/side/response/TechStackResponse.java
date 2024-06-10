@@ -15,5 +15,5 @@ public class TechStackResponse {
     private Long id;
 
     private Long userId;
-    private Long techStackId;
+    private String techStack;
 }

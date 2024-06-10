@@ -14,5 +14,4 @@ import java.time.LocalDateTime;
 public class UserScrapResponse {
     private Long id;
     private Long userId;
-    private Long userScrapId;
 }

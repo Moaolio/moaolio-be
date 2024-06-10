@@ -8,6 +8,7 @@ import java.util.List;
 @Repository
 public interface UserPostCommentsRepository extends JpaRepository<UserPostComments, Long> {
     // UserPostComments 테이블에서 postId로 조회하는 메서드
-    List<UserPostComments> findByPostId(Long postId);
+    List<UserPostComments> findByUserPostId(Long userPostId);
+
 
 }

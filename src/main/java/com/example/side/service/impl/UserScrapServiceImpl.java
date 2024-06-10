@@ -1,4 +1,4 @@
-package com.example.side.service.Impl;
+package com.example.side.service.impl;
 
 import com.example.side.model.entity.UserScrap;
 import com.example.side.repository.UserScrapRepository;

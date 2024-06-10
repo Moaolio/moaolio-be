@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class TechStackRequest {
     private Long id;
     private Long userId;
-    private Long techStackListId;
+    private String techStack;
 }

@@ -13,6 +13,6 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String occupation;
-
-
+    @ManyToOne
+    private User user;
 }
