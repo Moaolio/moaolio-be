@@ -1,0 +1,42 @@
+package com.example.side.service.impl;
+
+import com.example.side.model.entity.PostLike;
+import com.example.side.repository.PostLikeRepository;
+import com.example.side.service.PostLikeService;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class PostLikeServiceImpl implements PostLikeService {
+
+    private final PostLikeRepository postLikeRepository;
+
+    public PostLikeServiceImpl(PostLikeRepository postLikeRepository) {
+        this.postLikeRepository = postLikeRepository;
+    }
+
+    public Iterable<PostLike> selectAll() {
+        return postLikeRepository.findAll();
+    }
+
+    @Override
+    public Optional<PostLike> selectOneById(Long id) {
+        return postLikeRepository.findById(id);
+    }
+
+    @Override
+    public PostLike insertPostLike(PostLike postLike) {
+        return postLikeRepository.save(postLike);
+    }
+
+    @Override
+    public void deletePostLike(Long id) {
+        postLikeRepository.deleteById(id);
+    }
+
+    @Override
+    public void updatePostLike(PostLike postLike) {
+        postLikeRepository.save(postLike);
+    }
+}

@@ -1,0 +1,39 @@
+package com.example.side.service.impl;
+
+import com.example.side.model.entity.Notification;
+import com.example.side.repository.NotificationRepository;
+import com.example.side.service.NotificationService;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class NotificationServiceImpl implements NotificationService {
+
+    private final NotificationRepository notificationRepository;
+
+    public NotificationServiceImpl(NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
+    }
+
+    @Override
+    public Iterable<Notification> selectAll() {
+        return notificationRepository.findAll();
+    }
+
+    @Override
+    public Optional<Notification> selectOneById(Long id) {
+        return notificationRepository.findById(id);
+    }
+
+    @Override
+    public Notification insertNotification(Notification notification) {
+        return notificationRepository.save(notification);
+    }
+
+
+    @Override
+    public void deleteNotification(Long id) {
+        notificationRepository.deleteById(id);
+    }
+}
