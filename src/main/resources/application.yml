@@ -49,9 +49,9 @@ spring:
 #              - email
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/moaolio?serverTimezone=UTC
-    username: root
-    password: 1234
+    url: ENC(jI4OmKexMvKnl9nvnRVKiynxNdNAlNy1Vxigmtcu+dOadWJYGnwtK5QxJy7FXg0NkpUW99ewWEt1h0TTEQVFVQ==)
+    username: ENC(B4XavSzKsfWRGvOZfhJWAg==)
+    password: ENC(02FfmJ+BNdoypSy99Mu/6w==)
 
     jpa:
       database: mysql
