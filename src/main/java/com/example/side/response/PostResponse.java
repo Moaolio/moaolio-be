@@ -1,6 +1,6 @@
 package com.example.side.response;
 
-import com.example.side.model.entity.UserPost;
+import com.example.side.model.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserPostResponse {
+public class PostResponse {
     private Long id;
     private String title;
     private String tag;
@@ -27,16 +27,16 @@ public class UserPostResponse {
     private Long communityId;
 
     private List<UserScrapResponse> userScrapList;
-    private List<UserPostFileResponse> userPostFileList;
-    private List<UserPostCommentsResponse> userPostCommentsList;
+    private List<PostFileResponse> userPostFileList;
+    private List<CommentsResponse> userPostCommentsList;
     private List<PostLikeResponse> postLikeList;
 
-    public UserPostResponse(UserPost userPost) {
-        this.title = userPost.getTitle();
-        this.tag = userPost.getTag();
-        this.content = userPost.getContent();
-        this.category = userPost.getCategory();
-        this.createdAt = userPost.getCreatedAt();
-        this.userId = userPost.getUser().getId();
+    public PostResponse(Post post) {
+        this.title = post.getTitle();
+        this.tag = post.getTag();
+        this.content = post.getContent();
+        this.category = post.getCategory();
+        this.createdAt = post.getCreatedAt();
+        this.userId = post.getUser().getId();
     }
 }

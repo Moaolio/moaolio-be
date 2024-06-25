@@ -17,5 +17,5 @@ public class PostLike {
 
     @ManyToOne
     @JoinColumn(name = "user_post_id")
-    private UserPost userPost;
+    private Post post;
 }

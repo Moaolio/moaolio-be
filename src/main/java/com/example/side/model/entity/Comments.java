@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @lombok.Getter
 @lombok.Setter
 
-public class UserPostComments {
+public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,7 +18,7 @@ public class UserPostComments {
 
     @ManyToOne
     @JoinColumn(name = "user_post_id")
-    private UserPost userPost;
+    private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @jakarta.persistence.Table(name = "user_post_file")
 @lombok.Getter
 @lombok.Setter
-public class UserPostFile {
+public class PostFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,5 +18,5 @@ public class UserPostFile {
 
     @ManyToOne
     @JoinColumn(name = "user_post_id")
-    private UserPost userPost;
+    private Post post;
 }

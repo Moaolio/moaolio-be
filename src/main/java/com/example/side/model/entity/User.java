@@ -53,11 +53,11 @@ public class User {
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserPost> userPosts;
+    private List<Post> posts;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserScrap> userScraps;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserPostComments> userPostComments;
+    private List<Comments> comments;
 }

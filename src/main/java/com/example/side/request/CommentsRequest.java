@@ -8,12 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserPostFileRequest {
+public class CommentsRequest {
     private Long id;
-    private String fileName;
-    private String fileUrl;
-    private String fileType;
-    private Long fileSize;
-    private String fileOriginName;
     private Long userPostId;
+    private Long userId;
+    private String description;
 }

@@ -1,4 +1,4 @@
 package com.example.side.controller;
 
-public class UserPostFileController {
+public class CommentsController {
 }

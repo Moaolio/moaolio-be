@@ -1,9 +1,8 @@
 package com.example.side.model.entity;
 
-import com.example.side.request.UserPostRequest;
+import com.example.side.request.PostRequest;
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
 @lombok.Getter
 @lombok.Setter
 
-public class UserPost{
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,27 +37,27 @@ public class UserPost{
     private Community community;
 
     @OneToMany(mappedBy = "userPost", fetch = FetchType.LAZY)
-    private List<UserPostComments> userPostComments;
+    private List<Comments> comments;
 
     @OneToMany(mappedBy = "userPost", fetch = FetchType.LAZY)
-    private List<UserPostFile> userPostFiles;
+    private List<PostFile> postFiles;
 
-    public UserPost(UserPostRequest userPostRequest) {
-        this.title = userPostRequest.getTitle();
-        this.tag = userPostRequest.getTag();
-        this.content = userPostRequest.getContent();
-        this.category = userPostRequest.getCategory();
+    public Post(PostRequest postRequest) {
+        this.title = postRequest.getTitle();
+        this.tag = postRequest.getTag();
+        this.content = postRequest.getContent();
+        this.category = postRequest.getCategory();
     }
 
-    public UserPost() {
+    public Post() {
 
     }
 
 
-    public void update(UserPostRequest userPostRequest) {
-        this.title = userPostRequest.getTitle();
-        this.tag = userPostRequest.getTag();
-        this.content = userPostRequest.getContent();
-        this.category = userPostRequest.getCategory();
+    public void update(PostRequest postRequest) {
+        this.title = postRequest.getTitle();
+        this.tag = postRequest.getTag();
+        this.content = postRequest.getContent();
+        this.category = postRequest.getCategory();
     }
 }

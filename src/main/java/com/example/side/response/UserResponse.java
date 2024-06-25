@@ -27,10 +27,10 @@ public class UserResponse {
     private LocalDateTime Created;
     private LocalDateTime Updated;
     private List<NotificationResponse> notificationList;
-    private List<UserPostCommentsResponse> userPostComments;
-    private List<UserPostResponse> userPostList;
+    private List<CommentsResponse> userPostComments;
+    private List<PostResponse> userPostList;
     private List<PostLikeResponse> userPostLikeList;
-    private List<UserPostCommentsResponse> userPostCommentsList;
+    private List<CommentsResponse> userPostCommentsList;
     private List<UserScrapResponse> userScrapList;
 
 }

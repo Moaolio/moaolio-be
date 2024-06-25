@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserPostCommentsRequest {
-    private Long id;
-    private Long userPostId;
+public class PostRequest {
+    private String title;
+    private String tag;
+    private String content;
+    private String category;
     private Long userId;
-    private String description;
+    private Long communityId;
 }
