@@ -20,17 +20,17 @@ server:
 #  redirectUri: http://localhost:8080/login/naver
 
 spring:
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          google:
-#            client-id: ${google.client.clientId}
-#            client-secret: ${google.client.clientSecret}
-#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-#            scope:
-#              - email
-#              - profile
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(cdvqbrKy8AdmYHtSACXKEd4n+qpULz5e0AA8UA3lzRxxoaxEqy9uPjlTf0Xk434z+4Iwr8qUXyVmnh43OH7m/SeUKDoyS5PlOkVa9vhV8pGWUW0QiXuWXg==)
+            client-secret: ENC(QkR6x/kGYHas/3/YXTMzmVshoRrHshT+zZ9BKyqi4AiMncPU8qiPdAJfcWDneIjg)
+            redirect-uri: "http://localhost:8081/login/oauth2/code/google"
+            scope:
+              - email
+              - profile
 #          kakao:
 #            client-id: ${kakao.client.clientId}
 #            client-secret: ${kakao.client.clientSecret}
