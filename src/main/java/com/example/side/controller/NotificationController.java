@@ -15,18 +15,5 @@ import java.util.List;
 @RestController
 @RequestMapping("/notification")
 public class NotificationController {
-    private final NotificationRepository notificationRepository;
-    private final NotificationService notificationService;
-
-    public NotificationController(NotificationRepository notificationRepository, NotificationService notificationService) {
-        this.notificationRepository = notificationRepository;
-        this.notificationService = notificationService;
-    }
-
-    @GetMapping
-    public List<Notification> getAllNotifications() {
-        return (List<Notification>) notificationService.selectAll();
-    }
-
 
 }

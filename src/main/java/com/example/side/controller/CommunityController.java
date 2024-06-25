@@ -15,38 +15,4 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/community")
 public class CommunityController {
-    private CommunityRepository communityRepository;
-
-    @PostMapping
-    public Community createCommunity(@RequestBody Community community) {
-        return communityRepository.save(community);
-    }
-
-    @GetMapping
-    public List<Community> getAllCommunities() {
-        return communityRepository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Community> getCommunityById(@PathVariable Long id) {
-        Optional<Community> community = communityRepository.findById(id);
-        if (community.isPresent()) {
-            return ResponseEntity.ok(community.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Community> updateCommunity(@PathVariable Long id, @RequestBody Community communityDetails) {
-        Optional<Community> community = communityRepository.findById(id);
-        if (community.isPresent()) {
-            Community existingCommunity = community.get();
-            existingCommunity.setOccupation(communityDetails.getOccupation());
-            return ResponseEntity.ok(communityRepository.save(existingCommunity));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }
