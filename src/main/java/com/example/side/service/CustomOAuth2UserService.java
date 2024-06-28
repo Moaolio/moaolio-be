@@ -48,11 +48,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService { // OAuth
         // 리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디 값을 만듬
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
         User existData = userRepository.findByUsername(username);
-
+        /*
+        문제1. 유저닉네임이 이름으로 설정되는 것
+        문제2. username이 이름이 들어가야하는데 oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId()로 설정됨
+        문제4. OAuth2 로그인 시 유저를 저장할 때 모든 정보를 담아서 객체를 생성할 수 없는데 NULL 값으로 처리를 해야하는가
+         */
         if (existData == null) {
             User user = User.builder()
-                    .nickname(oAuth2Response.getName())
-                    .username(username)
+            //        .nickname(oAuth2Response.getName())
+            //        .username(username)
+                    .username(oAuth2Response.getName())
                     .email(oAuth2Response.getEmail())
                     .role("ROLE_USER")
                     .build();
