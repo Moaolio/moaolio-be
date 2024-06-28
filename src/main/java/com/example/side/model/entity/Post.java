@@ -1,6 +1,7 @@
 package com.example.side.model.entity;
 
 import com.example.side.request.PostRequest;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,8 @@ public class Post {
     private String category;
     private Long likeCount;
     private Long viewCount;
-    private Long postId;
+    //1. 포트폴리오 전용 2. 커뮤니티 전용
+    private Long postType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -36,11 +38,12 @@ public class Post {
     @JoinColumn(name = "community_id")
     private Community community;
 
-    @OneToMany(mappedBy = "userPost", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Comments> comments;
 
-    @OneToMany(mappedBy = "userPost", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<PostFile> postFiles;
+
 
     public Post(PostRequest postRequest) {
         this.title = postRequest.getTitle();

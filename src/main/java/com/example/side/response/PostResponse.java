@@ -39,4 +39,5 @@ public class PostResponse {
         this.createdAt = post.getCreatedAt();
         this.userId = post.getUser().getId();
     }
+
 }

@@ -15,4 +15,7 @@ public class PostRequest {
     private String category;
     private Long userId;
     private Long communityId;
+
+
+
 }

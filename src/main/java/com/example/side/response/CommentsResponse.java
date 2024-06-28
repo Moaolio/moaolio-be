@@ -1,5 +1,6 @@
 package com.example.side.response;
 
+import com.example.side.model.entity.Comments;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,4 +20,9 @@ public class CommentsResponse {
 
     private Long userId;
     private Long postId;
+
+    public CommentsResponse(Comments comments) {
+        this.description = comments.getDescription();
+        this.updatedAt = comments.getUpdatedAt();
+    }
 }
