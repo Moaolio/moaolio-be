@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -22,5 +23,5 @@ public class Tag {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "tag", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Post> post;
+    private List<Post> post = new ArrayList<>();
 }

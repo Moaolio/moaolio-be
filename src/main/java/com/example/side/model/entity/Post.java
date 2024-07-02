@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,13 +42,13 @@ public class Post {
     private Community community;
 
     @OneToMany(mappedBy = "post")
-    private List<Comments> comments;
+    private List<Comments> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
-    private List<PostFile> postFiles;
+    private List<PostFile> postFiles = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    private List<PostTag> tags;
+    private List<PostTag> tags = new ArrayList<>();
 
 
     public Post(PostRequest postRequest) {

@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Table(name = "user_post_comments")
 @Getter
 @Setter
-
 @NoArgsConstructor
 public class Comments {
     @Id
