@@ -1,12 +1,14 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@lombok.Setter
-@lombok.Getter
-@jakarta.persistence.Table(name = "community")
+@Setter
+@Getter
+@Table(name = "community")
 @NoArgsConstructor
 public class Community {
 
@@ -14,6 +16,7 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String occupation;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }

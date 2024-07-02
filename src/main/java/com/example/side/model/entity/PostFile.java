@@ -1,12 +1,14 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@jakarta.persistence.Table(name = "user_post_file")
-@lombok.Getter
-@lombok.Setter
+@Table(name = "user_post_file")
+@Getter
+@Setter
 @NoArgsConstructor
 public class PostFile {
     @Id
@@ -18,7 +20,7 @@ public class PostFile {
     private Long fileSize;
     private String fileOriginName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_post_id")
     private Post post;
 }

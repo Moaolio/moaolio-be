@@ -1,14 +1,16 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@lombok.Setter
-@lombok.Getter
-@jakarta.persistence.Table(name = "notification")
+@Setter
+@Getter
+@Table(name = "notification")
 @NoArgsConstructor
 public class Notification {
     @Id
@@ -18,7 +20,7 @@ public class Notification {
     private String discription;
     private LocalDateTime createdAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

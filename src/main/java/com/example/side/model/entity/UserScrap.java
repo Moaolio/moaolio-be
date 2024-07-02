@@ -1,23 +1,25 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@jakarta.persistence.Table(name = "user_scrap")
-@lombok.Getter
-@lombok.Setter
+@Table(name = "user_scrap")
+@Getter
+@Setter
 @NoArgsConstructor
 public class UserScrap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_post_id")
     private Post post;
 }

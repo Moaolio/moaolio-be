@@ -1,13 +1,15 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 @Entity
-@jakarta.persistence.Table(name = "user_post_comments")
-@lombok.Getter
-@lombok.Setter
+@Table(name = "user_post_comments")
+@Getter
+@Setter
 
 @NoArgsConstructor
 public class Comments {
@@ -18,11 +20,11 @@ public class Comments {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_post_id")
     private Post post;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }
