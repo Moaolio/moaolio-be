@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 public class PostTag {
+    private final String name;
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
@@ -16,4 +17,8 @@ public class PostTag {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    public PostTag(String name) {
+        this.name = name;
+    }
 }

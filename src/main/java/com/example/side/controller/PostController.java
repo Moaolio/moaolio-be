@@ -13,43 +13,50 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/post")
-
 public class PostController {
     private final PostService postService;
 
     public PostController(PostService postService) {
         this.postService = postService;
     }
-    //생성
-    @PostMapping("/post")
+
+    // 생성
+    @PostMapping
     public PostResponse createPost(@RequestBody PostRequest postRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.createPost(postRequest, userDetails);
     }
+
     // 수정
-    @PutMapping("/post")
+    @PutMapping("/{postId}")
     public PostResponse updatePost(@PathVariable Long postId, @RequestBody PostRequest postRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.updatePost(postId,postRequest, userDetails);
+        return postService.updatePost(postId, postRequest, userDetails);
     }
-    //삭제
-    @DeleteMapping("/post/{postId}")
+
+    // 삭제
+    @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         postService.deletePost(postId, userDetails);
     }
-    //조회
-    @GetMapping("/get/{postId}")
+
+    // 상세조회
+    @GetMapping("/{postId}")
     public PostResponse getPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.getPost(postId, userDetails);
     }
-    //내 게시글 조회
-    @GetMapping("/mypost")
-    public PostResponse<List<MyPostResponse>> getMyPost(@PathVariable String userId) {
-        List<MyPostResponse> myPostResponse = postService.getMyPost(userId);
+
+    // 내 게시글 조회
+    @GetMapping("/myposts")
+    public PostResponse<List<MyPostResponse>> getMyPosts(@RequestParam String userId) {
+        List<MyPostResponse> myPostResponse = postService.getMyPosts(userId);
         return PostResponse.ok(myPostResponse);
     }
-    //게시글 필터링 조회(tag, category, created)
+
+    // 게시글 필터링 조회 (tag, category, created)
     @GetMapping("/search")
-    public PostResponse<List<PostResponse>> searchPost(@RequestParam String tag, @RequestParam String category, @RequestParam String created) {
-        List<PostResponse> postResponse = postService.searchPost(tag, category, created);
+    public PostResponse<List<PostResponse>> searchPosts(@RequestParam(required = false) String tag,
+                                                        @RequestParam(required = false) String category,
+                                                        @RequestParam(required = false) String created) {
+        List<PostResponse> postResponse = postService.searchPosts(tag, category, created);
         return PostResponse.ok(postResponse);
     }
 }
