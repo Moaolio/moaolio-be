@@ -1,11 +1,13 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @jakarta.persistence.Table(name = "user_post_file")
 @lombok.Getter
 @lombok.Setter
+@NoArgsConstructor
 public class PostFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

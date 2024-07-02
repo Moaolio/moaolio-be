@@ -27,7 +27,7 @@ public class CommentsService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public CommentsResponse createComments(CommentsRequest commentsRequest) {
+    public CommentsResponse createComments(CommentsRequest commentsRequest, UserDetailsImpl userDetails) {
         Post findPost = postRepository.findById(commentsRequest.getUserPostId()).get();
         User findUser = userRepository.findById(commentsRequest.getUserId()).get();
 

@@ -22,7 +22,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-
 public class User {
 
     @Id // 엔티티의 주키(primary key)를 나타냅니다.

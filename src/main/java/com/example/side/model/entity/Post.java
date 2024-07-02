@@ -3,6 +3,7 @@ package com.example.side.model.entity;
 import com.example.side.request.PostRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.List;
 @jakarta.persistence.Table(name = "user_post")
 @lombok.Getter
 @lombok.Setter
-
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

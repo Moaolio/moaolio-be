@@ -2,7 +2,9 @@ package com.example.side.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class PostTag {
     private final String name;
     @GeneratedValue(strategy = GenerationType.AUTO)
