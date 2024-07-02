@@ -1,11 +1,13 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @lombok.Getter
 @lombok.Setter
 @jakarta.persistence.Table(name = "post_like")
+@NoArgsConstructor
 public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

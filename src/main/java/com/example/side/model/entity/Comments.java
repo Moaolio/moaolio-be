@@ -1,6 +1,7 @@
 package com.example.side.model.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 @Entity
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 @lombok.Getter
 @lombok.Setter
 
+@NoArgsConstructor
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
