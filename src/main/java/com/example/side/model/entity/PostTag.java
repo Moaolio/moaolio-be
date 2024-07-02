@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
@@ -12,8 +11,6 @@ import lombok.Setter;
 @Getter
 @Entity
 public class PostTag {
-
-    private final String name;
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
@@ -29,7 +26,6 @@ public class PostTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
-    public PostTag(String name) {
-        this.name = name;
-    }
+
+
 }
