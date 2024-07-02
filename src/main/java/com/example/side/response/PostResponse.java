@@ -40,4 +40,9 @@ public class PostResponse {
         this.userId = post.getUser().getId();
     }
 
+    public void setDayBefore(String dayBefore) {
+    }
+
+    public void addTag(String tagName) {
+    }
 }

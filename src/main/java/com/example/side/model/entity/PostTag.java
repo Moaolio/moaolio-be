@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class PostTag {
+    private final String name;
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
@@ -19,4 +20,8 @@ public class PostTag {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    public PostTag(String name) {
+        this.name = name;
+    }
 }

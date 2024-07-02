@@ -46,6 +46,9 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<PostFile> postFiles;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<PostTag> tags;
+
 
     public Post(PostRequest postRequest) {
         this.title = postRequest.getTitle();
@@ -58,11 +61,21 @@ public class Post {
 
     }
 
+    public Post(PostRequest postRequest, User user) {
+        this.title = postRequest.getTitle();
+        this.content = postRequest.getContent();
+        this.user = user;
+    }
+
+
 
     public void update(PostRequest postRequest) {
         this.title = postRequest.getTitle();
         this.tag = postRequest.getTag();
         this.content = postRequest.getContent();
         this.category = postRequest.getCategory();
+    }
+    public void setTags(List<PostTag> tags) {
+        this.tags = tags;
     }
 }

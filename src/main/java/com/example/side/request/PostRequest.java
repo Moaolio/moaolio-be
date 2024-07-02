@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +20,9 @@ public class PostRequest {
 
 
 
+    private List<String> tags;
+
+    private String postType; // "portfolio" 또는 "community"
+    private String portfolioSpecificField; // 포트폴리오 포스트에 특화된 필드
+    private String communitySpecificField; // 커뮤니티 포스트에 특화된 필드
 }
