@@ -33,7 +33,8 @@ public class Post extends BaseEntity {
     private Long likeCount;
     private Long viewCount;
     //1. 포트폴리오 전용 2. 커뮤니티 전용
-    private Long postType;
+    @Enumerated(EnumType.STRING)
+    private PostStatus postType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
