@@ -19,4 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByCareer(Long career);
     User findByState(String state);
     User findByAge(String age);
+
 }

@@ -27,5 +27,6 @@ public class PostTag {
     private Tag tag;
 
 
-
+    public PostTag(String tagName) {
+    }
 }
