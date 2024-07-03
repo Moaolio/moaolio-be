@@ -1,5 +1,6 @@
 package com.example.side.model.entity;
 
+import com.example.side.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,17 +15,12 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "notification")
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-@MappedSuperclass
-public class Notification {
+public class Notification extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String discription;
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

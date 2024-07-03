@@ -1,5 +1,6 @@
 package com.example.side.model.entity;
 
+import com.example.side.common.BaseEntity;
 import com.example.side.request.PostRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -18,9 +19,7 @@ import java.util.List;
 @Table(name = "user_post")
 @Getter
 @Setter
-@EntityListeners(AuditingEntityListener.class)
-@MappedSuperclass
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,11 +29,6 @@ public class Post {
     private String tag;
     @Column(nullable = false)
     private String content;
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
     private String category;
     private Long likeCount;
     private Long viewCount;
