@@ -12,12 +12,11 @@ import lombok.Setter;
 @Entity
 public class PostTag {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
@@ -25,7 +24,6 @@ public class PostTag {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
-
 
     public PostTag(String tagName) {
     }

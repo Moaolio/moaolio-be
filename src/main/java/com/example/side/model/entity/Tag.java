@@ -14,14 +14,10 @@ import java.util.List;
 @Getter
 @Entity
 public class Tag {
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
+
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
     private String tagName;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "tag", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Post> post = new ArrayList<>();
 }
