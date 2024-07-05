@@ -39,10 +39,13 @@ public class PostController {
         return postService.deletePost(postId, userDetails);
     }
 
-    // 전체 게시글 조회 (최신순)
-    @GetMapping("/posts")
+    // 포트폴리오 게시글 조회 (최신순)
+    @GetMapping("/posts/portfolio")
     public List<PostResponse> recentPosts() {
-        return postService.recentPosts();
+        return postService.portfolioPosts();
+    }
+    @GetMapping("/posts/commutity"){
+        public List<PostResponse>
     }
 
     // 내 게시글 전체 조회

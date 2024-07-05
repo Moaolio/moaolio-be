@@ -10,6 +10,9 @@ import lombok.Setter;
 @Getter
 @Table(name = "community")
 @NoArgsConstructor
+/*
+게시판 종류별로 나누는 것
+ */
 public class Community {
 
     @Id

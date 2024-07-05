@@ -22,7 +22,11 @@ public class CommentsResponse {
     private Long postId;
 
     public CommentsResponse(Comments comments) {
+        this.id = comments.getId();
         this.description = comments.getDescription();
+        this.createdAt = comments.getCreatedAt();
         this.updatedAt = comments.getUpdatedAt();
+        this.userId = comments.getUser().getId();
+        this.postId = comments.getPost().getId();
     }
 }

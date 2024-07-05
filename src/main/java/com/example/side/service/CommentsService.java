@@ -14,27 +14,31 @@ import com.example.side.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class CommentsService {
 
     private final CommentsRepository commentsRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    // 생성
     public CommentsResponse createComments(CommentsRequest commentsRequest, UserDetailsImpl userDetails) {
         Post findPost = postRepository.findById(commentsRequest.getUserPostId()).get();
         User findUser = userRepository.findById(commentsRequest.getUserId()).get();
 
         Comments comments = new Comments();
         comments.setDescription(commentsRequest.getDescription());
-        comments.setCreatedAt(LocalDateTime.now());
-        comments.setUpdatedAt(LocalDateTime.now());
         comments.setPost(findPost);
         comments.setUser(findUser);
 
@@ -43,8 +47,6 @@ public class CommentsService {
         CommentsResponse commentsResponse = new CommentsResponse().builder()
                 .id(comments.getId())
                 .description(comments.getDescription())
-                .createdAt(comments.getCreatedAt())
-                .updatedAt(comments.getUpdatedAt())
                 .postId(comments.getPost().getId())
                 .userId(comments.getUser().getId())
                 .build();
@@ -58,10 +60,8 @@ public class CommentsService {
             throw new IllegalArgumentException("권한이 없습니다.");
         }
         comments.setDescription(commentsRequest.getDescription());
-        comments.setUpdatedAt(LocalDateTime.now());
-        //저장
-        Comments saveComments = commentsRepository.save(comments);
-        CommentsResponse commentsResponse = new CommentsResponse(saveComments);
+
+        CommentsResponse commentsResponse = new CommentsResponse(comments);
         return commentsResponse;
     }
 
@@ -76,4 +76,18 @@ public class CommentsService {
         commentsRepository.deleteById(commentsId);
         return responseId;
     }
+
+    // 특정 글의 댓글 조회
+    public List<CommentsResponse> findCommentsByPostId(Long postId, UserDetailsImpl userDetails) {
+        List<Comments> findComments = commentsRepository.findByPostId(postId);
+        List<CommentsResponse> returnCommentsResponse = new ArrayList<>();
+
+        findComments.stream()
+                .map(comments -> new CommentsResponse(comments))
+                .forEach(returnCommentsResponse::add);
+
+        return returnCommentsResponse;
+    }
+
+
 }

@@ -56,7 +56,6 @@ public class Post extends BaseEntity {
 
     public Post(PostRequest postRequest) {
         this.title = postRequest.getTitle();
-        this.tag = postRequest.getTag();
         this.content = postRequest.getContent();
         this.category = postRequest.getCategory();
     }

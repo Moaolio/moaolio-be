@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface CommentsRepository extends JpaRepository<Comments, Long> {
-    // UserPostComments 테이블에서 postId로 조회하는 메서드
-    List<Comments> findByUserPostId(Long userPostId);
-
+    List<Comments> findByUserId(Long userId); // 유저의 댓글 찾기
+    List<Comments> findByPostId(Long postId); // 글에 남겨진 댓글 찾기
+    List<Comments> findByPostIdAndUserId(Long postId, Long userId); // 특정 유저가 글에 남긴 댓글 찾기
 }
