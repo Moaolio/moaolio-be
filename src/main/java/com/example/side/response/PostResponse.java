@@ -33,18 +33,8 @@ public class PostResponse {
 
     public PostResponse(Post post) {
         this.title = post.getTitle();
-        this.tag = post.getTag();
         this.content = post.getContent();
         this.category = post.getCategory();
-        this.createdAt = post.getCreatedAt();
         this.userId = post.getUser().getId();
     }
-
-    public void setDayBefore(String dayBefore) {
-    }
-
-    public void addTag(String tagName) {
-    }
-
-
 }

@@ -12,15 +12,11 @@ import java.util.List;
 @Builder
 public class PostRequest {
     private String title;
-    private String tag;
+    private List<String> tag;
     private String content;
     private String category;
     private Long userId;
     private Long communityId;
-
-
-
-    private List<String> tags;
 
     private String postType; // "portfolio" 또는 "community"
     private String portfolioSpecificField; // 포트폴리오 포스트에 특화된 필드

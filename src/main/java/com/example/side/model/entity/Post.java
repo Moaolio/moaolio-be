@@ -82,4 +82,5 @@ public class Post extends BaseEntity {
     public void setTags(List<PostTag> tags) {
         this.tags = tags;
     }
+
 }
