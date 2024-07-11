@@ -10,6 +10,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -34,5 +36,11 @@ public class CommentsController {
     @DeleteMapping("/delete/{commentsId}")
     public void deleteComments(@PathVariable Long commentsId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         commentsService.deleteComments(commentsId, userDetails);
+    }
+
+    // 조회
+    @GetMapping("/post/{postId}")
+    public List<CommentsResponse> getComments(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentsService.findCommentsByPostId(postId, userDetails);
     }
 }

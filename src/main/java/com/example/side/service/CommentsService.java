@@ -1,5 +1,8 @@
 package com.example.side.service;
 
+import com.example.side.common.exception.CommentNotFoundException;
+import com.example.side.common.exception.PostNotFoundException;
+import com.example.side.common.exception.UserNotFoundException;
 import com.example.side.config.UserDetailsImpl;
 import com.example.side.model.entity.Comments;
 import com.example.side.model.entity.Post;
@@ -20,12 +23,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class CommentsService {
 
     private final CommentsRepository commentsRepository;
@@ -33,29 +37,27 @@ public class CommentsService {
     private final UserRepository userRepository;
 
     // 생성
+    @Transactional
     public CommentsResponse createComments(CommentsRequest commentsRequest, UserDetailsImpl userDetails) {
-        Post findPost = postRepository.findById(commentsRequest.getUserPostId()).get();
-        User findUser = userRepository.findById(commentsRequest.getUserId()).get();
+        Post findPost = postRepository.findById(commentsRequest.getUserPostId()).orElseThrow(() -> new PostNotFoundException("게시글을 찾을 수 없습니다."));
+        User findUser = userRepository.findById(commentsRequest.getUserId()).orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
 
-        Comments comments = new Comments();
-        comments.setDescription(commentsRequest.getDescription());
-        comments.setPost(findPost);
-        comments.setUser(findUser);
-
+        Comments comments = new Comments(commentsRequest.getDescription(), findPost, findUser);
         commentsRepository.save(comments);
 
-        CommentsResponse commentsResponse = new CommentsResponse().builder()
+        CommentsResponse commentsResponse = CommentsResponse.builder()
                 .id(comments.getId())
                 .description(comments.getDescription())
-                .postId(comments.getPost().getId())
                 .userId(comments.getUser().getId())
+                .postId(comments.getPost().getId())
                 .build();
         return commentsResponse;
     }
 
     //수정
+    @Transactional
     public CommentsResponse updateComments(Long commentsId, CommentsRequest commentsRequest, UserDetailsImpl userDetails) {
-        Comments comments = commentsRepository.findById(commentsId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        Comments comments = commentsRepository.findById(commentsId).orElseThrow(() -> new CommentNotFoundException("존재하지 않는 댓글입니다."));
         if(!comments.getUser().getId().equals(userDetails.getUser().getId())) {
             throw new IllegalArgumentException("권한이 없습니다.");
         }
@@ -66,11 +68,14 @@ public class CommentsService {
     }
 
     //삭제
+    @Transactional
     public HashMap<String,Long> deleteComments(Long commentsId, UserDetailsImpl userDetails) {
         Comments comments = commentsRepository.findById(commentsId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+
         if(!comments.getUser().getId().equals(userDetails.getUser().getId())) {
             throw new IllegalArgumentException("권한이 없습니다.");
         }
+
         HashMap<String,Long> responseId = new HashMap<>();
         responseId.put("CommentsId",comments.getId());
         commentsRepository.deleteById(commentsId);
@@ -89,5 +94,14 @@ public class CommentsService {
         return returnCommentsResponse;
     }
 
+    // 내 댓글 모두 조회
+    public List<CommentsResponse> findCommentsByUserId(Long userId, UserDetailsImpl userDetails) {
+        List<Comments> findComments = commentsRepository.findByUserId(userDetails.getUser().getId());
+        List<CommentsResponse> returnCommentsResponse = new ArrayList<>();
+        findComments.stream()
+                .map(comments -> new CommentsResponse(comments))
+                .forEach(returnCommentsResponse::add);
+        return returnCommentsResponse;
+    }
 
 }
