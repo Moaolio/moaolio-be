@@ -53,15 +53,16 @@ spring:
     username: root
     password: 1234
 
-    jpa:
-      database: mysql
-      show-sql: true
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          format_sql: true
-          show_sql : true
+        format_sql: true
+        show_sql : true
+        default_batch_fetch_size: 100
 
   mail:
     host: smtp.example.com
