@@ -1,7 +1,5 @@
 package com.example.side.model.entity;
 
-import com.example.side.request.PostRequest;
-
 /*
 태그, 카테고리로 나눔
  */

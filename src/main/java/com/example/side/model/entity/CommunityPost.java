@@ -1,7 +1,5 @@
 package com.example.side.model.entity;
 
-import com.example.side.request.PostRequest;
-
 /*
 
  */

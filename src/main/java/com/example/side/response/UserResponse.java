@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,11 +25,4 @@ public class UserResponse {
 
     private LocalDateTime Created;
     private LocalDateTime Updated;
-    private List<NotificationResponse> notificationList;
-    private List<CommentsResponse> userPostComments;
-    private List<PostResponse> userPostList;
-    private List<PostLikeResponse> userPostLikeList;
-    private List<CommentsResponse> userPostCommentsList;
-    private List<UserScrapResponse> userScrapList;
-
 }

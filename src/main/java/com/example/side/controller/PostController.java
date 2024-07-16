@@ -1,8 +1,12 @@
 package com.example.side.controller;
 
 import com.example.side.config.UserDetailsImpl;
-import com.example.side.request.PostRequest;
-import com.example.side.response.PostResponse;
+import com.example.side.request.CommunityPostRequest;
+import com.example.side.request.PortfolioPostRequest;
+import com.example.side.response.CommunityPostResponse;
+import com.example.side.response.PortfolioPostResponse;
+import com.example.side.service.CommunityPostService;
+import com.example.side.service.PortfolioPostService;
 import com.example.side.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,50 +17,72 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/post")
 public class PostController {
-    private final PostService postService;
+    private final PortfolioPostService portfolioPostService;
+    private final CommunityPostService communityPostService;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
+
+    public PostController(PortfolioPostService portfolioPostService, CommunityPostService communityPostService) {
+        this.portfolioPostService = portfolioPostService;
+        this.communityPostService = communityPostService;
     }
 
-    // 생성
-    @PostMapping("/post/create")
-    public PostResponse createPost(@RequestBody PostRequest postRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.createPost(postRequest, userDetails);
+    // 포트폴리오 게시글 생성
+    @PostMapping("/create/portfolio")
+    public PortfolioPostResponse createPost(@RequestBody PortfolioPostRequest portfoliopostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return portfolioPostService.createPost(portfolioPostRequest, userDetails);
     }
 
-    // 게시글 수정
-    @PutMapping("/post/{postId}")
-    public PostResponse updatePost(@PathVariable Long postId, @RequestBody PostRequest postRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.updatePost(postId, postRequest, userDetails);
+    // 커뮤니티 게시글 생성
+    @PostMapping("/create/community")
+    public CommunityPostResponse createPost(@RequestBody CommunityPostRequest postRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return communityPostService.createPost(communityPostRequest, userDetails);
     }
 
-    // 게시글 삭제
-    @DeleteMapping("/post/{postId}")
+
+    // 포트폴리오 게시글 수정
+    @PutMapping("/update/portfolio/{postId}")
+    public PortfolioPostResponse updatePost(@PathVariable Long postId, @RequestBody PortfolioPostRequest postRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return portfolioPostService.updatePost(postId, portfolioPostRequest, userDetails);
+    }
+
+    // 커뮤니티 게시글 수정
+    @PutMapping("/update/community/{postId}")
+    public CommunityPostResponse updatePost(@PathVariable Long postId, @RequestBody CommunityPostRequest postRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return communityPostService.updatePost(postId, communityPostRequest, userDetails);
+    }
+
+
+    // 포트폴리오 게시글 삭제
+    @DeleteMapping("/delete/{postId}")
     public HashMap<String, Long> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.deletePost(postId, userDetails);
+        return portfolioPostService.deletePost(postId, userDetails);
     }
+
+
+    // 커뮤니티 게시글 삭제
+    @DeleteMapping("/delete/{postId}")
+    public HashMap<String, Long> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return communityPostService.deletePost(postId, userDetails);
+    }
+
+
+
 
     // 포트폴리오 게시글 조회 (최신순)
-    @GetMapping("/posts/portfolio")
-    public List<PostResponse> recentPosts() {
-        return postService.portfolioPosts();
-    }
-    @GetMapping("/posts/commutity"){
-        public List<PostResponse>
+    @GetMapping("/get/portfolio")
+    public List<PortfolioPostResponse> recentPortfolioPosts() {
+        return portfolioPostService.portfolioPosts();
     }
 
-    // 내 게시글 전체 조회
-    @GetMapping("/posts/{userId}")
-    public List<PostResponse> myPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.myPosts(userDetails);
+
+
+    // 커뮤니티 게시글 조회 (최신순)
+    @GetMapping("/get/community")
+    public List<CommunityPostResponse> recentCommunityPosts() {
+        return communityPostService.communityPosts();
     }
 
-    // 게시글 상세 조회
-    @GetMapping("/posts/{postId}")
-    public PostResponse getPost(@PathVariable Long postId) {
-        return postService.getPost(postId);
-    }
+
 }
