@@ -8,6 +8,7 @@ import com.example.side.user.entity.User;
 import com.example.side.user.entity.UserRole;
 import com.example.side.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -65,7 +67,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             UserOAuth2Dto userOAuth2Dto = new UserOAuth2Dto();
             userOAuth2Dto.setUsername(username);
             userOAuth2Dto.setNickname(oAuth2Response.getName());
-            userOAuth2Dto.setRole(UserRole.USER);
+            userOAuth2Dto.setRole(UserRole.USER.getKey());
 
             return new CustomOAuth2User(userOAuth2Dto);
         }
@@ -76,7 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             UserOAuth2Dto userOAuth2Dto = new UserOAuth2Dto();
             userOAuth2Dto.setUsername(existData.get().getUsername());
             userOAuth2Dto.setNickname(existData.get().getNickname());
-            userOAuth2Dto.setRole(UserRole.USER);
+            userOAuth2Dto.setRole(UserRole.USER.getKey());
 
             return new CustomOAuth2User(userOAuth2Dto);
         }

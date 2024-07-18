@@ -1,4 +1,6 @@
 spring:
+  jwt.secret: ENC(LZfRkimWUcofW+0DbAkzqIsZak4F82V8Vm3VScQoJTLvpdub5TPfeeMrA4Nq7HMtXsBf/+UXJdI=)
+
   security:
     oauth2:
       client:
