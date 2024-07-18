@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = {"post", "user"})
 public class Comments extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
