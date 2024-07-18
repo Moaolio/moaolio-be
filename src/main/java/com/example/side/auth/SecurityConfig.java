@@ -14,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomOAuth2UserService customOAuth2UserService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -26,8 +28,13 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
+        /**
+         * 데이터를 받았을 때 자동으로 customOAuth2UserService에 데이터 넘겨줌
+         */
         http
-                .oauth2Login(Customizer.withDefaults());
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService))));
 
         /**
          * 경로별 인가 작업
