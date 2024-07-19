@@ -2,6 +2,9 @@ package com.example.side.auth.handler;
 
 import com.example.side.auth.CustomOAuth2User;
 import com.example.side.auth.jwt.JWTUtil;
+import com.example.side.auth.jwt.RefreshToken;
+import com.example.side.auth.jwt.RefreshRepository;
+import com.example.side.common.MoaolioConstants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,13 +18,17 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
+
+import static com.example.side.common.MoaolioConstants.*;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private final RefreshRepository refreshRepository;
     private final JWTUtil jwtUtil;
 
     /**
@@ -42,10 +49,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60 * 60 * 60L);
+//        String access = jwtUtil.createJwt("access", username, role, 600000L);
+        String refresh = jwtUtil.createJwt("refresh", username, role, REFRESH_TOKEN_EXPIRED_MS);
 
-        response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("http://localhost:3000/");
+        addRefreshEntity(username, refresh, REFRESH_TOKEN_EXPIRED_MS);
+
+        /**
+         * Refresh 토큰만 우선적으로 쿠키에 담아 프론트로 보낸 뒤
+         * 프론트의 특정 페이지에서 axios를 통해 쿠키(Refresh 토큰)를 가지고
+         * 서버측으로 가서 헤더 방식으로 Access 토큰을 가져오면 된다.
+         */
+        response.addCookie(createCookie("RefreshAuth", refresh));
+//        response.sendRedirect("http://localhost:3000/");
+        response.sendRedirect("http://localhost:8081/test");
     }
 
     /**
@@ -54,11 +70,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
 
-        cookie.setMaxAge(60 * 60 * 60);
-//        cookie.setSecure(true); // https
-        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60);
+//        cookie.setSecure(true); // https 통신을 진행할 경우
+        cookie.setPath("/"); // 쿠키가 적용될 범위
         cookie.setHttpOnly(true);
 
         return cookie;
+    }
+
+    private void addRefreshEntity(String username, String refresh, Long expiredMs) {
+
+        Date date = new Date(System.currentTimeMillis() + expiredMs);
+
+        RefreshToken refreshToken = new RefreshToken(username, refresh, date.toString());
+        refreshRepository.save(refreshToken);
     }
 }

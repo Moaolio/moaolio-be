@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -68,10 +69,10 @@ public class SecurityConfig {
          * JWTFilter 추가
          */
         http
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
         /**
-         * OAuth2
+         * OAuth2 로그인 필터
          * OAuth2 로그인 시도가 오면
          * 데이터를 받았을 때 자동으로 customOAuth2UserService에 데이터 넘겨줌
          */
@@ -86,7 +87,8 @@ public class SecurityConfig {
          */
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/", "/login", "/test").permitAll()
+                        .requestMatchers("/reissue").permitAll()
                         .anyRequest().authenticated());
 
         /**
