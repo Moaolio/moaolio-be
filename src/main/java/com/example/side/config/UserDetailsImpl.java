@@ -1,6 +1,6 @@
 package com.example.side.config;
 
-import com.example.side.model.entity.User;
+import com.example.side.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

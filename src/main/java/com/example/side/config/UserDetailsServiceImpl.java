@@ -1,9 +1,8 @@
 package com.example.side.config;
 
-import com.example.side.model.entity.User;
-import com.example.side.repository.UserRepository;
+import com.example.side.user.entity.User;
+import com.example.side.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
