@@ -1,4 +1,4 @@
-package com.example.side.post.dto.response;
+package com.example.side.post.Dto.response;
 
 import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.tag.entity.PostTag;

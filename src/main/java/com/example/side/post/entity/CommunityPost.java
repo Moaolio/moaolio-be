@@ -2,7 +2,7 @@ package com.example.side.post.entity;
 
 import com.example.side.post.tag.entity.PostTag;
 import com.example.side.user.entity.User;
-import com.example.side.post.dto.request.CommunityPostRequest;
+import com.example.side.post.Dto.request.CommunityPostRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
