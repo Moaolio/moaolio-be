@@ -1,19 +1,15 @@
-package com.example.side.comments.entity;
+package com.example.side.comment.entity;
 
 import com.example.side.common.BaseEntity;
-import com.example.side.user.entity.User;
 import com.example.side.post.entity.Post;
+import com.example.side.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "user_post_comments")
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comments extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +23,12 @@ public class Comments extends BaseEntity {
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     private User user;
 
+    /**
+     * 연관관계 메서드
+     */
     public Comments(String description, Post post, User user) {
         this.description = description;
         this.post = post;

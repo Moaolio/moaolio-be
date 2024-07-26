@@ -1,6 +1,6 @@
-package com.example.side.comments.repository;
+package com.example.side.comment.repository;
 
-import com.example.side.comments.entity.Comments;
+import com.example.side.comment.entity.Comments;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

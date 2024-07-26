@@ -19,7 +19,7 @@ public class PortfolioPostResponse {
     private Long id;
     private String title;
     private String description;
-    private List<String> tag;
+    private List<String> tags; // Changed field name to plural 'tags'
     private String url; // Added field
     private List<CommentsResponse> comments;
     private Long likes;
@@ -29,7 +29,10 @@ public class PortfolioPostResponse {
         this.id = portfolioPost.getId();
         this.title = portfolioPost.getTitle();
         this.description = portfolioPost.getDescription();
-        this.tag = portfolioPost.getTags().stream().map(PostTag::getName).collect(Collectors.toList());
+        // Convert PostTag entities to a list of tag names (Strings)
+        this.tags = portfolioPost.getTags().stream()
+                .map(PostTag::getName) // Use getName() to match PostTag's field
+                .collect(Collectors.toList());
         this.url = portfolioPost.getUrl();
         this.likes = portfolioPost.getLikeCount(); // Assuming likeCount is the correct field name
         this.comments = portfolioPost.getComments().stream()

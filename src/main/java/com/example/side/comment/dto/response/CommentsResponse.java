@@ -1,14 +1,16 @@
-package com.example.side.comments.Dto.response;
+package com.example.side.comment.dto.response;
 
-import com.example.side.comments.entity.Comments;
+import com.example.side.comment.entity.Comments;
 import lombok.*;
 
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentsResponse {
+
     private Long id;
     private String description;
-
     private Long userId;
     private Long postId;
 
@@ -17,5 +19,6 @@ public class CommentsResponse {
         this.description = comments.getDescription();
         this.userId = comments.getUser().getId();
         this.postId = comments.getPost().getId();
+
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 @Setter
 @Getter
 public class AllPostResponse {
-    private List<PostResponse> posts;
+    private List<PortfolioPostResponse> posts;
 }

@@ -4,6 +4,7 @@ import com.example.side.comments.entity.Comments;
 import com.example.side.common.BaseEntity;
 import com.example.side.post.PostStatus;
 import com.example.side.post.file.entity.PostFile;
+import com.example.side.post.like.entity.PostLike;
 import com.example.side.post.tag.entity.PostTag;
 import com.example.side.user.entity.User;
 import jakarta.persistence.*;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "user_post")
+@Table(name = "post")
 public class Post extends BaseEntity {
 
     @Id
@@ -55,13 +56,13 @@ public class Post extends BaseEntity {
     @Getter @Setter
     private List<Comments> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Getter @Setter
-    private List<PostFile> postFiles = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @Getter @Setter
     private Set<PostTag> postTags;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostLike> postLikes = new ArrayList<>();
 
     // 기본 생성자
     public Post() {

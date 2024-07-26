@@ -1,4 +1,4 @@
-package com.example.side.notification.dto.request;
+package com.example.side.comment.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NotificationRequest {
-    private String title;
-    private String discription;
+public class CommentsRequest {
+
+    private Long userPostId;
     private Long userId;
+    private String description;
+
 }
