@@ -1,9 +1,9 @@
-package com.example.side.comments.controller;
+package com.example.side.comment.controller;
 
-import com.example.side.config.UserDetailsImpl;
-import com.example.side.comments.Dto.request.CommentsRequest;
-import com.example.side.comments.Dto.response.CommentsResponse;
-import com.example.side.comments.service.CommentsService;
+import com.example.side.auth.CustomUserDetails;
+import com.example.side.comment.dto.request.CommentsRequest;
+import com.example.side.comment.dto.response.CommentsResponse;
+import com.example.side.comment.service.CommentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
