@@ -1,6 +1,12 @@
+<<<<<<<< HEAD:src/main/java/com/example/side/comments/repository/CommentsRepository.java
 package com.example.side.comments.repository;
 
 import com.example.side.comments.entity.Comments;
+========
+package com.example.side.comment.repository;
+
+import com.example.side.comment.entity.Comments;
+>>>>>>>> feat/#4-JWT-OAuth2-Client:src/main/java/com/example/side/comment/repository/CommentsRepository.java
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
