@@ -1,26 +1,9 @@
-<<<<<<<< HEAD:src/main/java/com/example/side/comments/service/CommentsService.java
-package com.example.side.comments.service;
-========
 package com.example.side.comment.service;
->>>>>>>> feat/#4-JWT-OAuth2-Client:src/main/java/com/example/side/comment/service/CommentsService.java
 
 import com.example.side.auth.CustomUserDetails;
 import com.example.side.common.exception.CommentNotFoundException;
 import com.example.side.common.exception.PostNotFoundException;
 import com.example.side.common.exception.UserNotFoundException;
-<<<<<<<< HEAD:src/main/java/com/example/side/comments/service/CommentsService.java
-import com.example.side.config.UserDetailsImpl;
-import com.example.side.comments.entity.Comments;
-import com.example.side.post.entity.Post;
-import com.example.side.user.entity.User;
-import com.example.side.comments.repository.CommentsRepository;
-import com.example.side.repository.PostRepository;
-import com.example.side.user.repository.UserRepository;
-import com.example.side.comments.Dto.request.CommentsRequest;
-import com.example.side.request.PostRequest;
-import com.example.side.comments.Dto.response.CommentsResponse;
-import com.example.side.response.PostResponse;
-========
 import com.example.side.comment.entity.Comments;
 import com.example.side.post.entity.Post;
 import com.example.side.comment.repository.CommentsRepository;
@@ -31,7 +14,6 @@ import com.example.side.post.repository.PortfolioPostRepository;
 import com.example.side.post.repository.PostRepository;
 import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
->>>>>>>> feat/#4-JWT-OAuth2-Client:src/main/java/com/example/side/comment/service/CommentsService.java
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,26 +1,31 @@
-package com.example.side.config;
+package com.example.side.auth;
 
 import com.example.side.user.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
-public class UserDetailsImpl implements UserDetails {
-    private final User user;
+@Getter
+public class CustomUserDetails implements UserDetails {
 
-    public UserDetailsImpl(User user) {
+    private User user;
+
+    public CustomUserDetails(User user) {
         this.user = user;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-
-    public String getNickname() {
-        return user.getNickname();
+    /**
+     * 계정이 갖고 있는 권한 목록을 리턴
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        /**
+         * 사용자 권한 로직 구현
+         */
+        return null;
     }
 
     @Override
@@ -51,10 +56,5 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override // 인가를 해주는 부분
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
     }
 }

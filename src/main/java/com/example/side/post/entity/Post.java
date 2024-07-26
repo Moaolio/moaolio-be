@@ -1,54 +1,77 @@
 package com.example.side.post.entity;
 
+import com.example.side.comments.entity.Comments;
 import com.example.side.common.BaseEntity;
-import com.example.side.comment.entity.Comments;
+import com.example.side.post.PostStatus;
+import com.example.side.post.file.entity.PostFile;
+import com.example.side.post.tag.entity.PostTag;
 import com.example.side.user.entity.User;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn
-@SuperBuilder
-public abstract class Post extends BaseEntity {
+@Table(name = "user_post")
+public class Post extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter @Setter
     private Long id;
 
+    @Column(nullable = false)
+    @Getter @Setter
     private String title;
 
-    @Lob
-    private String content;
+    @Column(nullable = false)
+    private String tag;
+
+    // Description 설정 메서드
+    @Column(nullable = false)
+    @Getter @Setter
+    private String description;
+
+    @Getter @Setter
+    private Long likeCount = 0L;
+
+    @Getter @Setter
+    private Long viewCount = 0L;
+
+    // 1. 포트폴리오 전용 2. 커뮤니티 전용
+    @Enumerated(EnumType.STRING)
+    @Getter @Setter
+    private PostStatus postType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "user_id")
+    @Getter @Setter
     private User user;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Getter @Setter
     private List<Comments> comments = new ArrayList<>();
 
-    /**
-     * 연관관계 메서드
-     */
-    public Post(String title, String content, User user) {
-        this.title = title;
-        this.content = content;
-        user.getPosts().add(this);
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Getter @Setter
+    private List<PostFile> postFiles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Getter @Setter
+    private Set<PostTag> postTags;
+
+    // 기본 생성자
+    public Post() {
     }
 
-    /**
-     * Post 수정
-     */
-    public void updatePost(String title, String content) {
+    // 커스텀 생성자
+    public Post(String title, String description, User user) {
         this.title = title;
-        this.content = content;
+        this.description = description;
+        this.user = user;
     }
+
 }

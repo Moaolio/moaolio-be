@@ -1,33 +1,52 @@
 package com.example.side.post.tag.entity;
 
-import com.example.side.post.entity.PortfolioPost;
+import com.example.side.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Entity
-@Table(name = "tag")
 public class PostTag {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<PortfolioPost> posts;
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 
-    // 기본 생성자
-    public PostTag() {}
+    // Getter 및 Setter
+    public Long getId() {
+        return id;
+    }
 
-    // 커스텀 생성자
-    public PostTag(String name) {
-        this.name = name;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+    // Tag name 반환
+    public String getName() {
+        return tag.getName();
     }
 }
