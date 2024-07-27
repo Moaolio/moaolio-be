@@ -4,8 +4,8 @@ import com.example.side.config.UserDetailsImpl;
 import com.example.side.post.entity.CommunityPost;
 import com.example.side.post.repository.CommunityPostRepository;
 import com.example.side.user.repository.UserRepository;
-import com.example.side.post.Dto.request.CommunityPostRequest;
-import com.example.side.post.Dto.response.CommunityPostResponse;
+import com.example.side.post.dto.request.CommunityPostRequest;
+import com.example.side.post.dto.response.CommunityPostResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +51,5 @@ public class CommunityPostService {
         responseId.put("postId", post.getId());
         return responseId;
     }
-    //필터링검색
 
 }

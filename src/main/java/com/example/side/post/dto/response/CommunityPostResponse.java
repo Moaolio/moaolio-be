@@ -1,4 +1,4 @@
-package com.example.side.post.Dto.response;
+package com.example.side.post.dto.response;
 
 import com.example.side.post.entity.CommunityPost;
 import com.example.side.comments.Dto.response.CommentsResponse;

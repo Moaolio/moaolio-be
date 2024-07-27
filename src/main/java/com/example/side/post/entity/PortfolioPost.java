@@ -2,7 +2,7 @@ package com.example.side.post.entity;
 
 import com.example.side.post.tag.entity.PostTag;
 import com.example.side.user.entity.User;
-import com.example.side.post.Dto.request.PortfolioPostRequest;
+import com.example.side.post.dto.request.PortfolioPostRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;

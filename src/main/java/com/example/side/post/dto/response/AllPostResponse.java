@@ -1,4 +1,4 @@
-package com.example.side.post.Dto.response;
+package com.example.side.post.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,12 +1,10 @@
 package com.example.side.post.controller;
 
 import com.example.side.config.UserDetailsImpl;
-import com.example.side.post.Dto.request.CommunityPostRequest;
-import com.example.side.post.Dto.request.PortfolioPostRequest;
-import com.example.side.post.Dto.request.PostFilterRequest;
-import com.example.side.post.Dto.response.CommunityPostResponse;
-import com.example.side.post.Dto.response.PortfolioPostResponse;
-import com.example.side.post.entity.Post;
+import com.example.side.post.dto.request.CommunityPostRequest;
+import com.example.side.post.dto.request.PortfolioPostRequest;
+import com.example.side.post.dto.response.CommunityPostResponse;
+import com.example.side.post.dto.response.PortfolioPostResponse;
 import com.example.side.post.service.CommunityPostService;
 import com.example.side.post.service.PortfolioPostService;
 import lombok.extern.slf4j.Slf4j;
@@ -84,8 +82,5 @@ public class PostController {
         return communityPostService.communityPosts();
     }
 
-    @PostMapping("/get/filter")
-    public List<Post> filterPosts(@RequestBody PostFilterRequest filterRequest) {
-        return portfolioPostService.filterPosts(filterRequest);
-    }
+
 }
