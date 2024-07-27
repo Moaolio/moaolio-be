@@ -78,14 +78,14 @@ public class PostController {
 
 
 
-//    // 커뮤니티 게시글 조회 (최신순)
-//    @GetMapping("/get/community")
-//    public List<CommunityPostResponse> recentCommunityPosts() {
-//        return communityPostService.communityPosts();
-//    }
-//
-//    @PostMapping("/get/filter")
-//    public List<Post> filterPosts(@RequestBody PostFilterRequest filterRequest) {
-//        return portfolioPostService.filterPosts(filterRequest);
-//    }
+    // 커뮤니티 게시글 조회 (최신순)
+    @GetMapping("/get/community")
+    public List<CommunityPostResponse> recentCommunityPosts() {
+        return communityPostService.communityPosts();
+    }
+
+    @PostMapping("/get/filter")
+    public List<Post> filterPosts(@RequestBody PostFilterRequest filterRequest) {
+        return portfolioPostService.filterPosts(filterRequest);
+    }
 }
