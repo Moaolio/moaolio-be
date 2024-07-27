@@ -1,4 +1,4 @@
-package com.example.side.user.Dto.request;
+package com.example.side.user.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

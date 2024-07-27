@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 public interface UserScrapRepository extends JpaRepository<UserScrap, Long> {
-    Optional<UserScrap> findByUserIdAndPostId(Long userId, Long postId);
-
+    Page<UserScrap> findByUserId(Long userId, Pageable pageable);
+    Optional<UserScrap> findByUserIdAndUserPostId(Long userId, Long userPostId);
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "post_file")
+@Table(name = "user_post_file")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class PostFile {
     private Long fileSize;
     private String fileOriginName;
 
-    @Column(name= "user_post_id")
-    private Long userPostId;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_post_id")
+    private Post post;
 }

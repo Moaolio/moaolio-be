@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
-    Optional<PostLike> findByUserAndPost(User user, Post post); // 메서드 이름이 엔티티 필드와 일치해야 합니다.
+    Optional<PostLike> findByUserAndUserPost(User user, Post post);
 }

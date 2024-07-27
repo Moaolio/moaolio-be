@@ -1,4 +1,4 @@
-package com.example.side.notification.dto.response;
+package com.example.side.notification.Dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
