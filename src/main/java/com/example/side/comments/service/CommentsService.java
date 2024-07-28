@@ -1,19 +1,17 @@
 package com.example.side.comments.service;
 
+import com.example.side.auth.CustomUserDetails;
 import com.example.side.common.exception.CommentNotFoundException;
 import com.example.side.common.exception.PostNotFoundException;
 import com.example.side.common.exception.UserNotFoundException;
-import com.example.side.config.UserDetailsImpl;
 import com.example.side.comments.entity.Comments;
 import com.example.side.post.entity.Post;
-import com.example.side.user.entity.User;
 import com.example.side.comments.repository.CommentsRepository;
-import com.example.side.repository.PostRepository;
+import com.example.side.comments.dto.request.CommentsRequest;
+import com.example.side.comments.dto.response.CommentsResponse;
+import com.example.side.post.repository.PostRepository;
+import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
-import com.example.side.comments.Dto.request.CommentsRequest;
-import com.example.side.request.PostRequest;
-import com.example.side.comments.Dto.response.CommentsResponse;
-import com.example.side.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +33,7 @@ public class CommentsService {
 
     // 생성
     @Transactional
-    public CommentsResponse createComments(CommentsRequest commentsRequest, UserDetailsImpl userDetails) {
+    public CommentsResponse createComments(CommentsRequest commentsRequest, CustomUserDetails userDetails) {
         Post findPost = postRepository.findById(commentsRequest.getUserPostId()).orElseThrow(() -> new PostNotFoundException("게시글을 찾을 수 없습니다."));
         User findUser = userRepository.findById(commentsRequest.getUserId()).orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
 
@@ -48,25 +46,32 @@ public class CommentsService {
                 .userId(comments.getUser().getId())
                 .postId(comments.getPost().getId())
                 .build();
+
         return commentsResponse;
     }
 
     //수정
     @Transactional
-    public CommentsResponse updateComments(Long commentsId, CommentsRequest commentsRequest, UserDetailsImpl userDetails) {
+    public CommentsResponse updateComments(Long commentsId, CommentsRequest commentsRequest, CustomUserDetails userDetails) {
         Comments comments = commentsRepository.findById(commentsId).orElseThrow(() -> new CommentNotFoundException("존재하지 않는 댓글입니다."));
         if(!comments.getUser().getId().equals(userDetails.getUser().getId())) {
             throw new IllegalArgumentException("권한이 없습니다.");
         }
         comments.setDescription(commentsRequest.getDescription());
 
-        CommentsResponse commentsResponse = new CommentsResponse(comments);
+        CommentsResponse commentsResponse = CommentsResponse.builder()
+                .id(comments.getId())
+                .description(comments.getDescription())
+                .userId(comments.getUser().getId())
+                .postId(comments.getPost().getId())
+                .build();
+
         return commentsResponse;
     }
 
     //삭제
     @Transactional
-    public HashMap<String,Long> deleteComments(Long commentsId, UserDetailsImpl userDetails) {
+    public HashMap<String,Long> deleteComments(Long commentsId, CustomUserDetails userDetails) {
         Comments comments = commentsRepository.findById(commentsId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
 
         if(!comments.getUser().getId().equals(userDetails.getUser().getId())) {
@@ -80,7 +85,7 @@ public class CommentsService {
     }
 
     // 특정 글의 댓글 조회
-    public List<CommentsResponse> findCommentsByPostId(Long postId, UserDetailsImpl userDetails) {
+    public List<CommentsResponse> findCommentsByPostId(Long postId, CustomUserDetails userDetails) {
         List<Comments> findComments = commentsRepository.findByPostId(postId);
         List<CommentsResponse> returnCommentsResponse = new ArrayList<>();
 
@@ -92,7 +97,7 @@ public class CommentsService {
     }
 
     // 내 댓글 모두 조회
-    public List<CommentsResponse> findCommentsByUserId(Long userId, UserDetailsImpl userDetails) {
+    public List<CommentsResponse> findCommentsByUserId(Long userId, CustomUserDetails userDetails) {
         List<Comments> findComments = commentsRepository.findByUserId(userDetails.getUser().getId());
         List<CommentsResponse> returnCommentsResponse = new ArrayList<>();
         findComments.stream()

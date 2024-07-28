@@ -1,7 +1,7 @@
 package com.example.side.post.dto.response;
 
+import com.example.side.comments.dto.response.CommentsResponse;
 import com.example.side.post.entity.CommunityPost;
-import com.example.side.comments.Dto.response.CommentsResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

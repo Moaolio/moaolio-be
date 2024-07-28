@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommunityPostService {
@@ -27,6 +29,7 @@ public class CommunityPostService {
         CommunityPost savedCommunityPost = communityPostRepository.save(communityPost);
         return new CommunityPostResponse(savedCommunityPost);
     }
+
     @Transactional //수정
     public CommunityPostResponse updatePost(Long postId, CommunityPostRequest postRequest, UserDetailsImpl userDetails) {
         CommunityPost communityPost = communityPostRepository.findById(postId).orElseThrow(()
@@ -47,9 +50,14 @@ public class CommunityPostService {
             throw new IllegalArgumentException("You can only delete your own posts");
         }
         communityPostRepository.deleteById(postId);
-        HashMap<String,Long> responseId = new HashMap<>();
+        HashMap<String, Long> responseId = new HashMap<>();
         responseId.put("postId", post.getId());
         return responseId;
     }
 
+    public List<CommunityPostResponse> communityPosts() {
+        return communityPostRepository.findAll().stream()
+                .map(CommunityPostResponse::new)
+                .collect(Collectors.toList());
+    }
 }

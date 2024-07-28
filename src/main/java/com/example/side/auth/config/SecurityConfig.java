@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -45,10 +44,6 @@ public class SecurityConfig {
                         configuration.setAllowedHeaders(Collections.singletonList("*")); // 어떤 헤더를 받을 수 있을 지
                         configuration.setMaxAge(3600L);
 
-                        /**
-                         * 우리가 데이터를 줄 경우 그 웹에서 보이게 할 수 있는 방법
-                         * 이 설정이 있어야 JWT를 프론트에서 받을 수 있음
-                         */
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
@@ -65,35 +60,21 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-        /**
-         * JWTFilter 추가
-         */
         http
                 .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
-        /**
-         * OAuth2 로그인 필터
-         * OAuth2 로그인 시도가 오면
-         * 데이터를 받았을 때 자동으로 customOAuth2UserService에 데이터 넘겨줌
-         */
         http
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler));
 
-        /**
-         * 경로별 인가 작업
-         */
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/login", "/test").permitAll()
                         .requestMatchers("/reissue").permitAll()
                         .anyRequest().authenticated());
 
-        /**
-         * 세션 설정 -> STATELESS(무상태)
-         */
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

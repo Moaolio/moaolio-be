@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PortfolioPostService {
@@ -58,5 +60,10 @@ public class PortfolioPostService {
         HashMap<String, Long> responseId = new HashMap<>();
         responseId.put("postId", portfolioPost.getId());
         return responseId;
+    }
+    public List<PortfolioPostResponse> portfolioPosts() {
+        return portfolioPostRepository.findAll().stream()
+                .map(PortfolioPostResponse::new)
+                .collect(Collectors.toList());
     }
 }

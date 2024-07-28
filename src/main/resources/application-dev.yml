@@ -1,19 +1,33 @@
 spring:
-  profiles:
-    active: dev
   datasource:
-    url: jdbc:mysql://localhost:3306/side?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/moaolio?serverTimezone=UTC
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jwt:
+    secret: ENC(LZfRkimWUcofW+0DbAkzqIsZak4F82V8Vm3VScQoJTLvpdub5TPfeeMrA4Nq7HMtXsBf/+UXJdI=)
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: google
+            client-id: ENC(ao/asGULsC0FZZVz57VlLnKKg984D//awkZrJg05n5q1Rzb9230bWOmcNcThzhJO4Yh0Qz9rf1maEwQP2z6g1dllMXY1AmG9xrLR9qU9z/A0dirAEw50Og==)
+            client-secret: ENC(ng8tvFKUirorpAgXqzGMctT4CBgpNDGSPyTSQJKzNVo9jaU5ZPjZ3KjPdLiX26LM)
+            redirect-uri: "http://localhost:8081/login/oauth2/code/google"
+            authorization-grant-type: authorization_code
+            scope:
+              - profile
+              - email
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
-#        show_sql : true
+        # show_sql : true  # SQL 쿼리 로그를 보려면 주석을 제거
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace

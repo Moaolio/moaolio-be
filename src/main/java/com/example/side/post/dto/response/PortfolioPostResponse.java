@@ -1,8 +1,8 @@
 package com.example.side.post.dto.response;
 
+import com.example.side.comments.dto.response.CommentsResponse;
 import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.tag.entity.PostTag;
-import com.example.side.comments.Dto.response.CommentsResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
