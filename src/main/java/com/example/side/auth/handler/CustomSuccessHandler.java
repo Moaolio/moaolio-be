@@ -31,6 +31,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final RefreshRepository refreshRepository;
     private final JWTUtil jwtUtil;
 
+
     /**
      * 로그인 성공 시 동작하는 메소드
      */
@@ -50,7 +51,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String role = auth.getAuthority();
 
 //        String access = jwtUtil.createJwt("access", username, role, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", username, role, REFRESH_TOKEN_EXPIRED_MS);
+        String refresh = jwtUtil.createJwt("refresh", "social", username, role, REFRESH_TOKEN_EXPIRED_MS);
 
         addRefreshEntity(username, refresh, REFRESH_TOKEN_EXPIRED_MS);
 

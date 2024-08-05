@@ -2,6 +2,8 @@ package com.example.side.user.entity;
 
 import com.example.side.comments.entity.Comments;
 import com.example.side.post.entity.Post;
+import com.example.side.techStack.entity.TechStack;
+import com.example.side.user.dto.request.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,14 +24,18 @@ public class User {
 
     /**
      * username -> 리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디
-     * ex) google_2398472981di
+     * ex) google_2398472981
      */
     @Column(unique = true, nullable = false)
     private String username;
     private String password;
 
+    private String name; // 실명
+
+    private String birth; // 생일
+
     /**
-     * OAuth2에서 제공받는 이름(실명) -> 추후에 변경
+     * OAuth2에서 제공받는 이름 -> 추후에 변경
      */
     private String nickname;
 
@@ -45,12 +51,18 @@ public class User {
     private UserRole role;
 
     @Builder
-    public User(String username, String password, String nickname, String email, UserRole role) {
+    public User(String username, String password, String name, String nickname, String email, UserRole role) {
         this.username = username;
         this.password = password;
-        this.nickname = nickname;
         this.email = email;
+        this.name = name;
+        this.nickname = nickname;
         this.role = role;
+    }
+
+    public User(UserDto userDto) {
+        this.username = userDto.getUsername();
+        this.role = UserRole.valueOf(userDto.getRole());
     }
 
     /**
