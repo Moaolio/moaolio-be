@@ -4,14 +4,12 @@ import com.example.side.email.service.EmailService;
 import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
     @Autowired
     private UserRepository userRepository;
@@ -29,7 +27,7 @@ public class AuthController {
 
         emailService.sendVerificationEmail(user);
 
-        return "Registration successful! Please check your email to verify.";
+        return "전송 완료되었습니다. 이메일을 확인해주세요.";
     }
 
     @GetMapping("/verify")
@@ -41,9 +39,9 @@ public class AuthController {
             user.setVerificationToken(null);
             user.setVerificationTokenExpiry(null);
             userRepository.save(user);
-            return "Email successfully verified!";
+            return "이메일 인증되었습니다.";
         } else {
-            return "Invalid or expired token.";
+            return "인증 실패";
         }
     }
 }

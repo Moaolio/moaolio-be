@@ -15,7 +15,6 @@ import com.example.side.post.dto.response.PortfolioPostResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class PortfolioPostService {
 
     // 생성
     @Transactional
-    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, UserDetailsImpl userDetails,String url) {
+    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, UserDetailsImpl userDetails) {
         PortfolioPost portfolioPost = new PortfolioPost(portfolioPostRequest, userDetails.getUser());
         PortfolioPost savedPortfolioPost = portfolioPostRepository.save(portfolioPost);
         savedPortfolioPost.setRepresentativeImageUrlAutomatically(url);

@@ -52,10 +52,8 @@ public class PortfolioPost extends Post {
         this.img = portfolioPostRequest.getImg();
 
     }
-
+    //대표이미지 관련 코드 (수정작업중)
     public void setRepresentativeImageUrlAutomatically(String url) {
-        // URL에서 대표 이미지 URL을 추출하거나 설정하는 로직
-        // 이 예제에서는 URL을 그대로 저장
         this.img = url;
     }
 }

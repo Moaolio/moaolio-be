@@ -12,10 +12,11 @@ import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
 import com.example.side.post.dto.request.CommunityPostRequest;
 import com.example.side.post.dto.response.CommunityPostResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -84,4 +85,13 @@ public class CommunityPostService {
             return CommunityPostResponse.of(communityPost,commentsResponses,false);
         }
     }
+    //검색
+    @Transactional(readOnly = true)
+    public List<CommunityPostResponse> searchPostsByTitle(String title) {
+        List<CommunityPost> posts = communityPostRepository.findPostsByTitle(title);
+        return posts.stream()
+                .map(CommunityPostResponse::new)
+                .collect(Collectors.toList());
+    }
+
 }

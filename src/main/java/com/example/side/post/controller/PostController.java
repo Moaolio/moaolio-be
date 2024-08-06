@@ -95,13 +95,18 @@ public class PostController {
     public CommunityPostResponse getCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return communityPostService.getPostId(postId, userDetails.getUser());
     }
-
-    @GetMapping("/search")
+    //포트폴리오 게시글 필터링 조회
+    @GetMapping("/portfolio/search")
     public List<PortfolioPost> searchPosts(
             @RequestParam(required = false) List<String> tags,
             @RequestParam(required = false) LocalDateTime startDate,
             @RequestParam(required = false) LocalDateTime endDate,
             @RequestParam(defaultValue = "likes") String sortBy) {
         return portfolioPostService.getFilteredPosts(tags, startDate, endDate, sortBy);
+    }
+    //커뮤니티 게시글 검색
+    @GetMapping("/community/search")
+    public List<CommunityPostResponse> searchPostsByTitle(@RequestParam(required = false) String title) {
+        return communityPostService.searchPostsByTitle(title);
     }
 }
