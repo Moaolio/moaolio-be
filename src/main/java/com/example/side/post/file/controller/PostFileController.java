@@ -1,11 +1,8 @@
 package com.example.side.post.file.controller;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,14 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Controller
+@RestController // Removed @Controller since @RestController includes @ResponseBody
 @RequestMapping("/api/files")
 @Slf4j(topic = "PostFileController")
-@RestController // Spring Boot's @RestController annotation for returning JSON responses.
 @CrossOrigin(origins = "*") // Cors configuration for enabling Cross-Origin Resource Sharing (CORS).
 public class PostFileController {
 
-    @Value("${upload.path}")
+    //@Value("${upload.path}")
     private String uploadPath;
 
     @PostMapping("/upload")
@@ -47,7 +43,7 @@ public class PostFileController {
             return ResponseEntity.ok(fileDownloadUri);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("File upload error", e); // Logging error properly
             return ResponseEntity.status(500).body("서버 에러");
         }
     }

@@ -15,6 +15,7 @@ public class TechStack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, length = 24)
     private String techName;
 
     @ManyToOne(fetch = FetchType.LAZY)

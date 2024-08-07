@@ -38,7 +38,7 @@ public class PortfolioPostService {
     public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, UserDetailsImpl userDetails) {
         PortfolioPost portfolioPost = new PortfolioPost(portfolioPostRequest, userDetails.getUser());
         PortfolioPost savedPortfolioPost = portfolioPostRepository.save(portfolioPost);
-        savedPortfolioPost.setRepresentativeImageUrlAutomatically(url);
+       // savedPortfolioPost.setRepresentativeImageUrlAutomatically(url);
         return new PortfolioPostResponse(savedPortfolioPost);
     }
 
