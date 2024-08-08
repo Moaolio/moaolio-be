@@ -2,14 +2,12 @@ package com.example.side.user.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
 @Builder
-public class UserSignUpResponse {
+@Getter @Setter
+public class UsernameFindResponse {
 
     private String username;
-    private String email;
-    private String name;
-    private String birth;
 
 }

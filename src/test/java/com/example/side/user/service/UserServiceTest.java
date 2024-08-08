@@ -27,7 +27,7 @@ class UserServiceTest {
                 .password("123456")
                 .email("email@email.com")
                 .name("name")
-                .nickName("nickname")
+                .birth("111111")
                 .build();
 
         //when

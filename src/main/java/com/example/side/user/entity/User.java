@@ -25,11 +25,14 @@ public class User {
     /**
      * username -> 리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디
      * ex) google_2398472981
+     * 자체 회원가입시 id
      */
     @Column(unique = true, nullable = false)
     private String username;
     private String password;
 
+    @Column(unique = true)
+    private String email; // 이메일
     private String name; // 실명
 
     private String birth; // 생일
@@ -37,9 +40,11 @@ public class User {
     /**
      * OAuth2에서 제공받는 이름 -> 추후에 변경
      */
+    @Column(unique = true)
     private String nickname;
+    private String description; // 자기소개
+    private String job; // 직업
 
-    private String email;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
@@ -51,12 +56,15 @@ public class User {
     private UserRole role;
 
     @Builder
-    public User(String username, String password, String name, String nickname, String email, UserRole role) {
+    public User(String username, String password, String email, String name, String birth, String nickname, String description, String job, UserRole role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
+        this.birth = birth;
         this.nickname = nickname;
+        this.description = description;
+        this.job = job;
         this.role = role;
     }
 
