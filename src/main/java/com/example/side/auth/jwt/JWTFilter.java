@@ -1,8 +1,12 @@
 package com.example.side.auth.jwt;
 
 import com.example.side.auth.CustomOAuth2User;
+import com.example.side.auth.CustomUserDetails;
+import com.example.side.user.dto.request.UserDto;
 import com.example.side.user.dto.request.UserOAuth2Dto;
+import com.example.side.user.entity.User;
 import com.example.side.user.entity.UserRole;
+import com.example.side.user.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,15 +17,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
+    private final UserRepository userRepository;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -80,25 +88,47 @@ public class JWTFilter extends OncePerRequestFilter {
          */
         String username = jwtUtil.getUsername(accessToken);
         String userRole = jwtUtil.getRole(accessToken);
-        UserOAuth2Dto userOAuth2Dto = new UserOAuth2Dto();
-        userOAuth2Dto.setUsername(username);
-        userOAuth2Dto.setRole(userRole);
+        String loginType = jwtUtil.getLoginType(accessToken);
 
-        /**
-         * OAuth2UserDetails에 회원 정보 객체 담기
-         */
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userOAuth2Dto);
+        if (loginType.equals("social")) {
 
-        /**
-         * 스프링 시큐리티 인증 토큰 생성
-         */
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
+            UserOAuth2Dto userOAuth2Dto = new UserOAuth2Dto();
+            userOAuth2Dto.setUsername(username);
+            userOAuth2Dto.setRole(userRole);
 
-        /**
-         * 세션에 사용자 등록
-         */
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+            /**
+             * OAuth2UserDetails에 회원 정보 객체 담기
+             */
+            CustomOAuth2User customOAuth2User = new CustomOAuth2User(userOAuth2Dto);
 
-        filterChain.doFilter(request, response);
+            /**
+             * 스프링 시큐리티 인증 토큰 생성
+             */
+            Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
+
+            /**
+             * 세션에 사용자 등록
+             */
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+
+            filterChain.doFilter(request, response);
+        }
+        else if (loginType.equals("basic")) {
+            Optional<User> findUser = userRepository.findByUsername(username);
+            User user = findUser.orElseThrow(() -> new UsernameNotFoundException("username not found"));
+
+            CustomUserDetails customUserDetails = new CustomUserDetails(user);
+            /**
+             * 스프링 시큐리티 인증 토큰 생성
+             */
+            Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+
+            /**
+             * 세션에 사용자 등록
+             */
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+
+            filterChain.doFilter(request, response);
+        }
     }
 }

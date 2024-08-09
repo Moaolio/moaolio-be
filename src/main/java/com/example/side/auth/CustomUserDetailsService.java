@@ -1,5 +1,6 @@
 package com.example.side.auth;
 
+import com.example.side.user.dto.request.UserDto;
 import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + "(을)를 찾을 수 없습니다."));
+
+//        UserDto userDto = new UserDto(user.getUsername(), user.getPassword(), user.getRole().getKey());
 
         return new CustomUserDetails(user);
     }
