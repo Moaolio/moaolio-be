@@ -8,6 +8,7 @@ import com.example.side.post.tag.entity.PostTag;
 import com.example.side.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "post")
 public class Post {
     @Id
@@ -76,9 +78,6 @@ public class Post {
     @Getter @Setter
     private Set<PostTag> postTags;
 
-    // 기본 생성자
-    public Post() {
-    }
 
     // 커스텀 생성자
     public Post(String title, String description, User user) {

@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Service
 public class EmailService {
-
-    private JavaMailSender mailSender;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Autowired
     private UserRepository userRepository;
