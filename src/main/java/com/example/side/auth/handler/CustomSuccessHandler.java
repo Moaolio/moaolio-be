@@ -23,8 +23,8 @@ import java.util.Iterator;
 
 import static com.example.side.common.MoaolioConstants.*;
 
-@Component
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 

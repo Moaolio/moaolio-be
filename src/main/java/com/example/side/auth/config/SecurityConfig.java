@@ -6,6 +6,7 @@ import com.example.side.auth.jwt.JWTFilter;
 import com.example.side.auth.jwt.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,9 +19,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
 
-@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
+@Configuration
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
