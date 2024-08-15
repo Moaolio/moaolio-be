@@ -7,9 +7,14 @@ spring:
     properties:
         mail:
             smtp:
-            auth: true
-            starttls:
-                enable: true
+                auth: true
+                starttls:
+                    enable: true
+                    required: true
+                connection timeout: 5000
+                timeout: 5000
+                write timeout: 5000
+        auth-code-expire-millis: 180000
   datasource:
     url: jdbc:mysql://localhost:3306/moaolio?serverTimezone=UTC
     username: root
@@ -25,7 +30,7 @@ spring:
             client-name: google
             client-id: ENC(ao/asGULsC0FZZVz57VlLnKKg984D//awkZrJg05n5q1Rzb9230bWOmcNcThzhJO4Yh0Qz9rf1maEwQP2z6g1dllMXY1AmG9xrLR9qU9z/A0dirAEw50Og==)
             client-secret: ENC(ng8tvFKUirorpAgXqzGMctT4CBgpNDGSPyTSQJKzNVo9jaU5ZPjZ3KjPdLiX26LM)
-            redirect-uri: "http://localhost:8081/login/oauth2/code/google"
+            redirect-uri: "http://www.moaolio.kro.kr:8081/login/oauth2/code/google"
             authorization-grant-type: authorization_code
             scope:
               - profile

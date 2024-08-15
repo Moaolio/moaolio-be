@@ -61,7 +61,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
          */
         response.addCookie(createCookie("RefreshAuth", refresh));
 //        response.sendRedirect("http://localhost:3000/");
-        response.sendRedirect("http://localhost:8081/test");
+        response.sendRedirect("http://www.moaolio.kro.kr:8081/test");
     }
 
     /**
