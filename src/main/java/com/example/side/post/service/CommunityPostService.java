@@ -93,5 +93,12 @@ public class CommunityPostService {
                 .map(CommunityPostResponse::new)
                 .collect(Collectors.toList());
     }
-
+    //카테고리 검색
+    @Transactional(readOnly = true)
+    public List<CommunityPostResponse> findByCategory(String category) {
+        List<CommunityPost> posts = communityPostRepository.findByCategory(category);
+        return posts.stream()
+                .map(CommunityPostResponse::new)
+                .collect(Collectors.toList());
+    }
 }

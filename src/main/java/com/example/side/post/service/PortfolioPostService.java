@@ -98,4 +98,8 @@ public class PortfolioPostService {
     public List<PortfolioPost> getFilteredPosts(List<String> tags, LocalDateTime startDate, LocalDateTime endDate, String sortBy) {
         return portfolioPostRepository.findPosts(tags, startDate, endDate, sortBy);
     }
+    //검색
+    public List<PortfolioPost> searchPosts(String keyword) {
+        return portfolioPostRepository.findByTitleContaining(keyword);
+    }
 }

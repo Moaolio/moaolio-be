@@ -45,6 +45,5 @@ public class TechStackService {
 
         techStackRepository.delete(techStack);
     }
-
-    // Other methods such as removeTechStack, getTechStacks, etc.
+    //
 }

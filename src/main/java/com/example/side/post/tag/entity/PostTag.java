@@ -7,18 +7,14 @@ import lombok.Setter;
 
 @Setter
 @Getter
-
 @Entity
-@Table(name = "tags")
+@Table(name = "tag")
 public class PostTag {
-    // Getter 및 Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+
 
 
 }

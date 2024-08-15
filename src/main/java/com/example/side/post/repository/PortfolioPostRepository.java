@@ -20,5 +20,8 @@ public interface PortfolioPostRepository extends JpaRepository<PortfolioPost, Lo
                          @Param("startDate") LocalDateTime startDate,
                          @Param("endDate") LocalDateTime endDate,
                          @Param("sortBy") String sortBy);
+    //타이틀검색
+    @Query("SELECT p FROM Post p WHERE p.title LIKE %:title%")
+    List<PortfolioPost> findByTitleContaining(@Param("title") String title);
 }
 

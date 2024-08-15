@@ -109,4 +109,54 @@ public class PostController {
     public List<CommunityPostResponse> searchPostsByTitle(@RequestParam(required = false) String title) {
         return communityPostService.searchPostsByTitle(title);
     }
+    //포트폴리오 게시글 검색
+    @GetMapping("/portfolio/search")
+    public List<PortfolioPost> searchPosts(@RequestParam(required = false) String keyword) {
+        return portfolioPostService.searchPosts(keyword);
+    }
+    //커뮤니티 게시글 카테고리별 조회
+    @GetMapping("/community/category")
+    public List<CommunityPostResponse> findByCategory(@RequestParam(required = false) String category) {
+        return communityPostService.findByCategory(category);
+    }
+    //유저신고
+    
+
+
+//    //커뮤니티 게시글 스크랩
+//    @PostMapping("/community/scrap/{postId}")
+//    public HashMap<String, Long> scrapCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return communityPostService.scrapPost(postId, userDetails);
+//    }
+//    //커뮤니티 게시글 스크랩 취소
+//    @DeleteMapping("/community/scrap/{postId}")
+//    public HashMap<String, Long> unscrapCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return communityPostService.unscrapPost(postId, userDetails);
+//    }
+//    //커뮤니티 게시글 스크랩 조회
+//    @GetMapping("/community/scrap")
+//    public List<CommunityPostResponse> scrapedCommunityPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return communityPostService.scrapedPosts(userDetails);
+//    }
+//
+//
+//
+//    //포트폴리오 게시물 스크랩
+//    @PostMapping("/portfolio/scrap/{postId}")
+//    public HashMap<String, Long> scrapPortfolioPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return portfolioPostService.scrapPost(postId, userDetails);
+//    }
+//    //포트폴리오 게시물 스크랩 취소
+//    @DeleteMapping("/portfolio/scrap/{postId}")
+//    public HashMap<String, Long> unscrapPortfolioPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return portfolioPostService.unscrapPost(postId, userDetails);
+//    }
+//    //포트폴리오 게시물 스크랩 조회
+//    @GetMapping("/portfolio/scrap")
+//    public List<PortfolioPostResponse> scrapedPortfolioPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return portfolioPostService.scrapedPosts(userDetails);
+//    }
+//
+
+
 }
