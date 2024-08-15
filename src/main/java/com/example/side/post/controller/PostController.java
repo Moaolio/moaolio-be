@@ -120,7 +120,7 @@ public class PostController {
         return communityPostService.findByCategory(category);
     }
     //유저신고
-    
+
 
 
 //    //커뮤니티 게시글 스크랩
