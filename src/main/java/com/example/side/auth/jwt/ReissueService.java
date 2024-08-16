@@ -65,7 +65,7 @@ public class ReissueService {
         if (!category.equals("refresh")) {
 
             //response status code
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("is not refresh token", HttpStatus.BAD_REQUEST);
         }
 
         /**
@@ -73,7 +73,7 @@ public class ReissueService {
          */
         if (!refreshRepository.existsByRefresh(refresh)) {
 
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("not found refresh token", HttpStatus.BAD_REQUEST);
         }
 
         /**
@@ -81,10 +81,19 @@ public class ReissueService {
          */
         String username = jwtUtil.getUsername(refresh);
         String role = jwtUtil.getRole(refresh);
+        String loginType = jwtUtil.getLoginType(refresh);
 
+        String newAccess = "";
+        String newRefresh = "";
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", username, role, ACCESS_TOKEN_EXPIRED_MS);
-        String newRefresh = jwtUtil.createJwt("refresh", username, role, REFRESH_TOKEN_EXPIRED_MS);
+        if (loginType.equals("social")) {
+            newAccess = jwtUtil.createJwt("access", "social", username, role, ACCESS_TOKEN_EXPIRED_MS);
+            newRefresh = jwtUtil.createJwt("refresh", "social", username, role, REFRESH_TOKEN_EXPIRED_MS);
+        }
+        else if (loginType.equals("basic")) {
+            newAccess = jwtUtil.createJwt("access", "basic", username, role, ACCESS_TOKEN_EXPIRED_MS);
+            newRefresh = jwtUtil.createJwt("refresh", "basic", username, role, REFRESH_TOKEN_EXPIRED_MS);
+        }
 
         /**
          * 기존 refresh token 삭제 및 새 refresh token 저장

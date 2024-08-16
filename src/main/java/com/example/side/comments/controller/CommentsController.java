@@ -38,7 +38,7 @@ public class CommentsController {
     }
 
     // 조회
-    @GetMapping("/put/{postId}")
+    @GetMapping("/post/{postId}")
     public List<CommentsResponse> getComments(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         return commentsService.findCommentsByPostId(postId, userDetails);
     }

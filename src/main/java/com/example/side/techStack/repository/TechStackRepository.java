@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+@Repository
 public interface TechStackRepository extends JpaRepository<TechStack, Long> {
     int countByUser(User user);
     Optional<TechStack> findByUser(User user);

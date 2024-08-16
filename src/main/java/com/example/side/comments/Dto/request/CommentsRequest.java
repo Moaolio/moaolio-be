@@ -1,4 +1,4 @@
-package com.example.side.post.like.Dto.request;
+package com.example.side.comments.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostLikeRequest {
+public class CommentsRequest {
+
     private Long userPostId;
     private Long userId;
+    private String description;
+
 }

@@ -15,6 +15,10 @@ spring:
                 timeout: 5000
                 write timeout: 5000
         auth-code-expire-millis: 180000
+  config:
+    activate:
+      on-profile: dev
+
   datasource:
     url: jdbc:mysql://localhost:3306/moaolio?serverTimezone=UTC
     username: root
@@ -22,6 +26,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jwt:
     secret: ENC(LZfRkimWUcofW+0DbAkzqIsZak4F82V8Vm3VScQoJTLvpdub5TPfeeMrA4Nq7HMtXsBf/+UXJdI=)
+
   security:
     oauth2:
       client:

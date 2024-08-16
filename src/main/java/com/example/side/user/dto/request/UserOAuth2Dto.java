@@ -3,6 +3,11 @@ package com.example.side.user.dto.request;
 import lombok.Getter;
 import lombok.Setter;
 
+
+/**
+ * OAuth2 회원 가입 유저 DTO
+ */
+
 @Getter @Setter
 public class UserOAuth2Dto {
 
