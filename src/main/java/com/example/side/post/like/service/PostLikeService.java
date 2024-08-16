@@ -58,9 +58,9 @@ public class PostLikeService {
     public PostLike isPostLikeExist(User user, Post post) {
         Optional<PostLike> postLike = postLikeRepository.findByUserAndPost(user, post);
         return postLike.orElse(null);
-    public PostLikeService(PostLikeRepository postLikeRepository) {
-        this.postLikeRepository = postLikeRepository;
+
     }
+
 
     public Optional<PostLike> getPostLike(User user, Post post) {
         return postLikeRepository.findByUserAndPost(user, post);
