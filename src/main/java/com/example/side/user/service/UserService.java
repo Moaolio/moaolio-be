@@ -55,7 +55,7 @@ public class UserService {
         return userSignUpResponse;
     }
 
-    public UsernameFindResponse findUsername(UsernameFindRequest usernameFindRequest) throws IllegalStateException {
+    public UsernameFindResponse findUsername(UsernameFindRequest usernameFindRequest) throws IllegalStateException, UserNotFoundException {
         Optional<User> findUser = userRepository.findByEmail(usernameFindRequest.getEmail());
         if (findUser.isPresent()) {
             User user = findUser.get();
