@@ -1,5 +1,6 @@
 package com.example.side.post.controller;
 
+import com.example.side.Dto.GlobalResDto;
 import com.example.side.config.UserDetailsImpl;
 import com.example.side.post.dto.request.CommunityPostRequest;
 import com.example.side.post.dto.request.PortfolioPostRequest;
@@ -31,93 +32,104 @@ public class PostController {
 
     // 포트폴리오 게시글 생성
     @PostMapping("/create/portfolio")
-    public PortfolioPostResponse createPost(@RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return portfolioPostService.createPost(portfolioPostRequest, userDetails);
+    public GlobalResDto<PortfolioPostResponse> createPortfolioPost(@RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        PortfolioPostResponse response = portfolioPostService.createPost(portfolioPostRequest, userDetails);
+        return GlobalResDto.success(response, "게시글이 생성되었습니다.");
     }
 
     // 커뮤니티 게시글 생성
     @PostMapping("/create/community")
-    public CommunityPostResponse createPost(@RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return communityPostService.createPost(communityPostRequest, userDetails);
+    public GlobalResDto<CommunityPostResponse> createCommunityPost(@RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        CommunityPostResponse response = communityPostService.createPost(communityPostRequest, userDetails);
+        return GlobalResDto.success(response, "게시글이 성공적으로 생성되었습니다.");
     }
-
 
     // 포트폴리오 게시글 수정
     @PutMapping("/update/portfolio/{postId}")
-    public PortfolioPostResponse updatePost(@PathVariable Long postId, @RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return portfolioPostService.updatePost(postId, portfolioPostRequest, userDetails);
+    public GlobalResDto<PortfolioPostResponse> updatePortfolioPost(@PathVariable Long postId, @RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        PortfolioPostResponse response = portfolioPostService.updatePost(postId, portfolioPostRequest, userDetails);
+        return GlobalResDto.success(response, "게시글이 성공적으로 수정되었습니다.");
     }
 
     // 커뮤니티 게시글 수정
     @PutMapping("/update/community/{postId}")
-    public CommunityPostResponse updatePost(@PathVariable Long postId, @RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return communityPostService.updatePost(postId, communityPostRequest, userDetails);
+    public GlobalResDto<CommunityPostResponse> updateCommunityPost(@PathVariable Long postId, @RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        CommunityPostResponse response = communityPostService.updatePost(postId, communityPostRequest, userDetails);
+        return GlobalResDto.success(response, "커뮤니티 게시글이 성공적으로 수정되었습니다.");
     }
-
 
     // 포트폴리오 게시글 삭제
     @DeleteMapping("/delete/portfolio/{postId}")
-    public HashMap<String, Long> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return portfolioPostService.deletePost(postId, userDetails);
+    public GlobalResDto<Long> deletePortfolioPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        portfolioPostService.deletePost(postId, userDetails);
+        return GlobalResDto.success(postId, "포트폴리오 게시글이 성공적으로 삭제되었습니다.");
     }
 
-    // 커뮤니티 게시글 삭제 - Method name changed to differentiate
+    // 커뮤니티 게시글 삭제
     @DeleteMapping("/delete/community/{postId}")
-    public HashMap<String, Long> deleteCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return communityPostService.deletePost(postId, userDetails);
+    public GlobalResDto<Long> deleteCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        communityPostService.deletePost(postId, userDetails);
+        return GlobalResDto.success(postId, "커뮤니티 게시글이 성공적으로 삭제되었습니다.");
     }
-
-
-
 
     // 포트폴리오 게시글 조회 (최신순)
     @GetMapping("/get/portfolio")
-    public List<PortfolioPostResponse> recentPortfolioPosts() {
-        return portfolioPostService.portfolioPosts();
+    public GlobalResDto<List<PortfolioPostResponse>> recentPortfolioPosts() {
+        List<PortfolioPostResponse> response = portfolioPostService.portfolioPosts();
+        return GlobalResDto.success(response, "포트폴리오 게시글 목록 조회가 성공적으로 완료되었습니다.");
     }
-
-
 
     // 커뮤니티 게시글 조회 (최신순)
     @GetMapping("/get/community")
-    public List<CommunityPostResponse> recentCommunityPosts() {
-        return communityPostService.communityPosts();
+    public GlobalResDto<List<CommunityPostResponse>> recentCommunityPosts() {
+        List<CommunityPostResponse> response = communityPostService.communityPosts();
+        return GlobalResDto.success(response, "커뮤니티 게시글 목록 조회가 성공적으로 완료되었습니다.");
     }
-
 
     // 포트폴리오 게시글 상세 조회
     @GetMapping("/get/portfolio/{postId}")
-    public PortfolioPostResponse getPortfolioPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return portfolioPostService.getPostId(postId, userDetails.getUser());
+    public GlobalResDto<PortfolioPostResponse> getPortfolioPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        PortfolioPostResponse response = portfolioPostService.getPostId(postId, userDetails.getUser());
+        return GlobalResDto.success(response, "포트폴리오 게시글 조회가 성공적으로 완료되었습니다.");
     }
+
     // 커뮤니티 게시글 상세 조회
     @GetMapping("/get/community/{postId}")
-    public CommunityPostResponse getCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return communityPostService.getPostId(postId, userDetails.getUser());
+    public GlobalResDto<CommunityPostResponse> getCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        CommunityPostResponse response = communityPostService.getPostId(postId, userDetails.getUser());
+        return GlobalResDto.success(response, "커뮤니티 게시글 조회가 성공적으로 완료되었습니다.");
     }
-    //포트폴리오 게시글 필터링 조회
+
+    // 포트폴리오 게시글 필터링 조회
     @GetMapping("/portfolio/search")
-    public List<PortfolioPost> searchPosts(
+    public GlobalResDto<List<PortfolioPost>> searchPortfolioPosts(
             @RequestParam(required = false) List<String> tags,
             @RequestParam(required = false) LocalDateTime startDate,
             @RequestParam(required = false) LocalDateTime endDate,
             @RequestParam(defaultValue = "likes") String sortBy) {
-        return portfolioPostService.getFilteredPosts(tags, startDate, endDate, sortBy);
+        List<PortfolioPost> response = portfolioPostService.getFilteredPosts(tags, startDate, endDate, sortBy);
+        return GlobalResDto.success(response, "포트폴리오 게시글 필터링 조회가 성공적으로 완료되었습니다.");
     }
-    //커뮤니티 게시글 검색
+
+    // 커뮤니티 게시글 검색
     @GetMapping("/community/search")
-    public List<CommunityPostResponse> searchPostsByTitle(@RequestParam(required = false) String title) {
-        return communityPostService.searchPostsByTitle(title);
+    public GlobalResDto<List<CommunityPostResponse>> searchCommunityPostsByTitle(@RequestParam(required = false) String title) {
+        List<CommunityPostResponse> response = communityPostService.searchPostsByTitle(title);
+        return GlobalResDto.success(response, "커뮤니티 게시글 검색이 성공적으로 완료되었습니다.");
     }
-    //포트폴리오 게시글 검색
+
+    // 포트폴리오 게시글 검색
     @GetMapping("/portfolio/search")
-    public List<PortfolioPost> searchPosts(@RequestParam(required = false) String keyword) {
-        return portfolioPostService.searchPosts(keyword);
+    public GlobalResDto<List<PortfolioPost>> searchPortfolioPosts(@RequestParam(required = false) String keyword) {
+        List<PortfolioPost> response = portfolioPostService.searchPosts(keyword);
+        return GlobalResDto.success(response, "포트폴리오 게시글 검색이 성공적으로 완료되었습니다.");
     }
-    //커뮤니티 게시글 카테고리별 조회
+
+    // 커뮤니티 게시글 카테고리별 조회
     @GetMapping("/community/category")
-    public List<CommunityPostResponse> findByCategory(@RequestParam(required = false) String category) {
-        return communityPostService.findByCategory(category);
+    public GlobalResDto<List<CommunityPostResponse>> findCommunityPostsByCategory(@RequestParam(required = false) String category) {
+        List<CommunityPostResponse> response = communityPostService.findByCategory(category);
+        return GlobalResDto.success(response, "카테고리별 커뮤니티 게시글 조회가 성공적으로 완료되었습니다.");
     }
     //유저신고
 

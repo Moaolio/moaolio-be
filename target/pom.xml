@@ -19,13 +19,14 @@
 
     <properties>
         <java.version>17</java.version> <!-- Use the appropriate Java version -->
+        <spring.version>5.0.2.RELEASE</spring.version>
     </properties>
 
     <dependencies>
         <!-- Spring Boot Starter Actuator: Provides production-ready features like monitoring and metrics -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- Spring Boot Starter Web: Provides core functionality for web applications -->

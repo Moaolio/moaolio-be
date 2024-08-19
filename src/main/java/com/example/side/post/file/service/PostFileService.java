@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class PostFileService {
-    @Autowired
+
     private final PostFileRepository postFileRepository;
 
     public PostFileService(PostFileRepository postFileRepository) {

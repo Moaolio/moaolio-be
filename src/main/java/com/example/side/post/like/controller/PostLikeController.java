@@ -14,11 +14,22 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @PostMapping("/on/{postId}")
-    public GlobalResDto<?> createPostLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
-        return postLikeService.createPostLike(userDetails, postId);
+    public GlobalResDto<String> createPostLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+        try {
+            postLikeService.createPostLike(userDetails, postId);
+            return GlobalResDto.success("Post liked successfully", "Like added");
+        } catch (Exception e) {
+            return GlobalResDto.fail(500, null, "Failed to like the post");
+        }
     }
+
     @DeleteMapping("/off/{postId}")
-    public GlobalResDto<?> deletePostLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
-        return postLikeService.deletePostLike(userDetails, postId);
+    public GlobalResDto<String> deletePostLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+        try {
+            postLikeService.deletePostLike(userDetails, postId);
+            return GlobalResDto.success("Post unliked successfully", "Like removed");
+        } catch (Exception e) {
+            return GlobalResDto.fail(500, null, "Failed to unlike the post");
+        }
     }
 }

@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.side.Exception.ErrorCode.NOT_FOUND_POST;
-
-@Service
 @RequiredArgsConstructor
+@Service
+
 public class PortfolioPostService {
     private final PortfolioPostRepository portfolioPostRepository;
     private final UserRepository userRepository;
