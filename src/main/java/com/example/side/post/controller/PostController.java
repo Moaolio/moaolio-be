@@ -101,7 +101,7 @@ public class PostController {
     }
 
     // 포트폴리오 게시글 필터링 조회
-    @GetMapping("/portfolio/search")
+    @GetMapping("/portfolio/filter")
     public GlobalResDto<List<PortfolioPost>> searchPortfolioPosts(
             @RequestParam(required = false) List<String> tags,
             @RequestParam(required = false) LocalDateTime startDate,
