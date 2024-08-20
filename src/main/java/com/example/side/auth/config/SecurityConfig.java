@@ -97,7 +97,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/api/user/login", "/test", "/api/user/signup", "/reissue").permitAll()
+                        .requestMatchers("/", "/test",  "/reissue", "/api/user/**").permitAll()
                         .anyRequest().authenticated());
 
         http
