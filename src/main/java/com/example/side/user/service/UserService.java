@@ -5,6 +5,7 @@ import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
 import com.example.side.user.dto.request.UsernameFindRequest;
 import com.example.side.user.dto.response.UserPasswordFindResponse;
+import com.example.side.user.dto.response.UsernameExistResponse;
 import com.example.side.user.dto.response.UsernameFindResponse;
 import com.example.side.user.dto.response.UserSignUpResponse;
 import com.example.side.user.entity.User;
@@ -55,16 +56,25 @@ public class UserService {
         return userSignUpResponse;
     }
 
-    public UsernameFindResponse findUsername(UsernameFindRequest usernameFindRequest) throws IllegalStateException, UserNotFoundException {
-        Optional<User> findUser = userRepository.findByEmail(usernameFindRequest.getEmail());
-        if (findUser.isPresent()) {
-            User user = findUser.get();
+    public UsernameFindResponse findUsername(UsernameFindRequest usernameFindRequest) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByUsername(usernameFindRequest.getUsername());
+        if (user.isPresent()) {
             return UsernameFindResponse.builder()
-                    .username(user.getUsername())
+                    .username(usernameFindRequest.getUsername())
                     .build();
         }
         else {
             throw new UserNotFoundException("유저를 찾을 수 없습니다.");
+        }
+    }
+
+    public UsernameExistResponse existUsername(UsernameFindRequest usernameFindRequest) {
+        Optional<User> findUser = userRepository.findByUsername(usernameFindRequest.getUsername());
+        if (findUser.isPresent()) {
+            return new UsernameExistResponse(false);
+        }
+        else {
+            return new UsernameExistResponse(true);
         }
     }
 

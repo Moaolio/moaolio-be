@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter @Setter
 public class UsernameFindRequest {
 
-    private String email;
+    private String username;
 
 }

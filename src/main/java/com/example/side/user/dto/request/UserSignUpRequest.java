@@ -1,5 +1,6 @@
 package com.example.side.user.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,11 @@ import lombok.Setter;
 @Setter
 public class UserSignUpRequest {
 
+    /**
+     * 영어 알파벳과 숫자만 입력할 수 있습니다.
+     */
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z0-9]*$")
     private String username;
 
     /**
@@ -22,12 +28,18 @@ public class UserSignUpRequest {
      * 공백 문자가 포함되지 않아야 합니다.
      * 길이가 8자 이상 16자 이하여야 합니다.
      */
+    @NotBlank
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}")
     private String password;
 
+    @NotBlank
     @Pattern(regexp = "^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")
     private String email;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String birth;
 
     /**
