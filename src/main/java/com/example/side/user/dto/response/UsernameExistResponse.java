@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UsernameExistResponse {
 
-    private boolean isAvailable;
+    private boolean available;
 
 
 }
