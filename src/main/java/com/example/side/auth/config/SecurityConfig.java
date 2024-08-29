@@ -105,9 +105,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/test",  "/reissue", "/api/user/**").permitAll()
-                        .anyRequest().authenticated());
-
+                        .anyRequest().permitAll());
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
