@@ -68,9 +68,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
+        System.out.println(role+auth+username);
 
-        String refresh = jwtUtil.createJwt("refresh", "basic", username, role, REFRESH_TOKEN_EXPIRED_MS);
-
+        String refresh = jwtUtil.createJwt("refresh", "basic", username, role, REFRESH_TOKEN_EXPIRED_MS).trim();
+        System.out.println(refresh);
         addRefreshEntity(username, refresh, REFRESH_TOKEN_EXPIRED_MS);
 
         /**
@@ -94,7 +95,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
      * JWT 전달을 쿠키로 진행
      */
     private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
+        Cookie cookie = new Cookie(key, value.trim());
 
         cookie.setMaxAge(24 * 60 * 60);
 //        cookie.setSecure(true); // https 통신을 진행할 경우

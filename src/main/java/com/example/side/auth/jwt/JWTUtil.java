@@ -50,6 +50,6 @@ public class JWTUtil {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
-                .compact();
+                .compact().trim();
     }
 }
