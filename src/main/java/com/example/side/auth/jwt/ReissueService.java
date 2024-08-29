@@ -24,6 +24,8 @@ public class ReissueService {
 
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 
+        System.out.println("find refresh------------------------");
+
         /**
          * 쿠키에서 Refresh 토큰 찾음
          */

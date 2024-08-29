@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ import java.util.Iterator;
 
 import static com.example.side.common.MoaolioConstants.REFRESH_TOKEN_EXPIRED_MS;
 
+@Slf4j
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -49,8 +51,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 
+        System.out.println("---------login Dto----------");
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+        System.out.println("---------auth Token----------");
+        System.out.println(authToken);
+        System.out.println("-----------------------------");
 
 
         return authenticationManager.authenticate(authToken);
@@ -63,13 +69,24 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
+
         String username = customUserDetails.getUsername();
+        System.out.println("------username--------");
+        System.out.println(username);
+
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
+
+        System.out.println("----------username + auth + role-----------");
+        System.out.println(username + auth + role);
         String refresh = jwtUtil.createJwt("refresh", "basic", username, role, REFRESH_TOKEN_EXPIRED_MS);
+
+
+        System.out.println("---------create refresh token----------");
+        System.out.println(refresh);
 
         addRefreshEntity(username, refresh, REFRESH_TOKEN_EXPIRED_MS);
 
