@@ -1,11 +1,13 @@
 package com.example.side.user.entity;
 
 import com.example.side.comments.entity.Comments;
+import com.example.side.common.BaseEntity;
 import com.example.side.post.entity.Post;
 import com.example.side.techStack.entity.TechStack;
 import com.example.side.user.dto.request.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,8 +18,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = {"posts", "comments"})
 @Table(name = "user")
-@EqualsAndHashCode(of = {"username", "password", "role"})
-public class User {
+@EqualsAndHashCode(of = {"username", "password", "role"}, callSuper = false)
+public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,7 +65,6 @@ public class User {
 
     @Setter
     private LocalDateTime verificationTokenExpiry;
-
 
     @Setter
     private String verificationToken;

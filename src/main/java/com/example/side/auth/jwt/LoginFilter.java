@@ -2,6 +2,7 @@ package com.example.side.auth.jwt;
 
 import com.example.side.auth.CustomUserDetails;
 import com.example.side.auth.dto.LoginDto;
+import com.example.side.user.entity.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,7 +36,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-
         LoginDto loginDto;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -51,6 +51,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+
 
         return authenticationManager.authenticate(authToken);
     }

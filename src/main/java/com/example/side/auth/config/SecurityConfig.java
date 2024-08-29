@@ -1,6 +1,7 @@
 package com.example.side.auth.config;
 
 import com.example.side.auth.CustomOAuth2UserService;
+import com.example.side.auth.CustomUserDetailsService;
 import com.example.side.auth.handler.CustomSuccessHandler;
 import com.example.side.auth.jwt.JWTFilter;
 import com.example.side.auth.jwt.JWTUtil;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,6 +35,7 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
+    private final CustomUserDetailsService customUserDetailsService;
     private final JWTUtil jwtUtil;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final RefreshRepository refreshRepository;
@@ -44,7 +48,11 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(bCryptPasswordEncoder());
+
+        return new ProviderManager(provider);
     }
 
     @Bean

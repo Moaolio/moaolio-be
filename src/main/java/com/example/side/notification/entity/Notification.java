@@ -10,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Table(name = "notification")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuperBuilder
 /*
 알림
 1. (내가 작성한) 포스트에 댓글이 달렸을 때
