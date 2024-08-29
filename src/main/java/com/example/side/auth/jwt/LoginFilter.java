@@ -78,6 +78,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
+        System.out.println(role+auth+username);
 
 
         System.out.println("----------username + auth + role-----------");
@@ -111,7 +112,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
      * JWT 전달을 쿠키로 진행
      */
     private Cookie createCookie(String key, String value) {
-        Cookie cookie = new Cookie(key, value);
+        Cookie cookie = new Cookie(key, value.trim());
 
         cookie.setMaxAge(24 * 60 * 60);
 //        cookie.setSecure(true); // https 통신을 진행할 경우
