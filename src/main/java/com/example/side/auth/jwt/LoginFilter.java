@@ -98,7 +98,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
          */
         response.addCookie(createCookie("RefreshAuth", refresh));
 //        response.sendRedirect("http://localhost:3000/");
-        response.sendRedirect("http://193.122.108.30:8081/test");
+        response.sendRedirect("http://localhost:8081/test");
     }
 
     @Override
