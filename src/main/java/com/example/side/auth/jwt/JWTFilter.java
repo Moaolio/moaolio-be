@@ -123,7 +123,7 @@ public class JWTFilter extends OncePerRequestFilter {
             /**
              * 스프링 시큐리티 인증 토큰 생성
              */
-            Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+            Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, customUserDetails.getPassword(), customUserDetails.getAuthorities());
 
             /**
              * 세션에 사용자 등록

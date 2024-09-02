@@ -38,22 +38,30 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        System.out.println("-------------------in attemptAuthentication");
+
         LoginDto loginDto;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            System.out.println("--------create ObjectMapper");
             ServletInputStream inputStream = request.getInputStream();
+            System.out.println("request.getInputStream------------------");
             String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+            System.out.println("getMessageBody-----------------");
             loginDto = objectMapper.readValue(messageBody, LoginDto.class);
+            System.out.println("-----------------readValue-------------------");
         } catch (IOException e) {
+            System.out.println("---------------------------runtimeException12389712938--------");
             throw new RuntimeException(e);
         }
+
 
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
 
         System.out.println("---------login Dto----------");
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         System.out.println("---------auth Token----------");
         System.out.println(authToken);
         System.out.println("-----------------------------");
