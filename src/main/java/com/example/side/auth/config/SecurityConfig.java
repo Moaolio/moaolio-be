@@ -61,27 +61,29 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource apiConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Set-Cookie"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         LoginFilter loginFilter = new LoginFilter(authenticationManager(), jwtUtil, refreshRepository);
         loginFilter.setFilterProcessesUrl("/api/user/login");
 
-        http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                CorsConfiguration configuration = new CorsConfiguration();
-
-                configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
-                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                configuration.setAllowCredentials(true);
-                configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Set-Cookie"));
-                configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
-                configuration.setMaxAge(3600L);
-
-                return configuration;
-            }
-        }));
-
+        http
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(apiConfigurationSource()));
 
         http
                 .csrf((auth) -> auth.disable())
