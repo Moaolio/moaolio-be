@@ -105,8 +105,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
          * 서버측으로 가서 헤더 방식으로 Access 토큰을 가져오면 된다.
          */
         response.addCookie(createCookie("RefreshAuth", refresh));
-//        response.sendRedirect("http://localhost:3000/");
-        response.sendRedirect("http://localhost:8081/test");
+        response.sendRedirect("http://localhost:3000");
+//        response.sendRedirect("http://localhost:8081/test");
+        System.out.println("=----------------end successful---------------");
     }
 
     @Override

@@ -40,11 +40,15 @@ public class JWTFilter extends OncePerRequestFilter {
          * 헤더에서 Authorization에 담긴 액세스 토큰을 꺼냄
          */
         String accessToken = request.getHeader("Authorization");
+        String requestURI = request.getRequestURI();
+        System.out.println(accessToken == null);
+        System.out.println("access-> " + accessToken);
+        System.out.println("requestURI-> " + requestURI);
 
         /**
          * 없다면 다음 필터
          */
-        if (accessToken == null) {
+        if (accessToken == null || requestURI.contains("/api/user")) {
 
             filterChain.doFilter(request, response);
 
