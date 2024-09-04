@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsernameExistResponse {
+public class UidExistResponse {
 
     private boolean available;
 

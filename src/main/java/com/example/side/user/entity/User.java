@@ -30,7 +30,7 @@ public class User extends BaseEntity {
      * 자체 회원가입시 id
      */
     @Column(unique = true, nullable = false)
-    private String username;
+    private String uid;
     @Setter
     private String password;
 
@@ -70,8 +70,8 @@ public class User extends BaseEntity {
     private String verificationToken;
 
     @Builder
-    public User(String username, String password, String email, String name, String birth, String nickname, String description, String job, UserRole role) {
-        this.username = username;
+    public User(String uid, String password, String email, String name, String birth, String nickname, String description, String job, UserRole role) {
+        this.uid = uid;
         this.password = password;
         this.email = email;
         this.name = name;
@@ -83,7 +83,7 @@ public class User extends BaseEntity {
     }
 
     public User(UserDto userDto) {
-        this.username = userDto.getUsername();
+        this.uid = userDto.getuid();
         this.role = UserRole.valueOf(userDto.getRole());
     }
 

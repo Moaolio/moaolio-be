@@ -19,7 +19,7 @@ public class UserSignUpRequest {
      */
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9]*$")
-    private String username;
+    private String uid;
 
     /**
      * 최소 하나의 숫자(0-9)가 포함되어야 합니다.

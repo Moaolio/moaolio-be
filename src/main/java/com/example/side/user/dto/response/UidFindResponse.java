@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Builder
 @Getter @Setter
-public class UsernameFindResponse {
+public class UidFindResponse {
 
-    private String username;
+    private String uid;
 
 }

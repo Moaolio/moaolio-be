@@ -7,6 +7,6 @@ import lombok.Setter;
 @Builder
 @Getter @Setter
 public class UserPasswordFindRequest {
-    private String username;
+    private String uid;
     private String email;
 }

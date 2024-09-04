@@ -8,17 +8,17 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findByUid(String uid);
     Optional<User> findByEmail(String email);
     Optional<User> findByUsernameAndEmail(String username, String email);
 
     /**
      * 이미 존재하는지 확인
      * 자체 회원가입 아이디 중복확인
-     * @param username
+     * @param uid
      * @return
      */
-    boolean existsByUsername(String username);
+    boolean existsByUid(String uid);
 
     /**
      * 닉네임 중복확인

@@ -9,11 +9,11 @@ import lombok.*;
 @NoArgsConstructor
 public class UsernameFindRequest {
 
-    private String username;
+    private String uid;
 
     @JsonCreator
-    public UsernameFindRequest(@JsonProperty("username") String username) {
-        this.username = username;
+    public UsernameFindRequest(@JsonProperty("uid") String uid) {
+        this.uid = uid;
     }
 
 }

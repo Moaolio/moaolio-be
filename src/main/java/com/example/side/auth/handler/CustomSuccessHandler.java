@@ -61,14 +61,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
          */
         response.addCookie(createCookie(refresh));
 //        response.sendRedirect("http://localhost:3000/");
-        response.sendRedirect("http://localhost:8081/test");
+        response.sendRedirect("http://localhost:3000");
+
     }
 
     /**
      * JWT 전달을 쿠키로 진행
      */
     private Cookie createCookie(String value) {
-        Cookie cookie = new Cookie("RefreshAuth", value.trim());
+        Cookie cookie = new Cookie("RefreshAuth", value);
 
         cookie.setMaxAge(24 * 60 * 60);
 //        cookie.setSecure(true); // https 통신을 진행할 경우
