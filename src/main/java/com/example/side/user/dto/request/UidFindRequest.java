@@ -7,13 +7,13 @@ import lombok.*;
 @Builder
 @Getter @Setter
 @NoArgsConstructor
-public class UsernameFindRequest {
+public class UidFindRequest {
 
-    private String uid;
+    private String email;
 
     @JsonCreator
-    public UsernameFindRequest(@JsonProperty("uid") String uid) {
-        this.uid = uid;
+    public UidFindRequest(@JsonProperty("email") String email) {
+        this.email = email;
     }
 
 }

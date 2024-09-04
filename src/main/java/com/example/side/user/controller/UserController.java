@@ -1,9 +1,9 @@
 package com.example.side.user.controller;
 
 import com.example.side.Dto.GlobalResDto;
+import com.example.side.user.dto.request.UidFindRequest;
 import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
-import com.example.side.user.dto.request.UsernameFindRequest;
 import com.example.side.user.dto.response.UserPasswordFindResponse;
 import com.example.side.user.dto.response.UserSignUpResponse;
 import com.example.side.user.dto.response.UidExistResponse;
@@ -27,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping("/findId")
-    public GlobalResDto<Object> findId(@RequestBody UsernameFindRequest usernameFindRequest) {
-        UidFindResponse uidFindResponse = userService.findUid(usernameFindRequest);
+    public GlobalResDto<Object> findId(@RequestBody UidFindRequest uidFindRequest) {
+        UidFindResponse uidFindResponse = userService.findUid(uidFindRequest);
         return GlobalResDto.success(uidFindResponse, "아이디 찾기 성공");
     }
 
@@ -39,8 +39,8 @@ public class UserController {
     }
 
     @PostMapping("/idCheck")
-    public GlobalResDto<UidExistResponse> idCheck(@RequestBody UsernameFindRequest usernameFindRequest) {
-        UidExistResponse uidExistResponse = userService.existUid(usernameFindRequest);
+    public GlobalResDto<UidExistResponse> idCheck(@RequestBody UidFindRequest uidFindRequest) {
+        UidExistResponse uidExistResponse = userService.existUid(uidFindRequest);
 
         return GlobalResDto.success(uidExistResponse, "중복 확인 성공");
     }

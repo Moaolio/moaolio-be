@@ -1,6 +1,7 @@
 package com.example.side.user.service;
 
 import com.example.side.common.exception.UserNotFoundException;
+import com.example.side.user.dto.request.UidFindRequest;
 import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
 import com.example.side.user.dto.request.UsernameFindRequest;
@@ -58,7 +59,7 @@ public class UserService {
         return userSignUpResponse;
     }
 
-    public UidFindResponse findUid(UsernameFindRequest usernameFindRequest) throws UserNotFoundException {
+    public UidFindResponse findUid(UidFindRequest usernameFindRequest) throws UserNotFoundException {
         Optional<User> user = userRepository.findByUid(usernameFindRequest.getUid());
         if (user.isPresent()) {
             return UidFindResponse.builder()
@@ -70,8 +71,8 @@ public class UserService {
         }
     }
 
-    public UidExistResponse existUid(UsernameFindRequest usernameFindRequest) {
-        Optional<User> findUser = userRepository.findByUid(usernameFindRequest.getUid());
+    public UidExistResponse existUid(UidFindRequest usernameFindRequest) {
+        Optional<User> findUser = userRepository.findByUid(usernameFindRequest.getEmail());
         if (findUser.isPresent()) {
             return new UidExistResponse(false);
         }
