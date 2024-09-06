@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class PortfolioPostRequest {
-    private Long id;
     private String title;
     private String description;
     private List<String> tag;

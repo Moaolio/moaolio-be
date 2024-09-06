@@ -12,9 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CommunityPostRequest {
-    private Long id;
     private String title;
     private String description;
     private List<String> tag;
-    private String category;
 }
