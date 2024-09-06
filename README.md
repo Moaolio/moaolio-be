@@ -1,7 +1,7 @@
 # 포트폴리오 종합관리 웹사이트 (Moaolio)
 
 ![img.png](img.png)
-## :smile: Developer :smile:
+## :smile: 개발자소개 :smile:
 |     | 박성근                            | 김민서                        |
 |-----|--------------------------------|----------------------------|
 | 깃허브 | https://github.com/p-seonggeun | https://github.com/minseid |
@@ -12,7 +12,7 @@
 
 ![spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white) ![java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white) ![Mysql](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 
-## :point_up: Development part :point_up:
+## :point_up: 개발파트 :point_up:
 ### 박성근
 - [x] 유저관리부분 (회원가입, 로그인, 회원정보수정, 회원탈퇴)
 - [x] 프로필부분 (프로필수정, 프로필확인)
