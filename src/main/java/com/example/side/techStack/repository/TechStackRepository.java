@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface TechStackRepository extends JpaRepository<TechStack, Long> {
     int countByUser(User user);
     Optional<TechStack> findByUser(User user);
+    TechStack findByTechName(String techName);
 }

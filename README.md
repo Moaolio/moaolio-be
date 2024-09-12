@@ -5,7 +5,7 @@
 |     | 박성근                            | 김민서                        |
 |-----|--------------------------------|----------------------------|
 | 깃허브 | https://github.com/p-seonggeun | https://github.com/minseid |
-| 이메일 | minstandup@naver.com           |                            |
+| 이메일 | opuzo1@gmail.com           | minstandup@naver.com       |
 | 닉네임 | @p-seonggeun                   | @minseid                   |
 
 ## :sparkles: TechStack :sparkles:

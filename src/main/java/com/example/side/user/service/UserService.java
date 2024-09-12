@@ -4,11 +4,8 @@ import com.example.side.common.exception.UserNotFoundException;
 import com.example.side.user.dto.request.UidFindRequest;
 import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
-import com.example.side.user.dto.request.UsernameFindRequest;
-import com.example.side.user.dto.response.UserPasswordFindResponse;
-import com.example.side.user.dto.response.UidExistResponse;
-import com.example.side.user.dto.response.UidFindResponse;
-import com.example.side.user.dto.response.UserSignUpResponse;
+import com.example.side.user.dto.request.UserUpdateRequest;
+import com.example.side.user.dto.response.*;
 import com.example.side.user.entity.User;
 import com.example.side.user.entity.UserRole;
 import com.example.side.user.repository.UserRepository;
@@ -28,8 +25,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
 
     @Transactional
     public UserSignUpResponse signUp(UserSignUpRequest userSignUpRequest) throws IllegalStateException {
@@ -59,11 +54,11 @@ public class UserService {
         return userSignUpResponse;
     }
 
-    public UidFindResponse findUid(UidFindRequest usernameFindRequest) throws UserNotFoundException {
-        Optional<User> user = userRepository.findByUid(usernameFindRequest.getUid());
+    public UidFindResponse findUid(UidFindRequest uidFindRequest) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByEmail(uidFindRequest.getEmail());
         if (user.isPresent()) {
             return UidFindResponse.builder()
-                    .uid(usernameFindRequest.getUid())
+                    .uid(user.get().getUid())
                     .build();
         }
         else {
@@ -82,7 +77,7 @@ public class UserService {
     }
 
     public UserPasswordFindResponse findPassword(UserPasswordFindRequest userPasswordFindRequest) throws IllegalStateException {
-        Optional<User> findUser = userRepository.findByUsernameAndEmail(userPasswordFindRequest.getUid(), userPasswordFindRequest.getEmail());
+        Optional<User> findUser = userRepository.findByUidAndEmail(userPasswordFindRequest.getUid(), userPasswordFindRequest.getEmail());
         if (findUser.isPresent()) {
             User user = findUser.get();
             return UserPasswordFindResponse.builder()
@@ -92,6 +87,30 @@ public class UserService {
         else {
             throw new IllegalStateException("비밀번호를 찾을 수 없습니다.");
         }
+    }
+
+    @Transactional
+    public UserUpdateResponse update(UserUpdateRequest userUpdateRequest) throws IllegalStateException {
+        Optional<User> findUser = userRepository.findByUid(userUpdateRequest.getUid());
+        if (findUser.isPresent()) {
+            User user = findUser.get();
+            user.updateUserInfo(
+                    userUpdateRequest.getNickname(),
+                    userUpdateRequest.getIntroduction(),
+                    userUpdateRequest.getContactInformation(),
+                    userUpdateRequest.getExperience(),
+                    userUpdateRequest.getPhone());
+
+
+            UserUpdateResponse userUpdateResponse = new UserUpdateResponse(
+                    user.getNickname(), user.getDescription(), user.getContactInformation(), user.getExperience(), user.getPhone());
+
+            return userUpdateResponse;
+        }
+        else {
+            throw new UserNotFoundException("유저를 찾을 수 없습니다.");
+        }
+
     }
 
 }

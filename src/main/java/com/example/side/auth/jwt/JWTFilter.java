@@ -99,7 +99,7 @@ public class JWTFilter extends OncePerRequestFilter {
         if (loginType.equals("social")) {
 
             UserOAuth2Dto userOAuth2Dto = new UserOAuth2Dto();
-            userOAuth2Dto.setUsername(username);
+            userOAuth2Dto.setUid(username);
             userOAuth2Dto.setRole(userRole);
 
             /**
@@ -120,7 +120,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
         else if (loginType.equals("basic")) {
-            Optional<User> findUser = userRepository.findByUsername(username);
+            Optional<User> findUser = userRepository.findByUid(username);
             User user = findUser.orElseThrow(() -> new UsernameNotFoundException("username not found"));
 
             CustomUserDetails customUserDetails = new CustomUserDetails(user);

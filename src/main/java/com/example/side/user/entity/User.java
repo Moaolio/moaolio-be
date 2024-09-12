@@ -7,7 +7,6 @@ import com.example.side.techStack.entity.TechStack;
 import com.example.side.user.dto.request.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = {"posts", "comments"})
 @Table(name = "user")
-@EqualsAndHashCode(of = {"username", "password", "role"}, callSuper = false)
+@EqualsAndHashCode(of = {"uid", "password", "role"}, callSuper = false)
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +46,13 @@ public class User extends BaseEntity {
 
     @Column(unique = true)
     private String nickname;
+    private String contactInformation;
     private String description; // 자기소개
-    private String job; // 직업
+    private String experience;
+    private String phone;
 
+    @OneToMany(mappedBy = "user")
+    private List<TechStack> techStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
@@ -65,15 +68,12 @@ public class User extends BaseEntity {
 
 
     @Builder
-    public User(String uid, String password, String email, String name, String birth, String nickname, String description, String job, UserRole role) {
+    public User(String uid, String password, String email, String name, String birth, UserRole role) {
         this.uid = uid;
         this.password = password;
         this.email = email;
         this.name = name;
         this.birth = birth;
-        this.nickname = nickname;
-        this.description = description;
-        this.job = job;
         this.role = role;
     }
 
@@ -90,4 +90,11 @@ public class User extends BaseEntity {
         this.nickname = nickname;
     }
 
+    public void updateUserInfo(String nickname, String description, String contactInformation, String experience, String phone) {
+        this.nickname = nickname;
+        this.description = description;
+        this.experience = experience;
+        this.contactInformation = contactInformation;
+        this.phone = phone;
+    }
 }

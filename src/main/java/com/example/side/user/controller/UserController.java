@@ -4,10 +4,8 @@ import com.example.side.Dto.GlobalResDto;
 import com.example.side.user.dto.request.UidFindRequest;
 import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
-import com.example.side.user.dto.response.UserPasswordFindResponse;
-import com.example.side.user.dto.response.UserSignUpResponse;
-import com.example.side.user.dto.response.UidExistResponse;
-import com.example.side.user.dto.response.UidFindResponse;
+import com.example.side.user.dto.request.UserUpdateRequest;
+import com.example.side.user.dto.response.*;
 import com.example.side.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +43,11 @@ public class UserController {
         return GlobalResDto.success(uidExistResponse, "중복 확인 성공");
     }
 
+    @PatchMapping("/update")
+    public GlobalResDto<Object> update(@RequestBody UserUpdateRequest userUpdateRequest) {
+        UserUpdateResponse userUpdateResponse = userService.update(userUpdateRequest);
 
+        return GlobalResDto.success(userUpdateResponse, "회원정보 수정 성공");
+    }
 
 }
