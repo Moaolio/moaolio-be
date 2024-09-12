@@ -56,7 +56,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         }
 
 
-        String username = loginDto.getUsername();
+        String username = loginDto.getUid();
         String password = loginDto.getPassword();
 
         System.out.println("---------login Dto----------");

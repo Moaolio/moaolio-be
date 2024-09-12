@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = {"posts", "comments"})
 @Table(name = "user")
-@EqualsAndHashCode(of = {"username", "password", "role"}, callSuper = false)
+@EqualsAndHashCode(of = {"uid", "password", "role"}, callSuper = false)
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,7 +83,7 @@ public class User extends BaseEntity {
     }
 
     public User(UserDto userDto) {
-        this.uid = userDto.getuid();
+        this.uid = userDto.getUid();
         this.role = UserRole.valueOf(userDto.getRole());
     }
 

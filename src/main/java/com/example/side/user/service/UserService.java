@@ -4,7 +4,6 @@ import com.example.side.common.exception.UserNotFoundException;
 import com.example.side.user.dto.request.UidFindRequest;
 import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
-import com.example.side.user.dto.request.UsernameFindRequest;
 import com.example.side.user.dto.response.UserPasswordFindResponse;
 import com.example.side.user.dto.response.UidExistResponse;
 import com.example.side.user.dto.response.UidFindResponse;
@@ -28,8 +27,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
 
     @Transactional
     public UserSignUpResponse signUp(UserSignUpRequest userSignUpRequest) throws IllegalStateException {
@@ -59,11 +56,11 @@ public class UserService {
         return userSignUpResponse;
     }
 
-    public UidFindResponse findUid(UidFindRequest usernameFindRequest) throws UserNotFoundException {
-        Optional<User> user = userRepository.findByUid(usernameFindRequest.getUid());
+    public UidFindResponse findUid(UidFindRequest uidFindRequest) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByEmail(uidFindRequest.getEmail());
         if (user.isPresent()) {
             return UidFindResponse.builder()
-                    .uid(usernameFindRequest.getUid())
+                    .uid(user.get().getUid())
                     .build();
         }
         else {
@@ -82,7 +79,7 @@ public class UserService {
     }
 
     public UserPasswordFindResponse findPassword(UserPasswordFindRequest userPasswordFindRequest) throws IllegalStateException {
-        Optional<User> findUser = userRepository.findByUsernameAndEmail(userPasswordFindRequest.getUid(), userPasswordFindRequest.getEmail());
+        Optional<User> findUser = userRepository.findByUidAndEmail(userPasswordFindRequest.getUid(), userPasswordFindRequest.getEmail());
         if (findUser.isPresent()) {
             User user = findUser.get();
             return UserPasswordFindResponse.builder()

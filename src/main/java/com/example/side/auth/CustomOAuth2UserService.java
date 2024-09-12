@@ -53,11 +53,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
          * ex) google_2398472981di
          */
         String username = oAuth2Response.getProvider() + "_" + oAuth2Response.getProviderId();
-        Optional<User> existData = userRepository.findByUsername(username);
+        Optional<User> existData = userRepository.findByUid(username);
         if (!existData.isPresent()) { // 한 번도 로그인하지 않은 경우
             User user = User
                     .builder()
-                    .username(username)
+                    .uid(username)
                     .email(oAuth2Response.getEmail())
                     .role(UserRole.USER)
                     .build();
@@ -65,7 +65,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userRepository.save(user);
 
             UserOAuth2Dto userOAuth2Dto = new UserOAuth2Dto();
-            userOAuth2Dto.setUsername(username);
+            userOAuth2Dto.setUid(username);
             userOAuth2Dto.setNickname(oAuth2Response.getName());
             userOAuth2Dto.setRole(UserRole.USER.getKey());
 
@@ -76,7 +76,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             existData.get().updateUserInfo(oAuth2Response.getEmail(), oAuth2Response.getName());
 
             UserOAuth2Dto userOAuth2Dto = new UserOAuth2Dto();
-            userOAuth2Dto.setUsername(existData.get().getUsername());
+            userOAuth2Dto.setUid(existData.get().getUid());
             userOAuth2Dto.setNickname(existData.get().getNickname());
             userOAuth2Dto.setRole(UserRole.USER.getKey());
 

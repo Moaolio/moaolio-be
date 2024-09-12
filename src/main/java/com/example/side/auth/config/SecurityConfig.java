@@ -3,17 +3,12 @@ package com.example.side.auth.config;
 import com.example.side.auth.CustomOAuth2UserService;
 import com.example.side.auth.CustomUserDetailsService;
 import com.example.side.auth.handler.CustomSuccessHandler;
-import com.example.side.auth.jwt.JWTFilter;
-import com.example.side.auth.jwt.JWTUtil;
-import com.example.side.auth.jwt.LoginFilter;
-import com.example.side.auth.jwt.RefreshRepository;
+import com.example.side.auth.jwt.*;
 import com.example.side.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -21,17 +16,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationProvider;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -95,6 +87,7 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler))
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JWTFilter(jwtUtil, userRepository), LoginFilter.class)
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
                 .authorizeHttpRequests((auth) -> auth
                         .anyRequest().permitAll())
                 .sessionManagement((session) -> session
