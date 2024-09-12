@@ -1,9 +1,6 @@
 package com.example.side.user.service;
 
 import com.example.side.common.exception.UserNotFoundException;
-import com.example.side.techStack.entity.TechStack;
-import com.example.side.techStack.repository.TechStackRepository;
-import com.example.side.techStack.service.TechStackService;
 import com.example.side.user.dto.request.UidFindRequest;
 import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
@@ -18,11 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,8 +25,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final TechStackService techStackService;
-    private final TechStackRepository techStackRepository;
 
     @Transactional
     public UserSignUpResponse signUp(UserSignUpRequest userSignUpRequest) throws IllegalStateException {
@@ -100,12 +91,6 @@ public class UserService {
 
     @Transactional
     public UserUpdateResponse update(UserUpdateRequest userUpdateRequest) throws IllegalStateException {
-        List<String> myStack = userUpdateRequest.getMyStack();
-        List<TechStack> techStacks = myStack.stream()
-                .map(stack -> techStackRepository.findByTechName(stack))  // 이름으로 개별 조회
-                .filter(Objects::nonNull)  // null 값 제외 (해당 이름이 없을 경우)
-                .collect(Collectors.toList());
-
         Optional<User> findUser = userRepository.findByUid(userUpdateRequest.getUid());
         if (findUser.isPresent()) {
             User user = findUser.get();
@@ -114,13 +99,11 @@ public class UserService {
                     userUpdateRequest.getIntroduction(),
                     userUpdateRequest.getContactInformation(),
                     userUpdateRequest.getExperience(),
-                    userUpdateRequest.getPhone(),
-                    techStacks);
+                    userUpdateRequest.getPhone());
 
-            List<String> stacks = user.toStacks(user.getTechStacks());
 
             UserUpdateResponse userUpdateResponse = new UserUpdateResponse(
-                    user.getNickname(), user.getDescription(), stacks, user.getContactInformation(), user.getExperience(), user.getPhone());
+                    user.getNickname(), user.getDescription(), user.getContactInformation(), user.getExperience(), user.getPhone());
 
             return userUpdateResponse;
         }

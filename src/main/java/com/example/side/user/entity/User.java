@@ -7,7 +7,6 @@ import com.example.side.techStack.entity.TechStack;
 import com.example.side.user.dto.request.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -96,21 +95,11 @@ public class User extends BaseEntity {
         this.nickname = nickname;
     }
 
-    public void updateUserInfo(String nickname, String description, String contactInformation, String experience, String phone, List<TechStack> techStacks) {
+    public void updateUserInfo(String nickname, String description, String contactInformation, String experience, String phone) {
         this.nickname = nickname;
         this.description = description;
         this.experience = experience;
         this.contactInformation = contactInformation;
         this.phone = phone;
-        this.techStacks = techStacks;
-    }
-
-    public List<String> toStacks(List<TechStack> techStacks) {
-        List<String> stacks = new ArrayList<>();
-        for (TechStack techStack : techStacks) {
-            stacks.add(String.valueOf(techStack));
-        }
-
-        return stacks;
     }
 }
