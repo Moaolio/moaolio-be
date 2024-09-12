@@ -47,9 +47,13 @@ public class User extends BaseEntity {
 
     @Column(unique = true)
     private String nickname;
+    private String contactInformation;
     private String description; // 자기소개
-    private String job; // 직업
+    private String experience;
+    private String phone;
 
+    @OneToMany(mappedBy = "user")
+    private List<TechStack> techStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
@@ -70,15 +74,12 @@ public class User extends BaseEntity {
     private String verificationToken;
 
     @Builder
-    public User(String uid, String password, String email, String name, String birth, String nickname, String description, String job, UserRole role) {
+    public User(String uid, String password, String email, String name, String birth, UserRole role) {
         this.uid = uid;
         this.password = password;
         this.email = email;
         this.name = name;
         this.birth = birth;
-        this.nickname = nickname;
-        this.description = description;
-        this.job = job;
         this.role = role;
     }
 
@@ -95,4 +96,21 @@ public class User extends BaseEntity {
         this.nickname = nickname;
     }
 
+    public void updateUserInfo(String nickname, String description, String contactInformation, String experience, String phone, List<TechStack> techStacks) {
+        this.nickname = nickname;
+        this.description = description;
+        this.experience = experience;
+        this.contactInformation = contactInformation;
+        this.phone = phone;
+        this.techStacks = techStacks;
+    }
+
+    public List<String> toStacks(List<TechStack> techStacks) {
+        List<String> stacks = new ArrayList<>();
+        for (TechStack techStack : techStacks) {
+            stacks.add(String.valueOf(techStack));
+        }
+
+        return stacks;
+    }
 }
