@@ -15,4 +15,5 @@ public class CommunityPostRequest {
     private String title;
     private String description;
     private List<String> tag;
+    private String category;
 }

@@ -63,11 +63,6 @@ public class User extends BaseEntity {
     @Setter
     private boolean enabled;
 
-    @Setter
-    private LocalDateTime verificationTokenExpiry;
-
-    @Setter
-    private String verificationToken;
 
     @Builder
     public User(String uid, String password, String email, String name, String birth, String nickname, String description, String job, UserRole role) {
@@ -83,7 +78,7 @@ public class User extends BaseEntity {
     }
 
     public User(UserDto userDto) {
-        this.uid = userDto.getuid();
+        this.uid = userDto.getUid();
         this.role = UserRole.valueOf(userDto.getRole());
     }
 
