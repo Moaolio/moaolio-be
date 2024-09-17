@@ -65,6 +65,7 @@ public class User extends BaseEntity {
 
     @Setter
     private boolean enabled;
+    private String verificationToken;
 
 
     @Builder
