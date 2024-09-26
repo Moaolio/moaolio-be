@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("PortfolioPost")
 public class PortfolioPost extends Post {
+
     @Column(name = "url")
     private String url;
     @Column(name = "technology_stack")

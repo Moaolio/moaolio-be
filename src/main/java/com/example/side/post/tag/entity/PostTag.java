@@ -10,7 +10,6 @@ import lombok.Setter;
 @Table(name = "post_tag")
 @Getter
 @Setter
-@Builder
 public class PostTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

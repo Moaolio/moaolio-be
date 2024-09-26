@@ -1,29 +1,20 @@
 package com.example.side.post.service;
 
-import com.example.side.Exception.CustomException;
 import com.example.side.auth.CustomUserDetails;
-import com.example.side.comments.dto.response.CommentsResponse;
-import com.example.side.comments.entity.Comments;
 import com.example.side.post.category.Category;
 import com.example.side.post.category.CategoryRepository;
 import com.example.side.post.entity.CommunityPost;
-import com.example.side.post.like.entity.PostLike;
+import com.example.side.post.entity.PostType;
 import com.example.side.post.like.repository.PostLikeRepository;
 import com.example.side.post.repository.CommunityPostRepository;
-import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
 import com.example.side.post.dto.request.CommunityPostRequest;
 import com.example.side.post.dto.response.CommunityPostResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 import static com.example.side.Exception.ErrorCode.NOT_FOUND_POST;
 
@@ -35,21 +26,26 @@ public class CommunityPostService {
     private final PostLikeRepository postLikeRepository;
     private final CategoryRepository categoryRepository;
 
-//    @Transactional //생성
-//    public CommunityPostResponse createPost(CommunityPostRequest communityPostRequest, CustomUserDetails userDetails) {
-//        Category category = categoryRepository.findById(communityPostRequest.getCategoryId())
-//                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
-//
-//        CommunityPost communityPost = new CommunityPost(
-//                communityPostRequest.getTitle(),
-//                communityPostRequest.getDescription(),
-//                userDetails.getUser(),
-//                category
-//        );
-//
-//        CommunityPost savedCommunityPost = communityPostRepository.save(communityPost);
-//        return new CommunityPostResponse(savedCommunityPost);
-//    }
+    @Transactional //생성
+    public CommunityPostResponse createPost(CommunityPostRequest communityPostRequest, CustomUserDetails userDetails) {
+        Category category = categoryRepository.findById(communityPostRequest.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        CommunityPost post = CommunityPost.builder()
+                .category(category)
+                .build();
+        post.setUser(userRepository.findById(userDetails.getUser().getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found")));
+        post.setPostType(PostType.COMMUNITY);
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
+        post.setTitle(communityPostRequest.getTitle());
+        post.setDescription(communityPostRequest.getDescription());
+        post.setLikeCount(0L);
+        post.setViewCount(0L);
+        communityPostRepository.save(post);
+
+        return CommunityPostResponse.from(post);
+    }
 //
 //    @Transactional//수정
 //    public CommunityPostResponse updatePost(Long postId, CommunityPostRequest postRequest, CustomUserDetails userDetails) {

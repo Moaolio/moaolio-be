@@ -42,4 +42,13 @@ public class CommunityPostResponse  {
                 .comments(commentsResponses)
                 .build();
     }
+    public static CommunityPostResponse from(CommunityPost communityPost) {
+        CommunityPostResponse response = new CommunityPostResponse();
+        response.setId(communityPost.getId());
+        response.setTitle(communityPost.getTitle());
+        response.setDescription(communityPost.getDescription());
+        response.setLikes(communityPost.getLikeCount());
+        response.setViews(communityPost.getViewCount());
+        return response;
+    }
 }

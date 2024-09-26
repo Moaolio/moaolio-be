@@ -5,7 +5,6 @@ import com.example.side.auth.CustomUserDetails;
 import com.example.side.comments.dto.response.CommentsResponse;
 import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.entity.PostType;
-import com.example.side.post.file.entity.PostFile;
 import com.example.side.post.like.repository.PostLikeRepository;
 import com.example.side.post.repository.PortfolioPostRepository;
 import com.example.side.post.tag.entity.PostTag;
@@ -19,7 +18,6 @@ import com.example.side.post.dto.response.PortfolioPostResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -36,7 +34,6 @@ public class PortfolioPostService {
 
     private final PortfolioPostRepository portfolioPostRepository;
     private final PostLikeRepository postLikeRepository;
-    private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final PostTagRepository postTagRepository;
 

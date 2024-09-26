@@ -37,11 +37,11 @@ public class PostController {
     }
 
     // 커뮤니티 게시글 생성
-//    @PostMapping("/create/community")
-//    public GlobalResDto<CommunityPostResponse> createCommunityPost(@RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
-//        CommunityPostResponse response = communityPostService.createPost(communityPostRequest, userDetails);
-//        return GlobalResDto.success(response, "게시글이 성공적으로 생성되었습니다.");
-//    }
+    @PostMapping("/create/community")
+    public GlobalResDto<CommunityPostResponse> createCommunityPost(@RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        CommunityPostResponse response = communityPostService.createPost(communityPostRequest, userDetails);
+        return GlobalResDto.success(response, "게시글이 성공적으로 생성되었습니다.");
+    }
 
     // 포트폴리오 게시글 수정
     @PutMapping("/update/portfolio/{postId}")
