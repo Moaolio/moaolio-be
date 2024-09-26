@@ -3,7 +3,7 @@ package com.example.side.post.like.service;
 import com.example.side.Dto.GlobalResDto;
 import com.example.side.Exception.CustomException;
 import com.example.side.Exception.ErrorCode;
-import com.example.side.config.UserDetailsImpl;
+import com.example.side.auth.CustomUserDetails;
 import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.entity.Post;
 import com.example.side.post.like.entity.PostLike;
@@ -23,7 +23,7 @@ public class PostLikeService {
     private final PortfolioPostRepository portfolioPostRepository;
 
     @Transactional
-    public GlobalResDto<?> createPostLike(UserDetailsImpl userDetails, Long postId) {
+    public GlobalResDto<?> createPostLike(CustomUserDetails userDetails, Long postId) {
         User user = userDetails.getUser();
         Post post = isPostExist(postId);
         if(post != null){
@@ -38,7 +38,7 @@ public class PostLikeService {
         return GlobalResDto.success(null, "게시물 좋아요 성공");
     }
     @Transactional
-    public GlobalResDto<?> deletePostLike(UserDetailsImpl userDetails, Long postId) {
+    public GlobalResDto<?> deletePostLike(CustomUserDetails userDetails, Long postId) {
         User user = userDetails.getUser();
         Post post = isPostExist(postId);
         if(post == null){

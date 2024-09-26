@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class CommunityPostResponse  {
     private Long id;
     private String title;
@@ -28,7 +29,7 @@ public class CommunityPostResponse  {
         this.id = communityPost.getId();
         this.title = communityPost.getTitle();
         this.description = communityPost.getDescription();
-        this.category = communityPost.getCategory();
+//        this.category = communityPost.getCategory().toString();
         this.likes = communityPost.getLikeCount();
         this.views = communityPost.getViewCount();
         this.comments = communityPost.getComments().stream()

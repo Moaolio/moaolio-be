@@ -49,5 +49,7 @@ public class UserController {
 
         return GlobalResDto.success(userUpdateResponse, "회원정보 수정 성공");
     }
+    //유저신고
+
 
 }

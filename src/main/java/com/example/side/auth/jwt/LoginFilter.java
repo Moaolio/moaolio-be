@@ -92,8 +92,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         System.out.println("----------username + auth + role-----------");
         System.out.println(username + auth + role);
         String refresh = jwtUtil.createJwt("refresh", "basic", username, role, REFRESH_TOKEN_EXPIRED_MS);
-
-
+        String access = jwtUtil.createJwt("access", "basic", username, role, REFRESH_TOKEN_EXPIRED_MS);
+        System.out.println(access);
         System.out.println("---------create refresh token----------");
         System.out.println(refresh);
 

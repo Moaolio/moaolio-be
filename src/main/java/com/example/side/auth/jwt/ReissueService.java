@@ -38,16 +38,12 @@ public class ReissueService {
                 refresh = cookie.getValue();
             }
         }
-
-        /**
-         * 상태코드는 프론트와 협의
-         */
+        //토큰 존재여부
         if (refresh == null) {
 
             //response status code
             return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
         }
-
         /**
          * 만료 확인
          */
@@ -58,6 +54,7 @@ public class ReissueService {
             //response status code
             return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
         }
+
 
         /**
          * 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
@@ -96,6 +93,8 @@ public class ReissueService {
             newAccess = jwtUtil.createJwt("access", "basic", username, role, ACCESS_TOKEN_EXPIRED_MS);
             newRefresh = jwtUtil.createJwt("refresh", "basic", username, role, REFRESH_TOKEN_EXPIRED_MS);
         }
+        //엑세스토큰 출력
+        System.out.println("new access token: " + newAccess);
 
         /**
          * 기존 refresh token 삭제 및 새 refresh token 저장

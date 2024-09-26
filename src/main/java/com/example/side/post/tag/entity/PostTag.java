@@ -1,7 +1,8 @@
 package com.example.side.post.tag.entity;
 
-import com.example.side.post.entity.Post;
+import com.example.side.post.entity.PortfolioPost;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,19 +10,22 @@ import lombok.Setter;
 @Table(name = "post_tag")
 @Getter
 @Setter
+@Builder
 public class PostTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Post post;
+    private PortfolioPost post;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
+    private Tag tag;
 
-    private Tags tag;
+    public PostTag() {}
 
 }

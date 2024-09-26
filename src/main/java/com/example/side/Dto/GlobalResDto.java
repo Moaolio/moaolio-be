@@ -1,8 +1,11 @@
 package com.example.side.Dto;
 
+import com.example.side.post.dto.response.CommunityPostResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -25,5 +28,10 @@ public class GlobalResDto<T> {
     // 실패 시 응답 (데이터 없이 메시지만)
     public static GlobalResDto<String> fail(String msg) {
         return new GlobalResDto<>(400, null, msg);
+    }
+
+
+    public static GlobalResDto<List<CommunityPostResponse>> error(String s) {
+        return new GlobalResDto<>(400, null, s);
     }
 }

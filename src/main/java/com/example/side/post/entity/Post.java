@@ -1,8 +1,6 @@
 package com.example.side.post.entity;
 
 import com.example.side.comments.entity.Comments;
-import com.example.side.common.BaseEntity;
-import com.example.side.post.PostStatus;
 import com.example.side.post.file.entity.PostFile;
 import com.example.side.post.tag.entity.PostTag;
 import com.example.side.user.entity.User;
@@ -13,6 +11,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,65 +19,46 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Table(name = "post")
+@Getter
+@Setter
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter
+    @Column(name = "id")
     private Long id;
-
-    @Column(nullable = false)
-    @Getter @Setter
+    @Column(name = "title", nullable = false)
     private String title;
-
-    @Column(nullable = false)
-    private String tag;
-
-    // Description 설정 메서드
-    @Column(nullable = false)
-    @Getter @Setter
+    @Column(name = "description", nullable = false)
     private String description;
-
-    @Getter @Setter
+    @Column(name = "like_count")
     private Long likeCount = 0L;
-
-    @Getter @Setter
+    @Column(name = "view_count")
     private Long viewCount = 0L;
-
-    // 1. 포트폴리오 전용 2. 커뮤니티 전용
+    // 0. 포트폴리오 전용 1. 커뮤니티 전용
     @Enumerated(EnumType.STRING)
-    @Getter @Setter
-    private PostStatus postType;
-
+    @Column(name = "post_type")
+    private PostType postType;
     @CreatedDate
-    @Getter @Setter
-    private String createdAt;
-
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     @LastModifiedDate
-    @Getter @Setter
-    private String updatedAt;
-
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
 
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @Getter @Setter
     private User user;
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Getter @Setter
     private List<Comments> comments = new ArrayList<>();
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Getter @Setter
     private List<PostFile> postFiles = new ArrayList<>();
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Getter @Setter
     private Set<PostTag> postTags;
-
-
     // 커스텀 생성자
     public Post(String title, String description, User user) {
         this.title = title;

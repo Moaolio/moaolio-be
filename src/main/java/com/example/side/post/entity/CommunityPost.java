@@ -1,13 +1,11 @@
 package com.example.side.post.entity;
 
-import com.example.side.post.tag.entity.PostTag;
+import com.example.side.post.category.Category;
 import com.example.side.user.entity.User;
 import com.example.side.post.dto.request.CommunityPostRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 /*
 
@@ -15,19 +13,23 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class CommunityPost extends Post{
-    private String category; // 게시글 카테고리
+@DiscriminatorValue("CommunityPost")
+public class CommunityPost extends Post {
 
-    public CommunityPost() {}
-
-    public CommunityPost(CommunityPostRequest communityPostRequest, User user) {
-        super(communityPostRequest.getTitle(), communityPostRequest.getDescription(), user);
-        this.category = communityPostRequest.getCategory();
-        this.setDescription(communityPostRequest.getDescription());
-    }
-    public void update(CommunityPostRequest communityPostRequest) {
-        super.setTitle(communityPostRequest.getTitle());
-        super.setDescription(communityPostRequest.getDescription());
-        this.category = communityPostRequest.getCategory();
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "category_id")
+//    private Category category;
+//
+//    public CommunityPost() {}
+//
+//    public CommunityPost(String title, String description, User user, Category category) {
+//        super(title, description, user);
+//        this.category = category;
+//    }
+//
+//    public void update(String title, String description, Category category) {
+//        super.setTitle(title);
+//        super.setDescription(description);
+//        this.category = category;
+//    }
 }

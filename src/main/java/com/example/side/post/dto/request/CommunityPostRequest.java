@@ -1,5 +1,6 @@
 package com.example.side.post.dto.request;
 
+import com.example.side.post.category.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,5 @@ import java.util.List;
 public class CommunityPostRequest {
     private String title;
     private String description;
-    private List<String> tag;
-    private String category;
+    private Long categoryId;
 }

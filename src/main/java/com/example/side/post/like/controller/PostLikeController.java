@@ -1,7 +1,7 @@
 package com.example.side.post.like.controller;
 
 import com.example.side.Dto.GlobalResDto;
-import com.example.side.config.UserDetailsImpl;
+import com.example.side.auth.CustomUserDetails;
 import com.example.side.post.like.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,7 +14,7 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @PostMapping("/on/{postId}")
-    public GlobalResDto<String> createPostLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+    public GlobalResDto<String> createPostLike(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
         try {
             postLikeService.createPostLike(userDetails, postId);
             return GlobalResDto.success("Post liked successfully", "Like added");
@@ -24,7 +24,7 @@ public class PostLikeController {
     }
 
     @DeleteMapping("/off/{postId}")
-    public GlobalResDto<String> deletePostLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+    public GlobalResDto<String> deletePostLike(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
         try {
             postLikeService.deletePostLike(userDetails, postId);
             return GlobalResDto.success("Post unliked successfully", "Like removed");

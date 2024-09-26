@@ -41,11 +41,17 @@ public class MailService {
 
         message.setFrom(senderEmail);
         message.setRecipients(MimeMessage.RecipientType.TO, mail);
-        message.setSubject("이메일 인증");
+        message.setSubject("모아올리오 메일인증 안내", "UTF-8");
         String body = "";
-        body += "<h3>요청하신 인증 번호입니다.</h3>";
+        body += "<div style='font-family: Arial, sans-serif; background-color: #f0f8ff; padding: 20px;'>";
+        body += "<div style='text-align: center; margin-bottom: 20px;'>";
+        body += "<img src='logo_url' alt='모아올리오' style='width: 150px;'/>";
+        body += "<h2 style='color: #00AEEF;'>모아올리오 메일인증 안내</h2>";
+        body += "</div>";
+        body += "<h3>안녕하세요, 모아올리오를 이용해주셔서 감사합니다.</h3>";
+        body += "<p>아래의 인증번호를 입력해주세요. 감사힙니다.</p>";
+        body += "<div style='text-align: center; margin-top: 30px;'>";
         body += "<h1>" + number + "</h1>";
-        body += "<h3>감사합니다.</h3>";
         message.setText(body, "UTF-8", "html");
 
         return message;

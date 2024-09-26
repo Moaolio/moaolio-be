@@ -1,13 +1,17 @@
 package com.example.side.post.service;
 
 import com.example.side.Exception.CustomException;
+import com.example.side.auth.CustomUserDetails;
 import com.example.side.comments.dto.response.CommentsResponse;
-import com.example.side.comments.entity.Comments;
-import com.example.side.config.UserDetailsImpl;
 import com.example.side.post.entity.PortfolioPost;
-import com.example.side.post.like.entity.PostLike;
+import com.example.side.post.entity.PostType;
+import com.example.side.post.file.entity.PostFile;
 import com.example.side.post.like.repository.PostLikeRepository;
 import com.example.side.post.repository.PortfolioPostRepository;
+import com.example.side.post.tag.entity.PostTag;
+import com.example.side.post.tag.entity.PostTagRepository;
+import com.example.side.post.tag.entity.Tag;
+import com.example.side.post.tag.entity.TagRepository;
 import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
 import com.example.side.post.dto.request.PortfolioPostRequest;
@@ -15,9 +19,9 @@ import com.example.side.post.dto.response.PortfolioPostResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,35 +33,97 @@ import static com.example.side.Exception.ErrorCode.NOT_FOUND_POST;
 public class PortfolioPostService {
 
     private static final String NO_PERMISSION = "이 페이지에 대한 권한이 없습니다.";
-    private static final String UNKNOWN_POST_ID = "알 수 없는 게시물 ID: ";
 
     private final PortfolioPostRepository portfolioPostRepository;
-    private final UserRepository userRepository;
     private final PostLikeRepository postLikeRepository;
+    private final UserRepository userRepository;
+    private final TagRepository tagRepository;
+    private final PostTagRepository postTagRepository;
 
     // 생성
     @Transactional
-    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, UserDetailsImpl userDetails) {
-        PortfolioPost portfolioPost = new PortfolioPost(portfolioPostRequest, userDetails.getUser());
-        PortfolioPost savedPortfolioPost = portfolioPostRepository.save(portfolioPost);
-        return new PortfolioPostResponse(savedPortfolioPost);
+    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails) {
+
+        PortfolioPost portfolioPost = PortfolioPost.builder()
+                .url(portfolioPostRequest.getUrl())
+                .technologyStack(portfolioPostRequest.getTechnologyStack())
+                .img(portfolioPostRequest.getImg())
+
+                .build();
+        portfolioPost.setPostType(PostType.PORTFOLIO);
+        portfolioPost.setTitle(portfolioPostRequest.getTitle());
+        portfolioPost.setDescription(portfolioPostRequest.getDescription());
+        portfolioPost.setUser(userDetails.getUser());
+        portfolioPost.setCreatedAt(LocalDateTime.now());
+        portfolioPost.setUpdatedAt(LocalDateTime.now());
+        portfolioPost.setLikeCount(0L);
+        portfolioPost.setViewCount(0L);
+        portfolioPostRepository.save(portfolioPost);
+
+        processTags(portfolioPost, portfolioPostRequest.getTags());
+//        processFiles(portfolioPost, portfolioPostRequest.getFiles());
+
+        return PortfolioPostResponse.from(portfolioPost);
+
     }
+
+    private void processTags(PortfolioPost post, List<String> tagNames) {
+        if (tagNames != null && !tagNames.isEmpty()) {
+            for (String name : tagNames) {
+                Tag tag = tagRepository.findByName(name)
+                        .orElseGet(() -> {
+                            Tag newTag = new Tag();
+                            newTag.setName(name);
+                            return tagRepository.save(newTag);
+                        });
+                PostTag postTag = new PostTag();
+                postTag.setPost(post);
+                postTag.setTag(tag);
+                postTagRepository.save(postTag);
+            }
+        }
+    }
+
+//    private void processFiles(PortfolioPost post, List<MultipartFile> files) {
+//        if (files != null && !files.isEmpty()) {
+//            for (MultipartFile file : files) {
+//                PostFile postFile = new PostFile();
+//                postFile.setUserPostId(post.getId());
+//                postFile.setFileName(file.getOriginalFilename());
+//                postFile.setFileSize(file.getSize());
+//                postFile.setFileType(file.getContentType());
+//                postFile.setFileOriginname(file.getOriginalFilename());
+//                postFileRepository.save(postFile);
+//
+//                saveFile(file);
+//            }
+//        }
 
     // 수정
     @Transactional
-    public PortfolioPostResponse updatePost(Long postId, PortfolioPostRequest postRequest, UserDetailsImpl userDetails) {
-        PortfolioPost portfolioPost = getPostById(postId);
+    public PortfolioPostResponse updatePost(Long portfolioPostId, PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails) {
 
-        validateUserPermission(portfolioPost, userDetails);
+        PortfolioPost portfolioPost = portfolioPostRepository.findById(portfolioPostId)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
-        portfolioPost.update(postRequest);
-        PortfolioPost updatedPortfolioPost = portfolioPostRepository.save(portfolioPost);
-        return new PortfolioPostResponse(updatedPortfolioPost);
+        portfolioPost.setTitle(portfolioPostRequest.getTitle());
+        portfolioPost.setDescription(portfolioPostRequest.getDescription());
+        portfolioPost.setUrl(portfolioPostRequest.getUrl());
+        portfolioPost.setTechnologyStack(portfolioPostRequest.getTechnologyStack());
+//        portfolioPost.setImg(portfolioPostRequest.getImg());
+
+        portfolioPost = portfolioPostRepository.save(portfolioPost);
+
+        // 태그 삭제
+//        postTagRepository.deleteByPost(portfolioPost);
+//
+        return PortfolioPostResponse.from(portfolioPost);
     }
+
 
     // 삭제
     @Transactional
-    public HashMap<String, Long> deletePost(Long postId, UserDetailsImpl userDetails) {
+    public HashMap<String, Long> deletePost(Long postId, CustomUserDetails userDetails) {
         PortfolioPost portfolioPost = getPostById(postId);
 
         validateUserPermission(portfolioPost, userDetails);
@@ -69,6 +135,7 @@ public class PortfolioPostService {
     }
 
     // 전체 조회
+    @Transactional
     public List<PortfolioPostResponse> portfolioPosts() {
         return portfolioPostRepository.findAll().stream()
                 .map(PortfolioPostResponse::new)
@@ -76,6 +143,7 @@ public class PortfolioPostService {
     }
 
     // 상세 조회
+    @Transactional
     public PortfolioPostResponse getPostId(Long postId, User user) {
         PortfolioPost portfolioPost = getPostById(postId);
         List<CommentsResponse> commentsResponses = getSortedComments(portfolioPost);
@@ -83,15 +151,17 @@ public class PortfolioPostService {
         return PortfolioPostResponse.of(portfolioPost, commentsResponses, isLiked);
     }
 
-    // 필터링 조회
-    public List<PortfolioPost> getFilteredPosts(List<String> tags, LocalDateTime startDate, LocalDateTime endDate, String sortBy) {
-        return portfolioPostRepository.findPosts(tags, startDate, endDate, sortBy);
-    }
+//    // 필터링 조회
+//    @Transactional
+//    public List<PortfolioPost> getFilteredPosts(List<String> tags, LocalDateTime startDate, LocalDateTime endDate, String sortBy) {
+//        return portfolioPostRepository.findByPosts(tags, startDate, endDate, sortBy);
+//    }
 
     // 검색
-    public List<PortfolioPost> searchPosts(String keyword) {
-        return portfolioPostRepository.findByTitleContaining(keyword);
-    }
+//    @Transactional
+//    public List<PortfolioPost> searchPosts(String keyword) {
+//        return portfolioPostRepository.findByTitle(keyword);
+//    }
 
     // 유틸 메소드: 게시물 ID로 찾기
     private PortfolioPost getPostById(Long postId) {
@@ -100,7 +170,7 @@ public class PortfolioPostService {
     }
 
     // 유틸 메소드: 유저 권한 검증
-    private void validateUserPermission(PortfolioPost portfolioPost, UserDetailsImpl userDetails) {
+    private void validateUserPermission(PortfolioPost portfolioPost, CustomUserDetails userDetails) {
         if (!portfolioPost.getUser().getId().equals(userDetails.getUser().getId())) {
             throw new IllegalArgumentException(NO_PERMISSION);
         }

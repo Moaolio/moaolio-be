@@ -41,7 +41,6 @@ public class JWTFilter extends OncePerRequestFilter {
          */
         String accessToken = request.getHeader("Authorization");
         String requestURI = request.getRequestURI();
-        System.out.println(accessToken == null);
         System.out.println("access-> " + accessToken);
         System.out.println("requestURI-> " + requestURI);
 
