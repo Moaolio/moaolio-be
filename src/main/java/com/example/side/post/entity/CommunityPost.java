@@ -19,4 +19,10 @@ public class CommunityPost extends Post {
         super(title, description, null);
         this.category = category;
     }
+
+    public void update(String title, String description, Category category) {
+        super.setTitle(title);
+        super.setDescription(description);
+        this.category = category;
+    }
 }

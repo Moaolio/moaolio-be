@@ -14,7 +14,11 @@ public class CategoryInitializer implements CommandLineRunner {
         if (categoryRepository.count() == 0) {
             categoryRepository.saveAll(Arrays.asList(
                     new Category("자유게시판"),
-                    new Category("팁게시판")
+                    new Category("백엔드"),
+                    new Category("프론트엔드"),
+                    new Category("디자인"),
+                    new Category("데브옵스"),
+                    new Category("AI")
             ));
         }
 

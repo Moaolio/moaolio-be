@@ -148,17 +148,19 @@ public class PortfolioPostService {
         return PortfolioPostResponse.of(portfolioPost, commentsResponses, isLiked);
     }
 
-//    // 필터링 조회
-//    @Transactional
-//    public List<PortfolioPost> getFilteredPosts(List<String> tags, LocalDateTime startDate, LocalDateTime endDate, String sortBy) {
-//        return portfolioPostRepository.findByPosts(tags, startDate, endDate, sortBy);
-//    }
+    // 좋아요 순 정렬
+    @Transactional
+    public List<PortfolioPostResponse> likedPosts() {
+        return portfolioPostRepository.findAllByOrderByLikeCountDesc().stream()
+                .map(PortfolioPostResponse::new)
+                .collect(Collectors.toList());
+    }
 
     // 검색
-//    @Transactional
-//    public List<PortfolioPost> searchPosts(String keyword) {
-//        return portfolioPostRepository.findByTitle(keyword);
-//    }
+    @Transactional
+    public List<PortfolioPost> searchPostsByTitle(String keyword) {
+        return portfolioPostRepository.findByTitle(keyword);
+    }
 
     // 유틸 메소드: 게시물 ID로 찾기
     private PortfolioPost getPostById(Long postId) {

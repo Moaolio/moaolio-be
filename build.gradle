@@ -48,6 +48,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
+    //file
+    implementation 'com.ironsoftware:ironpdf:2024.8.1'
+    
 }
 
 

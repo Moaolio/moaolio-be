@@ -11,10 +11,12 @@ import java.util.List;
 
 @Repository
 public interface CommunityPostRepository extends JpaRepository<CommunityPost, Long> {
-//    @Query("SELECT p FROM CommunityPost p WHERE (:title IS NULL OR p.title LIKE %:title%)")
-//    List<CommunityPost> findPostsByTitle(@Param("title") String title);
-//    //카테고리 검색
-//    List<CommunityPost> findByCategoryId(Long categoryId);
+    //문제없음
+    //제목검색
+    @Query("SELECT p FROM Post p WHERE p.postType = 'CommunityPost' AND (:title IS NULL OR LOWER(p.title) LIKE LOWER(CONCAT('%', :title, '%')))")    List<CommunityPost> findPostsByTitle(@Param("title") String title);
+    //문제없음
+    //카테고리 검색
+    List<CommunityPost> findByCategoryId(Long categoryId);
 
 
 }

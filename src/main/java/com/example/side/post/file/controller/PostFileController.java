@@ -36,7 +36,6 @@ public class PostFileController {
             if (!Files.exists(uploadDir)) {
                 Files.createDirectories(uploadDir);
             }
-
             Path filePath = uploadDir.resolve(file.getOriginalFilename());
             file.transferTo(filePath);
 
