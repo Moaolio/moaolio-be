@@ -15,6 +15,8 @@ import com.example.side.user.repository.UserRepository;
 import com.example.side.post.dto.request.CommunityPostRequest;
 import com.example.side.post.dto.response.CommunityPostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,10 +92,9 @@ public class CommunityPostService {
         return responseId;
     }
     //조회
-    public List<CommunityPostResponse> communityPosts() {
-        return communityPostRepository.findAll().stream()
-                .map(CommunityPostResponse::new)
-                .collect(Collectors.toList());
+    public Page<CommunityPostResponse> communityPosts(Pageable pageable){
+        Page<CommunityPost> posts = communityPostRepository.findAll(pageable);
+        return posts.map(CommunityPostResponse::new);
     }
     //상세조회
     public CommunityPostResponse getPostId(Long postId, User user){

@@ -10,6 +10,10 @@ import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.service.CommunityPostService;
 import com.example.side.post.service.PortfolioPostService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,16 +76,16 @@ public class PostController {
     }
 
     // 포트폴리오 게시글 조회 (최신순)
-    @GetMapping("/get/portfolio")
-    public GlobalResDto<List<PortfolioPostResponse>> recentPortfolioPosts() {
-        List<PortfolioPostResponse> response = portfolioPostService.portfolioPosts();
+    public GlobalResDto<Page<PortfolioPostResponse>> recentPortfolioPosts(
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<PortfolioPostResponse> response = portfolioPostService.portfolioPosts(pageable);
         return GlobalResDto.success(response, "포트폴리오 게시글 목록 조회가 성공적으로 완료되었습니다.");
     }
 
     // 커뮤니티 게시글 조회 (최신순)
     @GetMapping("/get/community")
-    public GlobalResDto<List<CommunityPostResponse>> recentCommunityPosts() {
-        List<CommunityPostResponse> response = communityPostService.communityPosts();
+    public GlobalResDto<Page<CommunityPostResponse>> recentCommunityPosts(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CommunityPostResponse> response = communityPostService.communityPosts(pageable);
         return GlobalResDto.success(response, "커뮤니티 게시글 목록 조회가 성공적으로 완료되었습니다.");
     }
 

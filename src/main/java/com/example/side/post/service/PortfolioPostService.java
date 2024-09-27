@@ -18,6 +18,9 @@ import com.example.side.post.dto.response.PortfolioPostResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -133,10 +136,9 @@ public class PortfolioPostService {
 
     // 전체 조회
     @Transactional
-    public List<PortfolioPostResponse> portfolioPosts() {
-        return portfolioPostRepository.findAll().stream()
-                .map(PortfolioPostResponse::new)
-                .collect(Collectors.toList());
+    public Page<PortfolioPostResponse> portfolioPosts(Pageable pageable) {
+        Page<PortfolioPost> portfolioPostPage = portfolioPostRepository.findAll(pageable);
+        return portfolioPostPage.map(PortfolioPostResponse::new);
     }
 
     // 상세 조회
