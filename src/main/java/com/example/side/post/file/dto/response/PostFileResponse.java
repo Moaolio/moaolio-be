@@ -1,4 +1,4 @@
-package com.example.side.post.file.Dto.response;
+package com.example.side.post.file.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

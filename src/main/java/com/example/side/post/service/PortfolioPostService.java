@@ -3,6 +3,7 @@ package com.example.side.post.service;
 import com.example.side.Exception.CustomException;
 import com.example.side.auth.CustomUserDetails;
 import com.example.side.comments.dto.response.CommentsResponse;
+import com.example.side.oracle.ObjectStorageService;
 import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.entity.PostType;
 import com.example.side.post.like.repository.PostLikeRepository;
@@ -12,7 +13,6 @@ import com.example.side.post.tag.entity.PostTagRepository;
 import com.example.side.post.tag.entity.Tag;
 import com.example.side.post.tag.entity.TagRepository;
 import com.example.side.user.entity.User;
-import com.example.side.user.repository.UserRepository;
 import com.example.side.post.dto.request.PortfolioPostRequest;
 import com.example.side.post.dto.response.PortfolioPostResponse;
 import jakarta.transaction.Transactional;
@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -39,10 +38,16 @@ public class PortfolioPostService {
     private final PostLikeRepository postLikeRepository;
     private final TagRepository tagRepository;
     private final PostTagRepository postTagRepository;
+    private final ObjectStorageService objectStorageService;
 
     // 생성
     @Transactional
-    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails) {
+    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails) throws Exception {
+        // 이미지 업로드
+//        String objectName = null;
+//        if (portfolioPostRequest.getImg() != null) {
+//            objectName = objectStorageService.uploadImage(portfolioPostRequest.getImg());
+//        }
 
         PortfolioPost portfolioPost = PortfolioPost.builder()
                 .url(portfolioPostRequest.getUrl())
@@ -84,63 +89,52 @@ public class PortfolioPostService {
         }
     }
 
-//    private void processFiles(PortfolioPost post, List<MultipartFile> files) {
-//        if (files != null && !files.isEmpty()) {
-//            for (MultipartFile file : files) {
-//                PostFile postFile = new PostFile();
-//                postFile.setUserPostId(post.getId());
-//                postFile.setFileName(file.getOriginalFilename());
-//                postFile.setFileSize(file.getSize());
-//                postFile.setFileType(file.getContentType());
-//                postFile.setFileOriginname(file.getOriginalFilename());
-//                postFileRepository.save(postFile);
-//
-//                saveFile(file);
-//            }
-//        }
-
     // 수정
     @Transactional
-    public PortfolioPostResponse updatePost(Long portfolioPostId, PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails) {
-
+    public PortfolioPostResponse updatePost(Long portfolioPostId, PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails) throws Exception {
         PortfolioPost portfolioPost = portfolioPostRepository.findById(portfolioPostId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+//        // 이미지 업데이트
+//        if (portfolioPostRequest.getImg() != null) {
+//            // 기존 이미지가 있다면 삭제
+//            if (portfolioPost.getImg() != null) {
+//                objectStorageService.deleteImage(portfolioPost.getImg());
+//            }
+//            String newObjectName = objectStorageService.uploadImage(portfolioPostRequest.getImg());
+//            portfolioPost.setImg(newObjectName);
+//        }
+//        String newObjectName = objectStorageService.uploadImage(portfolioPostRequest.getImg());
 
         portfolioPost.setTitle(portfolioPostRequest.getTitle());
         portfolioPost.setDescription(portfolioPostRequest.getDescription());
         portfolioPost.setUrl(portfolioPostRequest.getUrl());
         portfolioPost.setTechnologyStack(portfolioPostRequest.getTechnologyStack());
-//        portfolioPost.setImg(portfolioPostRequest.getImg());
-
+        portfolioPost.setImg(portfolioPost.getImg());
         portfolioPost = portfolioPostRepository.save(portfolioPost);
-
-        // 태그 삭제
-//        postTagRepository.deleteByPost(portfolioPost);
-//
         return PortfolioPostResponse.from(portfolioPost);
     }
-
-
     // 삭제
     @Transactional
     public HashMap<String, Long> deletePost(Long postId, CustomUserDetails userDetails) {
         PortfolioPost portfolioPost = getPostById(postId);
 
         validateUserPermission(portfolioPost, userDetails);
+//        // 이미지 삭제
+//        if (portfolioPost.getImg() != null) {
+//            objectStorageService.deleteImage(portfolioPost.getImg());
+//        }
 
         portfolioPostRepository.deleteById(postId);
         HashMap<String, Long> responseId = new HashMap<>();
         responseId.put("postId", portfolioPost.getId());
         return responseId;
     }
-
     // 전체 조회
     @Transactional
     public Page<PortfolioPostResponse> portfolioPosts(Pageable pageable) {
         Page<PortfolioPost> portfolioPostPage = portfolioPostRepository.findAll(pageable);
         return portfolioPostPage.map(PortfolioPostResponse::new);
     }
-
     // 상세 조회
     @Transactional
     public PortfolioPostResponse getPostId(Long postId, User user) {
@@ -149,7 +143,6 @@ public class PortfolioPostService {
         boolean isLiked = isPostLikedByUser(postId, user);
         return PortfolioPostResponse.of(portfolioPost, commentsResponses, isLiked);
     }
-
     // 좋아요 순 정렬
     @Transactional
     public List<PortfolioPostResponse> likedPosts() {
@@ -157,7 +150,6 @@ public class PortfolioPostService {
                 .map(PortfolioPostResponse::new)
                 .collect(Collectors.toList());
     }
-
     // 검색
     @Transactional
     public List<PortfolioPost> searchPostsByTitle(String keyword) {
@@ -188,5 +180,11 @@ public class PortfolioPostService {
     // 유틸 메소드: 게시물 좋아요 여부 확인
     private boolean isPostLikedByUser(Long postId, User user) {
         return postLikeRepository.findByPostIdAndUserId(postId, user.getId()) != null;
+    }
+    //내 게시글 조회
+    @Transactional
+    public Page<PortfolioPostResponse> myPosts(Pageable pageable, CustomUserDetails userDetails) {
+        Page<PortfolioPost> portfolioPostPage = portfolioPostRepository.findByUser(userDetails.getUser(), pageable);
+        return portfolioPostPage.map(PortfolioPostResponse::new);
     }
 }

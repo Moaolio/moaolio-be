@@ -5,7 +5,9 @@ import com.example.side.auth.CustomUserDetails;
 import com.example.side.comments.entity.Comments;
 import com.example.side.post.category.Category;
 import com.example.side.post.category.CategoryRepository;
+import com.example.side.post.dto.response.PortfolioPostResponse;
 import com.example.side.post.entity.CommunityPost;
+import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.entity.PostType;
 import com.example.side.post.like.entity.PostLike;
 import com.example.side.post.like.repository.PostLikeRepository;
@@ -14,6 +16,7 @@ import com.example.side.user.entity.User;
 import com.example.side.user.repository.UserRepository;
 import com.example.side.post.dto.request.CommunityPostRequest;
 import com.example.side.post.dto.response.CommunityPostResponse;
+import com.example.side.comments.dto.response.CommentsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +30,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.example.side.Exception.ErrorCode.NOT_FOUND_POST;
 
 @RequiredArgsConstructor
@@ -100,11 +102,12 @@ public class CommunityPostService {
     public CommunityPostResponse getPostId(Long postId, User user){
         CommunityPost communityPost = communityPostRepository.findById(postId).orElseThrow(()->new CustomException(NOT_FOUND_POST));
         communityPost.getComments().sort(Comparator.comparing(Comments::getCreatedAt).reversed());
-        List<com.example.side.comments.dto.response.CommentsResponse> commentsResponses = new ArrayList<>();
+        List<CommentsResponse> commentsResponses = new ArrayList<>();
         for(Comments comments : communityPost.getComments()){
-            commentsResponses.add(new com.example.side.comments.dto.response.CommentsResponse(comments));
+            commentsResponses.add(new CommentsResponse(comments));
         }
         PostLike postLike = postLikeRepository.findByPostIdAndUserId(postId,user.getId());
+
         if(postLike != null){
             return CommunityPostResponse.of(communityPost,commentsResponses,true);
         }
@@ -127,5 +130,11 @@ public class CommunityPostService {
         return posts.stream()
                 .map(CommunityPostResponse::new)
                 .collect(Collectors.toList());
+    }
+    //내 게시글 조회
+    @Transactional
+    public Page<CommunityPostResponse> myPosts(Pageable pageable, CustomUserDetails userDetails) {
+        Page<CommunityPost> communityPostsPage = communityPostRepository.findByUser(userDetails.getUser(), pageable);
+        return communityPostsPage.map(CommunityPostResponse::new);
     }
 }

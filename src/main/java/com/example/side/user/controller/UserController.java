@@ -1,6 +1,7 @@
 package com.example.side.user.controller;
 
 import com.example.side.Dto.GlobalResDto;
+import com.example.side.auth.CustomUserDetails;
 import com.example.side.user.dto.request.UidFindRequest;
 import com.example.side.user.dto.request.UserPasswordFindRequest;
 import com.example.side.user.dto.request.UserSignUpRequest;
@@ -9,6 +10,7 @@ import com.example.side.user.dto.response.*;
 import com.example.side.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,6 +50,13 @@ public class UserController {
         UserUpdateResponse userUpdateResponse = userService.update(userUpdateRequest);
 
         return GlobalResDto.success(userUpdateResponse, "회원정보 수정 성공");
+    }
+
+    @GetMapping("/my")
+    public GlobalResDto<UserResponse> getUser(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        UserResponse userResponse = userService.getMyInfo(customUserDetails.getUser().getId());
+
+        return GlobalResDto.success(userResponse, "마이페이지 유저 조회 성공");
     }
     //유저신고
 

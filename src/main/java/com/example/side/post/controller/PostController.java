@@ -17,7 +17,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +34,7 @@ public class PostController {
 
     // 포트폴리오 게시글 생성
     @PostMapping("/create/portfolio")
-    public GlobalResDto<PortfolioPostResponse> createPortfolioPost(@RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public GlobalResDto<PortfolioPostResponse> createPortfolioPost(@RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         PortfolioPostResponse response = portfolioPostService.createPost(portfolioPostRequest, userDetails);
         return GlobalResDto.success(response, "게시글이 생성되었습니다.");
     }
@@ -48,34 +47,35 @@ public class PostController {
     }
 
     // 포트폴리오 게시글 수정
-    @PutMapping("/update/portfolio/{postId}")
-    public GlobalResDto<PortfolioPostResponse> updatePortfolioPost(@PathVariable Long postId, @RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @PutMapping("/update/portfolio/{id}")
+    public GlobalResDto<PortfolioPostResponse> updatePortfolioPost(@PathVariable("id") Long postId, @RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
         PortfolioPostResponse response = portfolioPostService.updatePost(postId, portfolioPostRequest, userDetails);
         return GlobalResDto.success(response, "게시글이 성공적으로 수정되었습니다.");
     }
 
     // 커뮤니티 게시글 수정
-    @PutMapping("/update/community/{postId}")
-    public GlobalResDto<CommunityPostResponse> updateCommunityPost(@PathVariable Long postId, @RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @PutMapping("/update/community/{id}")
+    public GlobalResDto<CommunityPostResponse> updateCommunityPost(@PathVariable("id") Long postId, @RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
         CommunityPostResponse response = communityPostService.updatePost(postId, communityPostRequest, userDetails);
         return GlobalResDto.success(response, "커뮤니티 게시글이 성공적으로 수정되었습니다.");
     }
 
     // 포트폴리오 게시글 삭제
-    @DeleteMapping("/delete/portfolio/{postId}")
-    public GlobalResDto<Long> deletePortfolioPost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @DeleteMapping("/delete/portfolio/{id}")
+    public GlobalResDto<Long> deletePortfolioPost(@PathVariable("id") Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         portfolioPostService.deletePost(postId, userDetails);
         return GlobalResDto.success(postId, "포트폴리오 게시글이 성공적으로 삭제되었습니다.");
     }
 
     // 커뮤니티 게시글 삭제
-    @DeleteMapping("/delete/community/{postId}")
-    public GlobalResDto<Long> deleteCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @DeleteMapping("/delete/community/{id}")
+    public GlobalResDto<Long> deleteCommunityPost(@PathVariable("id") Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         communityPostService.deletePost(postId, userDetails);
         return GlobalResDto.success(postId, "커뮤니티 게시글이 성공적으로 삭제되었습니다.");
     }
 
     // 포트폴리오 게시글 조회 (최신순)
+    @GetMapping("/get/portfolio")
     public GlobalResDto<Page<PortfolioPostResponse>> recentPortfolioPosts(
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PortfolioPostResponse> response = portfolioPostService.portfolioPosts(pageable);
@@ -90,15 +90,15 @@ public class PostController {
     }
 
     // 포트폴리오 게시글 상세 조회
-    @GetMapping("/get/portfolio/{postId}")
-    public GlobalResDto<PortfolioPostResponse> getPortfolioPost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @GetMapping("/get/portfolio/{id}")
+    public GlobalResDto<PortfolioPostResponse> getPortfolioPost(@PathVariable("id") Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         PortfolioPostResponse response = portfolioPostService.getPostId(postId, userDetails.getUser());
         return GlobalResDto.success(response, "포트폴리오 게시글 조회가 성공적으로 완료되었습니다.");
     }
 
     // 커뮤니티 게시글 상세 조회
-    @GetMapping("/get/community/{postId}")
-    public GlobalResDto<CommunityPostResponse> getCommunityPost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @GetMapping("/get/community/{id}")
+    public GlobalResDto<CommunityPostResponse> getCommunityPost(@PathVariable("id") Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         CommunityPostResponse response = communityPostService.getPostId(postId, userDetails.getUser());
         return GlobalResDto.success(response, "커뮤니티 게시글 조회가 성공적으로 완료되었습니다.");
     }
@@ -136,8 +136,23 @@ public class PostController {
             return GlobalResDto.error("Invalid category ID format.");
         }
     }
+    //내 포트폴리오 게시글 조회
+    @GetMapping("/my/portfolio")
+    public GlobalResDto<Page<PortfolioPostResponse>> myPosts(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<PortfolioPostResponse> response = portfolioPostService.myPosts(pageable, userDetails);
+        return GlobalResDto.success(response, "내 게시글 조회가 성공적으로 완료되었습니다.");
+    }
 
+    //내 커뮤니티 게시글 조회
+    @GetMapping("/my/community")
+    public GlobalResDto<Page<CommunityPostResponse>> myCommunityPosts(@AuthenticationPrincipal CustomUserDetails userDetails,@PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CommunityPostResponse> response = communityPostService.myPosts(pageable,userDetails);
+        return GlobalResDto.success(response, "내 커뮤니티 게시글 조회가 성공적으로 완료되었습니다.");
+    }
 
+//스크럅운 추후에
 
 
 //    //커뮤니티 게시글 스크랩

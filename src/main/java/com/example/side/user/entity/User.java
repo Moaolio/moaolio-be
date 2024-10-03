@@ -3,6 +3,7 @@ package com.example.side.user.entity;
 import com.example.side.comments.entity.Comments;
 import com.example.side.common.BaseEntity;
 import com.example.side.post.entity.Post;
+import com.example.side.techStack.entity.TechMapping;
 import com.example.side.techStack.entity.TechStack;
 import com.example.side.user.dto.request.UserDto;
 import jakarta.persistence.*;
@@ -52,7 +53,7 @@ public class User extends BaseEntity {
     private String phone;
 
     @OneToMany(mappedBy = "user")
-    private List<TechStack> techStacks = new ArrayList<>();
+    private List<TechMapping> techMappings;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -15,11 +17,14 @@ public class TechStack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 24)
+    @Column(nullable = false, length = 24, unique = true, name = "name")
     private String techName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    public TechStack(String techName) {
+        this.techName = techName;
+    }
+    @OneToMany(mappedBy = "techStack")
+    private List<TechMapping> techMappings;
+
 
 }

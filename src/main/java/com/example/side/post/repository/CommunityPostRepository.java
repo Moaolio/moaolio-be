@@ -1,6 +1,10 @@
 package com.example.side.post.repository;
 
 import com.example.side.post.entity.CommunityPost;
+import com.example.side.post.entity.PortfolioPost;
+import com.example.side.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +21,8 @@ public interface CommunityPostRepository extends JpaRepository<CommunityPost, Lo
     //문제없음
     //카테고리 검색
     List<CommunityPost> findByCategoryId(Long categoryId);
+    Page<CommunityPost> findByUser(User user, Pageable pageable);
+
 
 
 }

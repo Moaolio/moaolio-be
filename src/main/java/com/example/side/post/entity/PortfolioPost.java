@@ -17,8 +17,8 @@ public class PortfolioPost extends Post {
     private String url;
     @Column(name = "technology_stack")
     private String technologyStack;
-//    @Column(name = "img")
-//    private String img;
+    @Column(name = "img")
+    private String img;
 
 
 

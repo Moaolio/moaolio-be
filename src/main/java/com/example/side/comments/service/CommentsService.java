@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -54,9 +55,7 @@ public class CommentsService {
     @Transactional
     public CommentsResponse updateComments(Long commentsId, CommentsRequest commentsRequest, CustomUserDetails userDetails) {
         Comments comments = commentsRepository.findById(commentsId).orElseThrow(() -> new CommentNotFoundException("존재하지 않는 댓글입니다."));
-        if(!comments.getUser().getId().equals(userDetails.getUser().getId())) {
-            throw new IllegalArgumentException("권한이 없습니다.");
-        }
+
         comments.setDescription(commentsRequest.getDescription());
 
         CommentsResponse commentsResponse = CommentsResponse.builder()
@@ -97,13 +96,28 @@ public class CommentsService {
     }
 
     // 내 댓글 모두 조회
-    public List<CommentsResponse> findCommentsByUserId(Long userId, CustomUserDetails userDetails) {
+    public List<CommentsResponse> findCommentsByUserId(CustomUserDetails userDetails) {
         List<Comments> findComments = commentsRepository.findByUserId(userDetails.getUser().getId());
         List<CommentsResponse> returnCommentsResponse = new ArrayList<>();
         findComments.stream()
                 .map(comments -> new CommentsResponse(comments))
                 .forEach(returnCommentsResponse::add);
         return returnCommentsResponse;
+    }
+
+    // 댓글 아이디로 댓글 조회
+    public CommentsResponse findById(Long commentsId) {
+        Optional<Comments> findComment = commentsRepository.findById(commentsId);
+        Comments comments = findComment.orElseThrow();
+
+        return CommentsResponse
+                        .builder()
+                        .id(comments.getId())
+                        .description(comments.getDescription())
+                        .userId(comments.getUser().getId())
+                        .postId(comments.getPost().getId())
+                        .build();
+
     }
 
 }

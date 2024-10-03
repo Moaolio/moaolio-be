@@ -26,6 +26,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    public UserResponse getMyInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("유저를 찾을 수 없습니다."));
+
+        UserResponse userResponse = new UserResponse(user);
+        return userResponse;
+    }
+
     @Transactional
     public UserSignUpResponse signUp(UserSignUpRequest userSignUpRequest) throws IllegalStateException {
 

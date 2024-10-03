@@ -1,8 +1,8 @@
 package com.example.side.post.dto.response;
 
 import com.example.side.comments.dto.response.CommentsResponse;
+import com.example.side.post.entity.CommunityPost;
 import com.example.side.post.entity.PortfolioPost;
-import com.example.side.post.tag.entity.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +21,7 @@ public class PortfolioPostResponse {
     private String description;
     private List<String> tag;
     private String url;
+    private String img;
     private List<CommentsResponse> comments;
     private Long likes;
     private Long views;
@@ -36,6 +37,9 @@ public class PortfolioPostResponse {
                 .map(CommentsResponse::new)
                 .collect(Collectors.toList());
         this.views = portfolioPost.getViewCount();
+    }
+
+    public PortfolioPostResponse(CommunityPost communityPost) {
     }
 
     public static PortfolioPostResponse of(PortfolioPost portfolioPost, List<CommentsResponse> commentsResponses, boolean b) {
@@ -56,10 +60,15 @@ public class PortfolioPostResponse {
         response.setId(portfolioPost.getId());
         response.setTitle(portfolioPost.getTitle());
         response.setDescription(portfolioPost.getDescription());
+        response.setImg(portfolioPost.getImg());
 //        response.setTag(portfolioPost.getTags().stream().map(postTag -> postTag.getTag().getName()).collect(Collectors.toList()));
         response.setUrl(portfolioPost.getUrl());
         response.setLikes(portfolioPost.getLikeCount());
         response.setViews(portfolioPost.getViewCount());
+        response.setComments(portfolioPost.getComments().stream()
+                .map(CommentsResponse::new)
+                .collect(Collectors.toList()));
+
         return response;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.side.techStack.controller;
 
 import com.example.side.Dto.GlobalResDto;
+import com.example.side.techStack.entity.TechMapping;
+import com.example.side.techStack.entity.TechStack;
 import com.example.side.techStack.service.TechStackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,7 @@ public class TechStackController {
     private TechStackService techStackService;
 
     @PostMapping("/add")
-    public List<GlobalResDto<Object>> addTechStack(@RequestParam Long userId, @RequestParam String tech) {
+    public List<GlobalResDto<Object>> addTechStack(@RequestParam Long userId, @RequestParam TechStack tech) {
         List<GlobalResDto<Object>> responseList = new ArrayList<>();
 
         try {
@@ -38,7 +40,7 @@ public class TechStackController {
     }
 
     @PutMapping("/update")
-    public List<GlobalResDto<Object>> updateTechStack(@RequestParam Long userId, @RequestParam String tech) {
+    public List<GlobalResDto<Object>> updateTechStack(@RequestParam Long userId, @RequestParam TechStack tech) {
         try {
             techStackService.updateTechStack(userId, tech);
             GlobalResDto<Object> successResponse = GlobalResDto.success("기술스택 수정에 성공하였습니다.", "Success");
@@ -51,7 +53,7 @@ public class TechStackController {
     }
 
     @DeleteMapping("/delete")
-    public List<GlobalResDto<Object>> deleteTechStack(@RequestParam Long userId, @RequestParam String tech) {
+    public List<GlobalResDto<Object>> deleteTechStack(@RequestParam Long userId, @RequestParam TechStack tech) {
         try {
             techStackService.deleteTechStack(userId, tech);
             GlobalResDto<Object> successResponse = GlobalResDto.success("기술스택 삭제에 성공하였습니다.", "Success");
@@ -61,5 +63,4 @@ public class TechStackController {
             return List.of(errorResponse);
         }
     }
-
 }

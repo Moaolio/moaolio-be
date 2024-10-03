@@ -10,4 +10,5 @@ public interface CommentsRepository extends JpaRepository<Comments, Long> {
     List<Comments> findByUserId(Long userId); // 유저의 댓글 찾기
     List<Comments> findByPostId(Long postId); // 글에 남겨진 댓글 찾기
     List<Comments> findByPostIdAndUserId(Long postId, Long userId); // 특정 유저가 글에 남긴 댓글 찾기
+    Boolean findUserById(Long userId);
 }

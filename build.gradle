@@ -48,9 +48,13 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
+    implementation 'org.springfreamework.web.bind.annotation:spring-boot-stater-web'
     //file
     implementation 'com.ironsoftware:ironpdf:2024.8.1'
-    
+    //oracle
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+    implementation 'com.oracle.oci.sdk:oci-java-sdk-objectstorage:3.50.0'
+
 }
 
 
@@ -59,4 +63,7 @@ tasks.named('test') {
 }
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-parameters"
+}
+repositories {
+    mavenCentral()
 }

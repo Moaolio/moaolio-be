@@ -29,7 +29,7 @@ public class CommunityPostResponse  {
         this.id = communityPost.getId();
         this.title = communityPost.getTitle();
         this.description = communityPost.getDescription();
-//        this.category = communityPost.getCategory().toString();
+//        this.category = communityPost.getCategory().toString( );
         this.likes = communityPost.getLikeCount();
         this.views = communityPost.getViewCount();
         this.comments = communityPost.getComments().stream()

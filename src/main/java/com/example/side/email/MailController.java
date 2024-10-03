@@ -21,8 +21,7 @@ public class MailController {
         if (!isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid email address format: " + email);
         }
-        String authCode = mailService.sendSimpleMessage(email);
-        return authCode;
+        return mailService.sendSimpleMessage(email);
     }
 
     private boolean isValidEmail(String email) {

@@ -1,4 +1,4 @@
-package com.example.side.post.like.Dto.request;
+package com.example.side.post.like.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
