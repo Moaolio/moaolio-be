@@ -147,9 +147,11 @@ public class PostController {
 
     //내 커뮤니티 게시글 조회
     @GetMapping("/my/community")
-    public GlobalResDto<Page<CommunityPostResponse>> myCommunityPosts(@AuthenticationPrincipal CustomUserDetails userDetails,@PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<CommunityPostResponse> response = communityPostService.myPosts(pageable,userDetails);
-        return GlobalResDto.success(response, "내 커뮤니티 게시글 조회가 성공적으로 완료되었습니다.");
+    public GlobalResDto<Page<CommunityPostResponse>> myCommunityPosts(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CommunityPostResponse> response = communityPostService.findMyPosts(pageable, userDetails);
+        return GlobalResDto.success(response, "내 게시글 조회가 성공적으로 완료되었습니다.");
     }
 
 //스크럅운 추후에

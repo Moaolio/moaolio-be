@@ -15,15 +15,16 @@ import com.example.side.post.tag.entity.TagRepository;
 import com.example.side.user.entity.User;
 import com.example.side.post.dto.request.PortfolioPostRequest;
 import com.example.side.post.dto.response.PortfolioPostResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.side.Exception.ErrorCode.NOT_FOUND_POST;
@@ -130,7 +131,7 @@ public class PortfolioPostService {
         return responseId;
     }
     // 전체 조회
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PortfolioPostResponse> portfolioPosts(Pageable pageable) {
         Page<PortfolioPost> portfolioPostPage = portfolioPostRepository.findAll(pageable);
         return portfolioPostPage.map(PortfolioPostResponse::new);
@@ -144,14 +145,14 @@ public class PortfolioPostService {
         return PortfolioPostResponse.of(portfolioPost, commentsResponses, isLiked);
     }
     // 좋아요 순 정렬
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PortfolioPostResponse> likedPosts() {
         return portfolioPostRepository.findAllByOrderByLikeCountDesc().stream()
                 .map(PortfolioPostResponse::new)
                 .collect(Collectors.toList());
     }
     // 검색
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PortfolioPost> searchPostsByTitle(String keyword) {
         return portfolioPostRepository.findByTitle(keyword);
     }
@@ -182,9 +183,13 @@ public class PortfolioPostService {
         return postLikeRepository.findByPostIdAndUserId(postId, user.getId()) != null;
     }
     //내 게시글 조회
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<PortfolioPostResponse> myPosts(Pageable pageable, CustomUserDetails userDetails) {
-        Page<PortfolioPost> portfolioPostPage = portfolioPostRepository.findByUser(userDetails.getUser(), pageable);
-        return portfolioPostPage.map(PortfolioPostResponse::new);
+        User user = Optional.ofNullable(userDetails.getUser())
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+
+        Page<PortfolioPost> postPage = portfolioPostRepository.findMyPosts(user,pageable);
+
+        return postPage.map(PortfolioPostResponse::new);
     }
 }

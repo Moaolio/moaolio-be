@@ -22,7 +22,7 @@ public interface CommunityPostRepository extends JpaRepository<CommunityPost, Lo
     //카테고리 검색
     List<CommunityPost> findByCategoryId(Long categoryId);
     Page<CommunityPost> findByUser(User user, Pageable pageable);
-
-
-
+    //내 게시글 조회
+    @Query("SELECT p FROM Post p WHERE p.postType = 'CommunityPost' AND p.user = :user ORDER BY p.id DESC")
+    Page<CommunityPost> findMyPosts(@Param("user") User user, Pageable pageable);
 }

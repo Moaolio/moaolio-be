@@ -27,5 +27,6 @@ public interface PortfolioPostRepository extends JpaRepository<PortfolioPost, Lo
     Page<PortfolioPost> findAll(Pageable pageable);
 
     //내 포트폴리오 게시글 조회
-    Page<PortfolioPost> findByUser(User user, Pageable pageable);
+    @Query("SELECT p FROM Post p WHERE p.postType = 'PortfolioPost' AND p.user = :user ORDER BY p.id DESC")
+    Page<PortfolioPost> findMyPosts(@Param("user") User user, Pageable pageable);
 }

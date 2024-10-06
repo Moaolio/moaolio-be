@@ -25,10 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import static com.example.side.Exception.ErrorCode.NOT_FOUND_POST;
 
@@ -94,11 +91,13 @@ public class CommunityPostService {
         return responseId;
     }
     //조회
+    @Transactional(readOnly = true)
     public Page<CommunityPostResponse> communityPosts(Pageable pageable){
         Page<CommunityPost> posts = communityPostRepository.findAll(pageable);
         return posts.map(CommunityPostResponse::new);
     }
     //상세조회
+    @Transactional
     public CommunityPostResponse getPostId(Long postId, User user){
         CommunityPost communityPost = communityPostRepository.findById(postId).orElseThrow(()->new CustomException(NOT_FOUND_POST));
         communityPost.getComments().sort(Comparator.comparing(Comments::getCreatedAt).reversed());
@@ -132,9 +131,11 @@ public class CommunityPostService {
                 .collect(Collectors.toList());
     }
     //내 게시글 조회
-    @Transactional
-    public Page<CommunityPostResponse> myPosts(Pageable pageable, CustomUserDetails userDetails) {
-        Page<CommunityPost> communityPostsPage = communityPostRepository.findByUser(userDetails.getUser(), pageable);
-        return communityPostsPage.map(CommunityPostResponse::new);
+    @Transactional(readOnly = true)
+    public Page<CommunityPostResponse> findMyPosts(Pageable pageable, CustomUserDetails userDetails) {
+        User user = Optional.ofNullable(userDetails.getUser())
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+        Page<CommunityPost> postPage = communityPostRepository.findMyPosts(user,pageable);
+        return postPage.map(CommunityPostResponse::new);
     }
 }
