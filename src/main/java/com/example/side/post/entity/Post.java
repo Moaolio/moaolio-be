@@ -1,7 +1,7 @@
 package com.example.side.post.entity;
 
 import com.example.side.comments.entity.Comments;
-import com.example.side.post.file.entity.PostFile;
+import com.example.side.post.pdf.entity.Pdf;
 import com.example.side.post.tag.entity.PostTag;
 import com.example.side.user.entity.User;
 import jakarta.persistence.*;
@@ -56,7 +56,7 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comments> comments = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PostFile> postFiles = new ArrayList<>();
+    private List<Pdf> postFiles = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostTag> postTags;
     // 커스텀 생성자

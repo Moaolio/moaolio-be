@@ -1,13 +1,10 @@
 package com.example.side.user.dto.response;
 
-import com.example.side.techStack.entity.TechMapping;
 import com.example.side.user.entity.User;
 import com.example.side.user.entity.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,7 +21,6 @@ public class UserResponse {
     private String description; // 자기소개
     private String experience;
     private String phone;
-    private List<TechMapping> techMappings;
     private UserRole role;
 
     public UserResponse(User user) {
@@ -38,7 +34,6 @@ public class UserResponse {
         this.description = user.getDescription();
         this.experience = user.getExperience();
         this.phone = user.getPhone();
-        this.techMappings = user.getTechMappings();
         this.role = user.getRole();
     }
 }

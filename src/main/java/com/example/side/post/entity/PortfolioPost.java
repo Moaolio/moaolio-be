@@ -15,10 +15,11 @@ public class PortfolioPost extends Post {
 
     @Column(name = "url")
     private String url;
-    @Column(name = "technology_stack")
+    @Column(name = "technologyStack")
     private String technologyStack;
     @Column(name = "img")
     private String img;
+
 
 
 

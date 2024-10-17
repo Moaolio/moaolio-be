@@ -19,6 +19,8 @@ public class Tag {
     // 태그 이름 반환 메서드
     @Column(name = "name")
     private String name;
+    // 태그와 포스트의 관계를 나타내는 매핑 테이블
+
 
 
 

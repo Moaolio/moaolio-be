@@ -3,7 +3,6 @@ package com.example.side.post.service;
 import com.example.side.Exception.CustomException;
 import com.example.side.auth.CustomUserDetails;
 import com.example.side.comments.dto.response.CommentsResponse;
-import com.example.side.oracle.ObjectStorageService;
 import com.example.side.post.entity.PortfolioPost;
 import com.example.side.post.entity.PostType;
 import com.example.side.post.like.repository.PostLikeRepository;
@@ -39,7 +38,6 @@ public class PortfolioPostService {
     private final PostLikeRepository postLikeRepository;
     private final TagRepository tagRepository;
     private final PostTagRepository postTagRepository;
-    private final ObjectStorageService objectStorageService;
 
     // 생성
     @Transactional
