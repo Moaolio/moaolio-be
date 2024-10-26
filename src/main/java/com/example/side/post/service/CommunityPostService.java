@@ -17,12 +17,15 @@ import com.example.side.user.repository.UserRepository;
 import com.example.side.post.dto.request.CommunityPostRequest;
 import com.example.side.post.dto.response.CommunityPostResponse;
 import com.example.side.comments.dto.response.CommentsResponse;
+import com.oracle.bmc.objectstorage.ObjectStorage;
+import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -36,13 +39,55 @@ public class CommunityPostService {
     private final CommunityPostRepository communityPostRepository;
     private final PostLikeRepository postLikeRepository;
     private final CategoryRepository categoryRepository;
+    private final ObjectStorage objectStorageClient;
 
+    static final String NAMESPACE = "cnshljz7n2kf";
+    static final String BUCKET_NAME = "bucket-20240928-2302";
+
+    private static final String REGION = "ap-sydney-1";
+
+    public class CommonUtils {
+
+        public static String buildFileName(String originalFilename) {
+            // 파일 확장자 추출
+            String extension = "";
+            int i = originalFilename.lastIndexOf('.');
+            if (i > 0) {
+                extension = originalFilename.substring(i);
+            }
+
+            // UUID를 사용하여 고유한 파일 이름 생성
+            String uniqueFileName = UUID.randomUUID().toString() + extension;
+            return uniqueFileName;
+        }
+    }
     @Transactional //생성
-    public CommunityPostResponse createPost(CommunityPostRequest communityPostRequest, CustomUserDetails userDetails) {
+    public CommunityPostResponse createPost(CommunityPostRequest communityPostRequest, CustomUserDetails userDetails, MultipartFile multipartFile) {
+        String imgUrl = null;
+        if(multipartFile != null && !multipartFile.isEmpty()){
+            String fileName = CommunityPostService.CommonUtils.buildFileName(multipartFile.getOriginalFilename());
+            try{
+                String objectName = UUID.randomUUID().toString()+"_"+fileName;
+                PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                        .namespaceName(NAMESPACE)
+                        .bucketName(BUCKET_NAME)
+                        .objectName(objectName)
+                        .putObjectBody(multipartFile.getInputStream())
+                        .contentType(multipartFile.getContentType())
+                        .contentLength(multipartFile.getSize())
+                        .build();
+                objectStorageClient.putObject(putObjectRequest);
+                imgUrl = "https://objectstorage." + REGION + ".oraclecloud.com/n/" + NAMESPACE + "/b/" + BUCKET_NAME + "/o/" + objectName;
+            } catch (Exception e) {
+                return CommunityPostResponse.fail("UPLOAD_FAILED", "파일 업로드에 실패했습니다: " + e.getMessage());
+            }
+        }
+
         Category category = categoryRepository.findById(communityPostRequest.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
         CommunityPost post = CommunityPost.builder()
                 .category(category)
+                .imgUrl(imgUrl)
                 .build();
         post.setUser(userRepository.findById(userDetails.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found")));

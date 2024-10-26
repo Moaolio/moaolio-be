@@ -43,16 +43,36 @@ public class MailService {
         message.setRecipients(MimeMessage.RecipientType.TO, mail);
         message.setSubject("모아올리오 메일인증 안내", "UTF-8");
         String body = "";
-        body += "<div style='font-family: Arial, sans-serif; background-color: #f0f8ff; padding: 20px;'>";
-        body += "<div style='text-align: center; margin-bottom: 20px;'>";
-        body += "<img src='logo_url' alt='모아올리오' style='width: 150px;'/>";
-        body += "<h2 style='color: #00AEEF;'>모아올리오 메일인증 안내</h2>";
-        body += "</div>";
-        body += "<h3>안녕하세요, 모아올리오를 이용해주셔서 감사합니다.</h3>";
-        body += "<p>아래의 인증번호를 입력해주세요. 감사힙니다.</p>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<img src='https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnshljz7n2kf/b/moaolioBucket/o/mail%2Flogo.png' alt='logo','margin-right: 10px';>"
+                +"<img src='https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnshljz7n2kf/b/moaolioBucket/o/mail%2Flogo_right.png' alt='right_logo'>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+      //  body += "<img src='https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnshljz7n2kf/b/moaolioBucket/o/mail%2Fpatition.png' 'margin-right: 10px';>"+
+        body +="<img src='https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnshljz7n2kf/b/moaolioBucket/o/mail%2Ftitle.png'>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<img src='https://objectstorage.ap-seoul-1.oraclecloud.com/n/cnshljz7n2kf/b/moaolioBucket/o/mail%2Fcontent.png'>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
+        body += "<br>";
         body += "<div style='text-align: center; margin-top: 30px;'>";
-        body += "<h1>" + number + "</h1>";
-        message.setText(body, "UTF-8", "html");
+        body += "<h1>인증번호 : " + number + "</h1>";
+        body += "</div>";
+
+        message.setContent(body, "text/html; charset=UTF-8"); // setText 대신 setContent 사용
+
+
 
         return message;
     }

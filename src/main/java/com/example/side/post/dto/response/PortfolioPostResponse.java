@@ -71,4 +71,8 @@ public class PortfolioPostResponse {
 
         return response;
     }
+
+    public static PortfolioPostResponse fail(String uploadFailed, String s) {
+        return null;
+    }
 }

@@ -14,16 +14,21 @@ import com.example.side.post.tag.entity.TagRepository;
 import com.example.side.user.entity.User;
 import com.example.side.post.dto.request.PortfolioPostRequest;
 import com.example.side.post.dto.response.PortfolioPostResponse;
+import com.oracle.bmc.objectstorage.ObjectStorage;
+import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
+import org.jasypt.commons.CommonUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.example.side.Exception.ErrorCode.NOT_FOUND_POST;
@@ -38,20 +43,44 @@ public class PortfolioPostService {
     private final PostLikeRepository postLikeRepository;
     private final TagRepository tagRepository;
     private final PostTagRepository postTagRepository;
+    private final ObjectStorage objectStorageClient;
+
+    static final String NAMESPACE = "cnshljz7n2kf";
+    static final String BUCKET_NAME = "bucket-20240928-2302";
+
+    private static final String REGION = "ap-sydney-1";
+
 
     // 생성
     @Transactional
-    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails) throws Exception {
-        // 이미지 업로드
-//        String objectName = null;
-//        if (portfolioPostRequest.getImg() != null) {
-//            objectName = objectStorageService.uploadImage(portfolioPostRequest.getImg());
-//        }
+    public PortfolioPostResponse createPost(PortfolioPostRequest portfolioPostRequest, CustomUserDetails userDetails, MultipartFile multipartFile) throws Exception {
+        String imgUrl = null;
+    // 이미지 업로드 오라클 클라우드버킷
+        //너쫌 개같더라
+        if(multipartFile != null && !multipartFile.isEmpty()){
+            String fileName = CommonUtils.buildFileName(multipartFile.getOriginalFilename());
+            try{
+                String objectName = UUID.randomUUID().toString()+"_"+fileName;
+                PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                        .namespaceName(NAMESPACE)
+                        .bucketName(BUCKET_NAME)
+                        .objectName(objectName)
+                        .putObjectBody(multipartFile.getInputStream())
+                        .contentType(multipartFile.getContentType())
+                        .contentLength(multipartFile.getSize())
+                        .build();
+                objectStorageClient.putObject(putObjectRequest);
+                imgUrl = "https://objectstorage." + REGION + ".oraclecloud.com/n/" + NAMESPACE + "/b/" + BUCKET_NAME + "/o/" + objectName;
+            } catch (Exception e) {
+                return PortfolioPostResponse.fail("UPLOAD_FAILED", "파일 업로드에 실패했습니다: " + e.getMessage());
+            }
+        }
+
 
         PortfolioPost portfolioPost = PortfolioPost.builder()
                 .url(portfolioPostRequest.getUrl())
                 .technologyStack(portfolioPostRequest.getTechnologyStack())
-                .img(portfolioPostRequest.getImg())
+                .img(imgUrl)
 
                 .build();
         portfolioPost.setPostType(PostType.PORTFOLIO);
@@ -65,7 +94,6 @@ public class PortfolioPostService {
         portfolioPostRepository.save(portfolioPost);
 
         processTags(portfolioPost, portfolioPostRequest.getTags());
-//        processFiles(portfolioPost, portfolioPostRequest.getFiles());
 
         return PortfolioPostResponse.from(portfolioPost);
 
@@ -190,4 +218,21 @@ public class PortfolioPostService {
 
         return postPage.map(PortfolioPostResponse::new);
     }
+    // 파일 이름 생성
+    public class CommonUtils {
+
+        public static String buildFileName(String originalFilename) {
+            // 파일 확장자 추출
+            String extension = "";
+            int i = originalFilename.lastIndexOf('.');
+            if (i > 0) {
+                extension = originalFilename.substring(i);
+            }
+
+            // UUID를 사용하여 고유한 파일 이름 생성
+            String uniqueFileName = UUID.randomUUID().toString() + extension;
+            return uniqueFileName;
+        }
+    }
 }
+

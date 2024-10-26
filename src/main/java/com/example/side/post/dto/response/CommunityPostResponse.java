@@ -51,4 +51,8 @@ public class CommunityPostResponse  {
         response.setViews(communityPost.getViewCount());
         return response;
     }
+
+    public static CommunityPostResponse fail(String uploadFailed, String s) {
+        return null;
+    }
 }

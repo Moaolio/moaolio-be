@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,15 +35,19 @@ public class PostController {
 
     // 포트폴리오 게시글 생성
     @PostMapping("/create/portfolio")
-    public GlobalResDto<PortfolioPostResponse> createPortfolioPost(@RequestBody PortfolioPostRequest portfolioPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
-        PortfolioPostResponse response = portfolioPostService.createPost(portfolioPostRequest, userDetails);
+    public GlobalResDto<PortfolioPostResponse> createPortfolioPost(@RequestPart MultipartFile multipartFile,
+                                                                   @RequestBody PortfolioPostRequest portfolioPostRequest,
+                                                                   @AuthenticationPrincipal CustomUserDetails userDetails) throws Exception {
+        PortfolioPostResponse response = portfolioPostService.createPost(portfolioPostRequest, userDetails, multipartFile);
         return GlobalResDto.success(response, "게시글이 생성되었습니다.");
     }
 
     // 커뮤니티 게시글 생성
     @PostMapping("/create/community")
-    public GlobalResDto<CommunityPostResponse> createCommunityPost(@RequestBody CommunityPostRequest communityPostRequest, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        CommunityPostResponse response = communityPostService.createPost(communityPostRequest, userDetails);
+    public GlobalResDto<CommunityPostResponse> createCommunityPost(@RequestPart MultipartFile multipartFile,
+                                                                   @RequestBody CommunityPostRequest communityPostRequest,
+                                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
+        CommunityPostResponse response = communityPostService.createPost(communityPostRequest, userDetails,multipartFile);
         return GlobalResDto.success(response, "게시글이 성공적으로 생성되었습니다.");
     }
 
